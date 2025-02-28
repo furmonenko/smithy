@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=3 uid="uid://g4ya6k88ptd2"]
+
+[ext_resource type="Script" path="res://layer_manager.gd" id="1_qrecu"]
+[ext_resource type="Script" path="res://player_controller.gd" id="2_f435b"]
+[ext_resource type="Texture2D" uid="uid://d0rkw6shhaplp" path="res://assets/Screenshot 2025-02-28 at 17.47.51.png" id="2_v4cvh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sbo3q"]
+size = Vector2(340, 524)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6elex"]
+
+[node name="Main" type="Node2D"]
+y_sort_enabled = true
+
+[node name="LayerManager" type="Node" parent="."]
+script = ExtResource("1_qrecu")
+front_layer_path = NodePath("../LayerFront")
+middle_layer_path = NodePath("../LayerMid")
+back_layer_path = NodePath("../LayerBack")
+y_positions = Array[float]([900.0, 600.0, 300.0])
+scales = Array[float]([1.0, 0.8, 0.7])
+
+[node name="front" type="CharacterBody2D" parent="."]
+position = Vector2(183, 288)
+collision_layer = 0
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="front"]
+position = Vector2(0, -225)
+shape = SubResource("RectangleShape2D_sbo3q")
+debug_color = Color(0.981277, 0, 0.372465, 0.42)
+
+[node name="nid" type="CharacterBody2D" parent="."]
+position = Vector2(755, 713)
+collision_layer = 0
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="nid"]
+position = Vector2(0, -225)
+shape = SubResource("RectangleShape2D_sbo3q")
+debug_color = Color(0.70614, 0.488514, 5.77569e-07, 0.42)
+
+[node name="back" type="CharacterBody2D" parent="."]
+position = Vector2(1101, 569)
+collision_layer = 0
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="back"]
+position = Vector2(0, -225)
+shape = SubResource("RectangleShape2D_sbo3q")
+debug_color = Color(0, 0.638766, 0.374252, 0.42)
+
+[node name="LayerBack" type="Node2D" parent="."]
+
+[node name="LayerMid" type="Node2D" parent="."]
+z_index = 10
+
+[node name="LayerFront" type="Node2D" parent="."]
+z_index = 20
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("layer_manager")]
+position = Vector2(435, 900)
+script = ExtResource("2_f435b")
+layer_manager = NodePath("../LayerManager")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(6.10352e-05, -14.9999)
+shape = SubResource("CapsuleShape2D_6elex")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+position = Vector2(-2.99994, -237)
+scale = Vector2(-0.6, 0.6)
+texture = ExtResource("2_v4cvh")
