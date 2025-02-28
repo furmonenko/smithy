@@ -17,11 +17,11 @@ script = ExtResource("1_qrecu")
 front_layer_path = NodePath("../LayerFront")
 middle_layer_path = NodePath("../LayerMid")
 back_layer_path = NodePath("../LayerBack")
-y_positions = Array[float]([900.0, 600.0, 300.0])
-scales = Array[float]([1.0, 0.8, 0.7])
+y_positions = Array[float]([1000.0, 800.0, 600.0])
+scales = Array[float]([1.0, 0.9, 0.8])
 
 [node name="front" type="CharacterBody2D" parent="."]
-position = Vector2(183, 288)
+position = Vector2(203, 997)
 collision_layer = 0
 collision_mask = 0
 metadata/_edit_group_ = true
@@ -32,7 +32,8 @@ shape = SubResource("RectangleShape2D_sbo3q")
 debug_color = Color(0.981277, 0, 0.372465, 0.42)
 
 [node name="nid" type="CharacterBody2D" parent="."]
-position = Vector2(755, 713)
+position = Vector2(695, 654)
+scale = Vector2(0.827, 0.827)
 collision_layer = 0
 collision_mask = 0
 metadata/_edit_group_ = true
@@ -43,7 +44,8 @@ shape = SubResource("RectangleShape2D_sbo3q")
 debug_color = Color(0.70614, 0.488514, 5.77569e-07, 0.42)
 
 [node name="back" type="CharacterBody2D" parent="."]
-position = Vector2(1101, 569)
+position = Vector2(1022, 521)
+scale = Vector2(0.7605, 0.7605)
 collision_layer = 0
 collision_mask = 0
 metadata/_edit_group_ = true
@@ -54,15 +56,18 @@ shape = SubResource("RectangleShape2D_sbo3q")
 debug_color = Color(0, 0.638766, 0.374252, 0.42)
 
 [node name="LayerBack" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="LayerMid" type="Node2D" parent="."]
 z_index = 10
+y_sort_enabled = true
 
 [node name="LayerFront" type="Node2D" parent="."]
 z_index = 20
+y_sort_enabled = true
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("layer_manager")]
-position = Vector2(435, 900)
+position = Vector2(458, 1000)
 script = ExtResource("2_f435b")
 layer_manager = NodePath("../LayerManager")
 metadata/_edit_group_ = true

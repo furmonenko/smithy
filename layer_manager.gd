@@ -10,7 +10,7 @@ class_name LayerManager
 
 @export_group("Параметри масштабування")
 # Y-координати для визначення шару
-@export var y_positions: Array[float] = [400.0, 600.0, 900.0]
+@export var y_positions: Array[float] = [900.0, 600.0, 300.0]
 # Масштаб для кожного шару
 @export var scales: Array[float] = [1.0, 0.85, 0.7]
 # Допустима похибка
@@ -99,6 +99,15 @@ func enable_auto_scale():
 	print("Auto-scaling enabled")
 	auto_scale = true
 
+# Визначення шару за Y-координатою
+func get_layer_index_for_position(y_pos: float) -> int:
+	if y_pos >= y_positions[0] - tolerance:
+		return 0  # Передній шар
+	elif y_pos >= y_positions[1] - tolerance:
+		return 1  # Середній шар
+	else:
+		return 2  # Задній шар
+
 # Оновлення масштабу об'єктів в редакторі
 func update_scales_in_editor():
 	var parent = get_parent()
@@ -114,20 +123,36 @@ func update_scales_in_editor():
 				original_scales[child] = child.scale
 				print("New object found: " + child.name + " with scale " + str(child.scale))
 			
+			# Розраховуємо масштаб на основі відношення Y-координат
+			var normalized_scale = 1.0
+			if layer_index == 0:
+				normalized_scale = scales[0]
+			elif layer_index == 1:
+				# Інтерполяція між першим і другим масштабом
+				var progress = (child.position.y - y_positions[0]) / (y_positions[1] - y_positions[0])
+				normalized_scale = lerp(scales[0], scales[1], progress)
+			else:
+				# Інтерполяція між другим і третім масштабом
+				var progress = (child.position.y - y_positions[1]) / (y_positions[2] - y_positions[1])
+				normalized_scale = lerp(scales[1], scales[2], progress)
+			
 			# Застосовуємо масштаб
 			var target_scale
 			if respect_original_scale and original_scales.has(child):
 				# Використовуємо оригінальний масштаб як основу
 				var original_scale = original_scales[child]
-				target_scale = Vector2(original_scale.x * scales[layer_index], 
-									   original_scale.y * scales[layer_index])
+				target_scale = Vector2(
+					original_scale.x * normalized_scale, 
+					original_scale.y * normalized_scale
+				)
 			else:
-				# Використовуємо лише коефіцієнт масштабу
-				target_scale = Vector2(scales[layer_index], scales[layer_index])
+				# Використовуємо лише розрахований масштаб
+				target_scale = Vector2(normalized_scale, normalized_scale)
 			
-			# Встановлюємо масштаб, якщо він змінився
-			if child.scale != target_scale:
+			# Встановлюємо масштаб, якщо він значно змінився
+			if abs(child.scale.x - target_scale.x) > 0.01:
 				child.scale = target_scale
+
 
 # Організація об'єктів по шарах при запуску гри
 func organize_objects_for_game():
@@ -189,15 +214,6 @@ func organize_objects_for_game():
 		
 		print("Object " + obj.name + " moved to layer " + str(layer_index) + 
 			" with scale " + str(obj.scale))
-
-# Визначення шару за Y-координатою
-func get_layer_index_for_position(y_pos: float) -> int:
-	if y_pos >= y_positions[2] - tolerance:
-		return 0  # Передній шар (внизу)
-	elif y_pos >= y_positions[1] - tolerance:
-		return 1  # Середній шар
-	else:
-		return 2  # Задній шар (вгорі)
 
 # Метод для ручного сортування через інспектор
 func organize_now():
