@@ -6,6 +6,7 @@ extends CharacterBody2D
 @export var layer_manager: LayerManager
 
 # Налаштування анімації
+@export var layer_moving_duration: float = 2
 @export var has_animations: bool = false
 @export var animation_player_path: NodePath
 @onready var animation_player = get_node_or_null(animation_player_path) if has_animations else null
@@ -64,10 +65,10 @@ func move_to_new_layer(new_layer: int):
 	play_layer_transition_animation(old_layer, new_layer)
 	
 	# Переміщуємо персонажа на новий шар
-	layer_manager.move_to_layer(self, new_layer)
+	layer_manager.move_to_layer(self, new_layer, layer_moving_duration)
 	
 	# Створюємо таймер для розблокування руху після завершення переходу
-	var timer = get_tree().create_timer(0.5)  # Час має збігатися з тривалістю переходу в LayerManager
+	var timer = get_tree().create_timer(layer_moving_duration)  # Час має збігатися з тривалістю переходу в LayerManager
 	timer.timeout.connect(func(): 
 		is_layer_transitioning = false
 	)

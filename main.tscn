@@ -1,13 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://g4ya6k88ptd2"]
+[gd_scene load_steps=7 format=3 uid="uid://g4ya6k88ptd2"]
 
 [ext_resource type="Script" path="res://layer_manager.gd" id="1_qrecu"]
-[ext_resource type="Script" path="res://player_controller.gd" id="2_f435b"]
-[ext_resource type="Texture2D" uid="uid://d0rkw6shhaplp" path="res://assets/Screenshot 2025-02-28 at 17.47.51.png" id="2_v4cvh"]
+[ext_resource type="PackedScene" uid="uid://bx8ek002jwy3h" path="res://blacksmith.tscn" id="2_71qyi"]
+[ext_resource type="Script" path="res://depth_camera.gd" id="3_rvftn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sbo3q"]
 size = Vector2(340, 524)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6elex"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6v1v1"]
+size = Vector2(662, 4040)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b3x1s"]
+size = Vector2(1264, 8084)
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -31,21 +35,21 @@ position = Vector2(0, -225)
 shape = SubResource("RectangleShape2D_sbo3q")
 debug_color = Color(0.981277, 0, 0.372465, 0.42)
 
-[node name="nid" type="CharacterBody2D" parent="."]
+[node name="mid" type="CharacterBody2D" parent="."]
 position = Vector2(695, 654)
-scale = Vector2(0.827, 0.827)
+scale = Vector2(0.565609, 0.565609)
 collision_layer = 0
 collision_mask = 0
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="nid"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="mid"]
 position = Vector2(0, -225)
 shape = SubResource("RectangleShape2D_sbo3q")
 debug_color = Color(0.70614, 0.488514, 5.77569e-07, 0.42)
 
 [node name="back" type="CharacterBody2D" parent="."]
 position = Vector2(1022, 521)
-scale = Vector2(0.7605, 0.7605)
+scale = Vector2(0.439843, 0.439843)
 collision_layer = 0
 collision_mask = 0
 metadata/_edit_group_ = true
@@ -66,17 +70,42 @@ y_sort_enabled = true
 z_index = 20
 y_sort_enabled = true
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("layer_manager")]
-position = Vector2(458, 1000)
-script = ExtResource("2_f435b")
+[node name="Blacksmith" parent="." node_paths=PackedStringArray("layer_manager") instance=ExtResource("2_71qyi")]
+position = Vector2(467, 1038)
+collision_layer = 0
+collision_mask = 512
+speed = 400.0
 layer_manager = NodePath("../LayerManager")
+layer_moving_duration = 1.0
+
+[node name="Camera2D" type="Camera2D" parent="Blacksmith" node_paths=PackedStringArray("player", "layer_manager")]
+position = Vector2(494, -501)
+scale = Vector2(0.7685, 0.7685)
+limit_left = -400
+limit_right = 2100
+limit_smoothed = true
+drag_horizontal_enabled = true
+script = ExtResource("3_rvftn")
+transition_speed = 0.8
+player = NodePath("..")
+layer_manager = NodePath("../../LayerManager")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-489, 633)
+scale = Vector2(0.8165, 0.8165)
+collision_layer = 512
+collision_mask = 0
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(6.10352e-05, -14.9999)
-shape = SubResource("CapsuleShape2D_6elex")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_6v1v1")
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
-position = Vector2(-2.99994, -237)
-scale = Vector2(-0.6, 0.6)
-texture = ExtResource("2_v4cvh")
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(2446, 631)
+scale = Vector2(0.409, 0.409)
+collision_layer = 512
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_b3x1s")

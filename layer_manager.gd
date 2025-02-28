@@ -2,6 +2,9 @@
 extends Node
 class_name LayerManager
 
+# Сигнал зміни шару
+signal layer_changed(object, old_layer, new_layer)
+
 # === Загальні налаштування ===
 @export_group("Шляхи до шарів")
 @export var front_layer_path: NodePath
@@ -230,6 +233,17 @@ func move_to_layer(obj: Node2D, target_layer_index: int, transition_duration: fl
 		print("Invalid layer movement request")
 		return
 	
+	# Визначаємо поточний шар об'єкта
+	var current_layer_index = -1
+	var current_parent = obj.get_parent()
+	
+	if current_parent == front_layer:
+		current_layer_index = 0
+	elif current_parent == middle_layer:
+		current_layer_index = 1
+	elif current_parent == back_layer:
+		current_layer_index = 2
+	
 	# Визначаємо цільовий шар
 	var target_layer
 	match target_layer_index:
@@ -257,7 +271,6 @@ func move_to_layer(obj: Node2D, target_layer_index: int, transition_duration: fl
 		target_scale = Vector2(scales[target_layer_index], scales[target_layer_index])
 	
 	# Видаляємо з поточного батька
-	var current_parent = obj.get_parent()
 	if current_parent:
 		current_parent.remove_child(obj)
 	
@@ -282,9 +295,12 @@ func move_to_layer(obj: Node2D, target_layer_index: int, transition_duration: fl
 	# Блокуємо input під час руху
 	obj.set_process_input(false)
 	
-	# Розблоковуємо input після завершення руху
+	emit_signal("layer_changed", obj, current_layer_index, target_layer_index)
+	# Розблоковуємо input після завершення руху та викликаємо сигнал
 	tween.tween_callback(func(): 
 		obj.set_process_input(true)
+		# Викликаємо сигнал зміни шару
+		
 	)
 	
 	# Додаткове логування
