@@ -25,7 +25,7 @@ var layer_offsets: Array[Vector2] = [
 func _ready():
 	# Отримуємо посилання на гравця
 	if layer_manager.has_signal("layer_changed"):
-		layer_manager.connect("layer_changed", Callable(self, "_on_layer_changed"))
+		layer_manager.layer_changed.connect(_on_layer_changed)
 		print("DepthCamera: Підключено до сигналу layer_changed")
 	else:
 		print("DepthCamera: Менеджер шарів не знайдено! Перевірте шлях.")

@@ -1,24 +1,24 @@
 extends CharacterBody2D
+class_name PlayerController
 
 # Налаштування руху
 @export var speed: float = 200.0
-@export var layer_manager_path: NodePath
 @export var layer_manager: LayerManager
 
 # Налаштування анімації
+@export var animation_player: AnimationPlayer
 @export var layer_moving_duration: float = 2
 @export var has_animations: bool = false
 @export var animation_player_path: NodePath
-@onready var animation_player = get_node_or_null(animation_player_path) if has_animations else null
 
 # Поточний шар персонажа (0 - передній, 1 - середній, 2 - задній)
-var current_layer = 0  # Починаємо з переднього шару
+var layer = 0  # Починаємо з переднього шару
 
 # Прапорець блокування руху під час переходу між шарами
 var is_layer_transitioning = false
 
 func _ready() -> void:
-	move_to_new_layer(current_layer)
+	move_to_new_layer(layer)
 
 func _process(delta: float) -> void:
 	# Забороняємо рух під час переходу між шарами
@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 		return
 	
 	# Горизонтальний рух
-	var direction = Input.get_axis("ui_left", "ui_right")
+	var direction = Input.get_axis("move_left", "move_right")
 	velocity.x = direction * speed
 	
 	# Зміна напрямку спрайту (якщо є)
@@ -36,13 +36,13 @@ func _process(delta: float) -> void:
 		$Sprite2D.flip_h = false
 	
 	# Рух між шарами (вперед/назад по глибині)
-	if Input.is_action_just_pressed("ui_down") and current_layer > 0 and layer_manager:
+	if Input.is_action_just_pressed("move_down") and layer > 0 and layer_manager:
 		# Рух до камери (зменшення шару)
-		move_to_new_layer(current_layer - 1)
+		move_to_new_layer(layer - 1)
 		
-	if Input.is_action_just_pressed("ui_up") and current_layer < 2 and layer_manager:
+	if Input.is_action_just_pressed("move_up") and layer < 2 and layer_manager:
 		# Рух від камери (збільшення шару)
-		move_to_new_layer(current_layer + 1)
+		move_to_new_layer(layer + 1)
 	
 	move_and_slide()
 	
@@ -51,15 +51,21 @@ func _process(delta: float) -> void:
 
 # Метод для переміщення на новий шар з анімацією
 func move_to_new_layer(new_layer: int):
-	if new_layer == current_layer:
+	if new_layer == layer:
 		return
 	
 	# Блокуємо рух під час переходу
 	is_layer_transitioning = true
 	
 	# Запам'ятовуємо старий шар для анімації
-	var old_layer = current_layer
-	current_layer = new_layer
+	var old_layer = layer
+	layer = new_layer
+	
+	# Повідомляємо InteractionComponent про зміну шару
+	if %InteractionArea:
+		var interaction_component = %InteractionArea
+		if interaction_component:
+			interaction_component.on_player_layer_changed(new_layer)
 	
 	# Запускаємо анімацію переходу між шарами
 	play_layer_transition_animation(old_layer, new_layer)

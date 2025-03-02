@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://g4ya6k88ptd2"]
+[gd_scene load_steps=8 format=3 uid="uid://g4ya6k88ptd2"]
 
 [ext_resource type="Script" path="res://layer_manager.gd" id="1_qrecu"]
 [ext_resource type="PackedScene" uid="uid://bx8ek002jwy3h" path="res://blacksmith.tscn" id="2_71qyi"]
+[ext_resource type="PackedScene" uid="uid://de0p5f556732l" path="res://objects/anvil.tscn" id="2_rsqs0"]
 [ext_resource type="Script" path="res://depth_camera.gd" id="3_rvftn"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sbo3q"]
-size = Vector2(340, 524)
+[ext_resource type="PackedScene" uid="uid://5tk0iuuul53k" path="res://objects/bugle.tscn" id="3_yob46"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6v1v1"]
 size = Vector2(662, 4040)
@@ -24,40 +23,14 @@ back_layer_path = NodePath("../LayerBack")
 y_positions = Array[float]([1000.0, 800.0, 600.0])
 scales = Array[float]([1.0, 0.9, 0.8])
 
-[node name="front" type="CharacterBody2D" parent="."]
-position = Vector2(203, 997)
-collision_layer = 0
-collision_mask = 0
-metadata/_edit_group_ = true
+[node name="Anvil" parent="." instance=ExtResource("2_rsqs0")]
+position = Vector2(1115, 1000)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="front"]
-position = Vector2(0, -225)
-shape = SubResource("RectangleShape2D_sbo3q")
-debug_color = Color(0.981277, 0, 0.372465, 0.42)
-
-[node name="mid" type="CharacterBody2D" parent="."]
-position = Vector2(695, 654)
-scale = Vector2(0.565609, 0.565609)
-collision_layer = 0
-collision_mask = 0
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="mid"]
-position = Vector2(0, -225)
-shape = SubResource("RectangleShape2D_sbo3q")
-debug_color = Color(0.70614, 0.488514, 5.77569e-07, 0.42)
-
-[node name="back" type="CharacterBody2D" parent="."]
-position = Vector2(1022, 521)
-scale = Vector2(0.439843, 0.439843)
-collision_layer = 0
-collision_mask = 0
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="back"]
-position = Vector2(0, -225)
-shape = SubResource("RectangleShape2D_sbo3q")
-debug_color = Color(0, 0.638766, 0.374252, 0.42)
+[node name="Bugle" parent="." instance=ExtResource("3_yob46")]
+position = Vector2(1560, 797)
+scale = Vector2(0.371547, 0.371547)
+collision_layer = 2
+layer = 1
 
 [node name="LayerBack" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -92,7 +65,7 @@ layer_manager = NodePath("../../LayerManager")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-489, 633)
-scale = Vector2(0.8165, 0.8165)
+scale = Vector2(0.161289, 0.161289)
 collision_layer = 512
 collision_mask = 0
 metadata/_edit_group_ = true
@@ -102,7 +75,7 @@ shape = SubResource("RectangleShape2D_6v1v1")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 position = Vector2(2446, 631)
-scale = Vector2(0.409, 0.409)
+scale = Vector2(0.0800046, 0.0800046)
 collision_layer = 512
 collision_mask = 0
 metadata/_edit_group_ = true

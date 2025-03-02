@@ -2,6 +2,9 @@
 extends Node
 class_name LayerManager
 
+# Enum для шарів
+enum LAYER {FRONT = 0, MID = 1, BACK = 2}
+
 # Сигнал зміни шару
 signal layer_changed(object, old_layer, new_layer)
 
@@ -41,14 +44,14 @@ var original_scales = {}
 var _lock_updates_for_frame = false
 
 func _ready():
-	print("Manager initialized in " + ("EDITOR" if Engine.is_editor_hint() else "GAME") + " mode")
+	# print("Manager initialized in " + ("EDITOR" if Engine.is_editor_hint() else "GAME") + " mode")
 	
 	# Отримуємо шари
 	front_layer = get_node_or_null(front_layer_path)
 	middle_layer = get_node_or_null(middle_layer_path)
 	back_layer = get_node_or_null(back_layer_path)
 	
-	print("Layers: Front=" + str(front_layer) + ", Middle=" + str(middle_layer) + ", Back=" + str(back_layer))
+	# print("Layers: Front=" + str(front_layer) + ", Middle=" + str(middle_layer) + ", Back=" + str(back_layer))
 	
 	# Налаштовуємо z-індекси
 	if front_layer: front_layer.z_index = 20
@@ -105,11 +108,11 @@ func enable_auto_scale():
 # Визначення шару за Y-координатою
 func get_layer_index_for_position(y_pos: float) -> int:
 	if y_pos >= y_positions[0] - tolerance:
-		return 0  # Передній шар
+		return LAYER.FRONT  # Передній шар
 	elif y_pos >= y_positions[1] - tolerance:
-		return 1  # Середній шар
+		return LAYER.MID  # Середній шар
 	else:
-		return 2  # Задній шар
+		return LAYER.BACK  # Задній шар
 
 # Оновлення масштабу об'єктів в редакторі
 func update_scales_in_editor():
@@ -121,6 +124,10 @@ func update_scales_in_editor():
 		if child is Node2D and child != self and child != front_layer and child != middle_layer and child != back_layer:
 			var layer_index = get_layer_index_for_position(child.position.y)
 			
+			# Встановлюємо змінну layer в об'єкті, якщо можливо
+			if "layer" in child:
+				child.layer = layer_index
+			
 			# Зберігаємо оригінальний масштаб при першому виявленні
 			if not original_scales.has(child) and respect_original_scale:
 				original_scales[child] = child.scale
@@ -128,16 +135,16 @@ func update_scales_in_editor():
 			
 			# Розраховуємо масштаб на основі відношення Y-координат
 			var normalized_scale = 1.0
-			if layer_index == 0:
-				normalized_scale = scales[0]
-			elif layer_index == 1:
+			if layer_index == LAYER.FRONT:
+				normalized_scale = scales[LAYER.FRONT]
+			elif layer_index == LAYER.MID:
 				# Інтерполяція між першим і другим масштабом
-				var progress = (child.position.y - y_positions[0]) / (y_positions[1] - y_positions[0])
-				normalized_scale = lerp(scales[0], scales[1], progress)
+				var progress = (child.position.y - y_positions[LAYER.FRONT]) / (y_positions[LAYER.MID] - y_positions[LAYER.FRONT])
+				normalized_scale = lerp(scales[LAYER.FRONT], scales[LAYER.MID], progress)
 			else:
 				# Інтерполяція між другим і третім масштабом
-				var progress = (child.position.y - y_positions[1]) / (y_positions[2] - y_positions[1])
-				normalized_scale = lerp(scales[1], scales[2], progress)
+				var progress = (child.position.y - y_positions[LAYER.MID]) / (y_positions[LAYER.BACK] - y_positions[LAYER.MID])
+				normalized_scale = lerp(scales[LAYER.MID], scales[LAYER.BACK], progress)
 			
 			# Застосовуємо масштаб
 			var target_scale
@@ -155,7 +162,6 @@ func update_scales_in_editor():
 			# Встановлюємо масштаб, якщо він значно змінився
 			if abs(child.scale.x - target_scale.x) > 0.01:
 				child.scale = target_scale
-
 
 # Організація об'єктів по шарах при запуску гри
 func organize_objects_for_game():
@@ -180,6 +186,10 @@ func organize_objects_for_game():
 		var y_pos = obj.position.y
 		var layer_index = get_layer_index_for_position(y_pos)
 		
+		# Встановлюємо змінну layer в об'єкті, якщо можливо
+		if "layer" in obj:
+			obj.layer = layer_index
+		
 		print("Assigning " + obj.name + " at Y=" + str(y_pos) + " to layer " + str(layer_index))
 		
 		# Зберігаємо глобальну позицію і оригінальний масштаб
@@ -202,9 +212,9 @@ func organize_objects_for_game():
 		# Визначаємо цільовий шар
 		var target_layer
 		match layer_index:
-			0: target_layer = front_layer
-			1: target_layer = middle_layer
-			2: target_layer = back_layer
+			LAYER.FRONT: target_layer = front_layer
+			LAYER.MID: target_layer = middle_layer
+			LAYER.BACK: target_layer = back_layer
 		
 		# Додаємо до цільового шару
 		target_layer.add_child(obj)
@@ -238,18 +248,22 @@ func move_to_layer(obj: Node2D, target_layer_index: int, transition_duration: fl
 	var current_parent = obj.get_parent()
 	
 	if current_parent == front_layer:
-		current_layer_index = 0
+		current_layer_index = LAYER.FRONT
 	elif current_parent == middle_layer:
-		current_layer_index = 1
+		current_layer_index = LAYER.MID
 	elif current_parent == back_layer:
-		current_layer_index = 2
+		current_layer_index = LAYER.BACK
+	
+	# Встановлюємо змінну layer в об'єкті
+	if "layer" in obj:
+		obj.layer = target_layer_index
 	
 	# Визначаємо цільовий шар
 	var target_layer
 	match target_layer_index:
-		0: target_layer = front_layer
-		1: target_layer = middle_layer
-		2: target_layer = back_layer
+		LAYER.FRONT: target_layer = front_layer
+		LAYER.MID: target_layer = middle_layer
+		LAYER.BACK: target_layer = back_layer
 	
 	# Перевірка, чи існує цільовий шар
 	if not target_layer:
@@ -296,11 +310,10 @@ func move_to_layer(obj: Node2D, target_layer_index: int, transition_duration: fl
 	obj.set_process_input(false)
 	
 	emit_signal("layer_changed", obj, current_layer_index, target_layer_index)
-	# Розблоковуємо input після завершення руху та викликаємо сигнал
+	
+	# Розблоковуємо input після завершення руху
 	tween.tween_callback(func(): 
 		obj.set_process_input(true)
-		# Викликаємо сигнал зміни шару
-		
 	)
 	
 	# Додаткове логування

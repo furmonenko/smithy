@@ -1,19 +1,37 @@
-[gd_scene load_steps=4 format=3 uid="uid://bx8ek002jwy3h"]
+[gd_scene load_steps=6 format=3 uid="uid://bx8ek002jwy3h"]
 
 [ext_resource type="Script" path="res://player_controller.gd" id="1_txate"]
 [ext_resource type="Texture2D" uid="uid://d0rkw6shhaplp" path="res://assets/Screenshot 2025-02-28 at 17.47.51.png" id="2_h16f5"]
+[ext_resource type="Script" path="res://components/interaction_component.gd" id="3_sl6t0"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6elex"]
+radius = 89.9999
+height = 276.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gxprm"]
+size = Vector2(330, 468)
 
 [node name="Blacksmith" type="CharacterBody2D"]
 script = ExtResource("1_txate")
 metadata/_edit_group_ = true
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -277)
+rotation = 3.14159
+scale = Vector2(0.7, -0.7)
+texture = ExtResource("2_h16f5")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(6.10352e-05, -14.9999)
+position = Vector2(0, -138)
 shape = SubResource("CapsuleShape2D_6elex")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -395)
-scale = Vector2(-1, 1)
-texture = ExtResource("2_h16f5")
+[node name="InteractionArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -240)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_sl6t0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("RectangleShape2D_gxprm")
+debug_color = Color(0, 0.628233, 0.494335, 0.42)

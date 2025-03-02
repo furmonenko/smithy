@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://bs06etu5ptjxj"]
+
+[ext_resource type="Script" path="res://objects/interactable.gd" id="1_6ref7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sbo3q"]
+size = Vector2(556, 654)
+
+[node name="Interactable" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_6ref7")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -262)
+shape = SubResource("RectangleShape2D_sbo3q")
+debug_color = Color(0.981277, 0, 0.372465, 0.42)
+
+[node name="InteractionLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+offset_left = -100.0
+offset_top = -500.0
+offset_right = 203.0
+offset_bottom = -381.0
+text = "press E to interact"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

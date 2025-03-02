@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://5tk0iuuul53k"]
+
+[ext_resource type="PackedScene" uid="uid://bs06etu5ptjxj" path="res://objects/interactable.tscn" id="1_itf2d"]
+[ext_resource type="Texture2D" uid="uid://0u5lcsuw8skb" path="res://assets/Screenshot 2025-03-02 at 13.46.11.png" id="2_ybart"]
+
+[node name="Bugle" instance=ExtResource("1_itf2d")]
+
+[node name="Sprite2D" parent="." index="0"]
+position = Vector2(0, -346)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_ybart")
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(3, -327)
+debug_color = Color(0.489164, 0.584729, 0, 0.42)
