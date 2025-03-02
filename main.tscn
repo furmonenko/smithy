@@ -27,10 +27,16 @@ scales = Array[float]([1.0, 0.9, 0.8])
 position = Vector2(1115, 1000)
 
 [node name="Bugle" parent="." instance=ExtResource("3_yob46")]
-position = Vector2(1560, 797)
-scale = Vector2(0.371547, 0.371547)
+position = Vector2(994, 553)
+scale = Vector2(0.251431, 0.251431)
 collision_layer = 2
-layer = 1
+layer = 2
+
+[node name="Bugle2" parent="." instance=ExtResource("3_yob46")]
+position = Vector2(1275, 551)
+scale = Vector2(0.223449, 0.223449)
+collision_layer = 2
+layer = 2
 
 [node name="LayerBack" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -65,7 +71,7 @@ layer_manager = NodePath("../../LayerManager")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-489, 633)
-scale = Vector2(0.161289, 0.161289)
+scale = Vector2(0.131692, 0.131692)
 collision_layer = 512
 collision_mask = 0
 metadata/_edit_group_ = true
@@ -75,7 +81,7 @@ shape = SubResource("RectangleShape2D_6v1v1")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 position = Vector2(2446, 631)
-scale = Vector2(0.0800046, 0.0800046)
+scale = Vector2(0.0652438, 0.0652438)
 collision_layer = 512
 collision_mask = 0
 metadata/_edit_group_ = true
