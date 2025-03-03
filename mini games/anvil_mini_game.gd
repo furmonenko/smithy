@@ -29,8 +29,7 @@ const RIGHT_ACTION = "ui_right"
 # Налаштування гри
 @export var skill_level: int = SKILL_LEVEL.APPRENTICE
 @export var weapon_type: int = WEAPON_TYPE.LONG_SWORD
-@export var starting_shringing_circe_scale: Vector2
-@export var starting_target_ring_scale: Vector2
+@export var shrinking_speed_factor: float = 2.0  # Множник швидкості зменшення кола
 
 # Параметри, що залежать від рівня майстерності
 var target_ring_size: float  # % від загального радіусу
@@ -50,6 +49,8 @@ var last_hit_quality: int = 0  # 0 = промах, 1 = задовільно, 2 =
 var flip_half_done: bool = false  # Чи був зроблений переворот на половині
 var current_direction: String = "up"  # Поточний напрямок (вгору/вниз)
 var current_hit_button: String = ""   # Поточна кнопка для удару
+var starting_shringing_circe_scale: Vector2
+var starting_target_ring_scale: Vector2
 
 # Таймери
 var ring_timer: Timer
@@ -59,47 +60,49 @@ var flip_timer: Timer
 func _ready():
 	# Налаштовуємо параметри залежно від рівня майстерності
 	match skill_level:
-		SKILL_LEVEL.APPRENTICE:  # Учень
-			target_ring_size = 0.28  # 7% від радіусу
+		SKILL_LEVEL.APPRENTICE:
+			target_ring_size = 0.28
 			reaction_time = 2
 			cooling_rate = 0.2  # Охолодження кожні 20% ударів
-		SKILL_LEVEL.JOURNEYMAN:  # Підмайстер
-			target_ring_size = 0.32  # 12% від радіусу
-			reaction_time = 2.5
-			cooling_rate = 0.3  # Охолодження кожні 30% ударів
-		SKILL_LEVEL.BLACKSMITH:  # Коваль
-			target_ring_size = 0.35  # 18% від радіусу
-			reaction_time = 3
-			cooling_rate = 0.4  # Охолодження кожні 40% ударів
-		SKILL_LEVEL.MASTER:  # Майстер-коваль
-			target_ring_size = 0.4  # 28% від радіусу
-			reaction_time = 5
-			cooling_rate = 0.5  # Охолодження кожні 50% ударів
+		SKILL_LEVEL.JOURNEYMAN:  
+			target_ring_size = 0.32
+			reaction_time = 2.2
+			cooling_rate = 0.3 
+		SKILL_LEVEL.BLACKSMITH: 
+			target_ring_size = 0.35 
+			reaction_time = 2.4
+			cooling_rate = 0.4 
+		SKILL_LEVEL.MASTER: 
+			target_ring_size = 0.4
+			reaction_time = 2.8
+			cooling_rate = 0.5
 	
 	# Налаштовуємо параметри залежно від типу зброї
 	match weapon_type:
 		WEAPON_TYPE.DAGGER:
-			total_hits_required = 6
+			total_hits_required = 10
 		WEAPON_TYPE.SHORT_SWORD:
-			total_hits_required = 8
+			total_hits_required = 10
 		WEAPON_TYPE.LONG_SWORD:
 			total_hits_required = 10
 	
 # Створюємо і налаштовуємо таймери
 	ring_timer = Timer.new()
 	ring_timer.one_shot = true
-	ring_timer.connect("timeout", Callable(self, "_on_ring_timer_timeout"))
+	ring_timer.timeout.connect(_on_ring_timer_timeout)
 	add_child(ring_timer)
 	
 	direction_timer = Timer.new()
 	direction_timer.one_shot = true
-	direction_timer.connect("timeout", Callable(self, "_on_direction_timer_timeout"))
+	direction_timer.timeout.connect(_on_direction_timer_timeout)
 	add_child(direction_timer)
 	
 	flip_timer = Timer.new()
 	flip_timer.one_shot = true
-	flip_timer.connect("timeout", Callable(self, "_on_flip_timer_timeout"))
+	flip_timer.timeout.connect(_on_flip_timer_timeout)
 	add_child(flip_timer)
+	
+	InputManager.input_type_changed.connect(_on_input_type_changed)
 	
 	starting_shringing_circe_scale = %ShrinkingCircle.scale
 	starting_target_ring_scale = %ShrinkingCircle.scale
@@ -110,6 +113,23 @@ func _ready():
 	# Приховуємо на початку
 	visible = false
 	start_game()
+
+func _on_input_type_changed(_device_type):
+	# Оновлюємо текстури всіх кнопок
+	setup_hit_buttons()
+	
+	# Оновлюємо активну фазу
+	match current_phase:
+		GAME_PHASE.HIT:
+			# Оновлюємо активну кнопку удару
+			start_hit_phase()
+		GAME_PHASE.DIRECTION:
+			# Оновлюємо стрілку напрямку
+			start_direction_phase()
+		GAME_PHASE.FLIP:
+			# Оновлюємо кнопку перевертання
+			start_flip_phase()
+	
 
 func setup_ui():
 	# Налаштовуємо розмір цільового кільця відповідно до рівня майстерності
@@ -123,13 +143,30 @@ func setup_ui():
 	
 	# Налаштовуємо кнопки удару
 	setup_hit_buttons()
+	
+	# Налаштовуємо шейдер для індикатора температури
+	setup_temperature_shader()
 
+# Оновлена функція setup_hit_buttons, яка призначає текстури
 func setup_hit_buttons():
 	# Приховуємо всі кнопки спочатку
 	%HitButtonA.visible = false
 	%HitButtonB.visible = false
 	%HitButtonX.visible = false
 	%HitButtonY.visible = false
+	
+	# Оновлюємо текстури відповідно до поточного пристрою вводу
+	%HitButtonA.texture = InputManager.get_button_texture("hit_button_a")
+	%HitButtonB.texture = InputManager.get_button_texture("hit_button_b")
+	%HitButtonX.texture = InputManager.get_button_texture("hit_button_x")
+	%HitButtonY.texture = InputManager.get_button_texture("hit_button_y")
+	
+	# Налаштовуємо текстури для стрілок і кнопки фліпу
+	if %DirectionArrow:
+		%DirectionArrow.texture = InputManager.get_button_texture("ui_up")  # Початкова текстура
+	
+	if %FlipButton:
+		%FlipButton.texture = InputManager.get_button_texture("ui_left")  # Початкова текстура для фліпу
 
 func start_game():
 	visible = true
@@ -151,24 +188,52 @@ func start_game():
 func start_hit_phase():
 	current_phase = GAME_PHASE.HIT
 	
+	# Визначаємо регіон залежно від прогресу
+	var region_position
+	
+	# Розраховуємо скільки ударів у кожній фазі (до і після перевертання)
+	var hits_per_phase = total_hits_required / 2
+	
+	if flip_half_done:
+		# Після перевертання:
+		# Рахуємо скільки ударів зроблено після перевертання
+		var hits_after_flip = current_hits - hits_per_phase
+		# Перетворюємо в прогрес від 0.0 до 1.0
+		var phase_progress = float(hits_after_flip) / hits_per_phase
+		# Починаємо з позиції 0.0 (верх) і рухаємося до 1.0 (низ)
+		region_position = phase_progress
+	else:
+		# До перевертання:
+		# Перетворюємо в прогрес від 0.0 до 1.0
+		var phase_progress = float(current_hits) / hits_per_phase
+		# Починаємо з позиції 1.0 (низ) і рухаємося до 0.0 (верх)
+		region_position = 1.0 - phase_progress
+	
+	# Оновлюємо шейдер
+	update_workpiece_region(region_position)
+	
 	# Вибираємо випадкову кнопку для удару
 	current_hit_button = HIT_ACTIONS[randi() % HIT_ACTIONS.size()]
 	
-	# Приховуємо всі кнопки
+	# Приховуємо всі кнопки спочатку
 	%HitButtonA.visible = false
 	%HitButtonB.visible = false
 	%HitButtonX.visible = false
 	%HitButtonY.visible = false
 	
-	# Показуємо поточну кнопку
+	# Показуємо поточну кнопку з правильною текстурою
 	match current_hit_button:
 		"hit_button_a":
+			%HitButtonA.texture = InputManager.get_button_texture("hit_button_a")
 			%HitButtonA.visible = true
 		"hit_button_b":
+			%HitButtonB.texture = InputManager.get_button_texture("hit_button_b")
 			%HitButtonB.visible = true
 		"hit_button_x":
+			%HitButtonX.texture = InputManager.get_button_texture("hit_button_x")
 			%HitButtonX.visible = true
 		"hit_button_y":
+			%HitButtonY.texture = InputManager.get_button_texture("hit_button_y")
 			%HitButtonY.visible = true
 	
 	# Обов'язково показуємо елементи
@@ -186,16 +251,16 @@ func start_hit_phase():
 		if tween.is_valid():
 			tween.kill()
 	
-	# Запускаємо анімацію кола
+	# Запускаємо анімацію кола з урахуванням множника швидкості
 	var tween = create_tween()
-	tween.tween_property(%ShrinkingCircle, "scale", Vector2(0, 0), reaction_time)
+	var adjusted_time = reaction_time / shrinking_speed_factor
+	tween.tween_property(%ShrinkingCircle, "scale", Vector2(0, 0), adjusted_time)
 	
 	# Встановлюємо таймер для автоматичного завершення фази
-	ring_timer.wait_time = reaction_time
+	ring_timer.wait_time = adjusted_time
 	ring_timer.start()
 	
-	# Показуємо підказку для гравця
-	var button_name = get_button_display_name(current_hit_button)
+	var button_name = InputManager.get_button_display_name(current_hit_button)
 	%InstructionsLabel.text = "Натисніть %s коли коло співпадає з цільовою зоною" % button_name
 
 func get_button_display_name(action_name: String) -> String:
@@ -216,45 +281,79 @@ func handle_hit(quality: int):
 	
 	# Обчислюємо очки за удар залежно від якості і температури
 	var hit_points = 0
+	var base_points = 0
+	var temp_multiplier = 0.0
+	var combo_multiplier = 1.0
+	
+	# Визначаємо базові очки
 	match quality:
 		3:  # Ідеальний удар
-			hit_points = 6
+			base_points = 6
 			perfect_hits_streak += 1
 			show_hit_feedback("Ідеально!", Color(0, 1, 0))
 		2:  # Хороший удар
-			hit_points = 4
+			base_points = 4
 			perfect_hits_streak = 0
 			show_hit_feedback("Добре", Color(0.5, 1, 0))
 		1:  # Задовільний удар
-			hit_points = 2
+			base_points = 2
 			perfect_hits_streak = 0
 			show_hit_feedback("Задовільно", Color(1, 1, 0))
 		0:  # Промах
-			hit_points = 0
+			base_points = 0
 			perfect_hits_streak = 0
 			show_hit_feedback("Промах!", Color(1, 0, 0))
 	
-	# Застосовуємо множник температури
+	# Визначаємо множник температури
 	match current_temperature:
 		TEMPERATURE_STATE.PERFECT:
-			hit_points = hit_points * 1.0
+			temp_multiplier = 1.0
 		TEMPERATURE_STATE.GOOD:
-			hit_points = hit_points * 0.75
+			temp_multiplier = 0.75
 		TEMPERATURE_STATE.SATISFACTORY:
-			hit_points = hit_points * 0.5
+			temp_multiplier = 0.5
 		TEMPERATURE_STATE.COLD:
-			hit_points = hit_points * 0.25
+			temp_multiplier = 0.25
 	
-	# Застосовуємо комбо-множники
+	# Визначаємо комбо-множник
 	if perfect_hits_streak >= 5:
-		hit_points *= 2  # x2 за 5+ послідовних ідеальних ударів
+		combo_multiplier = 2.0  # x2 за 5+ послідовних ідеальних ударів
 	elif perfect_hits_streak >= 3:
-		hit_points *= 1.5  # x1.5 за 3-4 послідовні ідеальні удари
+		combo_multiplier = 1.5  # x1.5 за 3-4 послідовні ідеальні удари
+	
+	# Розраховуємо очки за удар
+	hit_points = base_points * temp_multiplier * combo_multiplier
+	
+	# Виводимо інформацію в консоль
+	print("УДАР: базові очки = %d, множник температури = %.2f, комбо-множник = %.1f, очки за удар = %.1f" % [base_points, temp_multiplier, combo_multiplier, hit_points])
 	
 	# Додаємо очки
 	current_score += hit_points
 	
-	# Переходимо до фази вибору напрямку
+	# Збільшуємо лічильник ударів
+	current_hits += 1
+	update_hit_counter()
+	
+	# Перевіряємо охолодження (тут, після удару)
+	check_cooling()
+	
+	# Перевіряємо завершення гри
+	if current_hits >= total_hits_required:
+		end_game(true)
+		return
+	
+	# Визначаємо, чи це був останній удар перед перевертанням
+	var hits_per_phase = total_hits_required / 2
+	var need_flip = (current_hits == hits_per_phase) and not flip_half_done
+	
+	# Якщо це був останній удар перед перевертанням, оновлюємо позицію до 0.0 (верх)
+	if need_flip:
+		update_workpiece_region(0.0)  # Досягаємо верху перед перевертанням
+		flip_half_done = true
+		start_flip_phase()
+		return
+	
+	# Інакше переходимо до фази вибору напрямку
 	start_direction_phase()
 
 func start_direction_phase():
@@ -268,19 +367,24 @@ func start_direction_phase():
 	%HitButtonX.visible = false
 	%HitButtonY.visible = false
 	
-	# Визначаємо новий напрямок (протилежний поточному)
-	current_direction = "down" if current_direction == "up" else "up"
+	# Визначаємо напрямок на основі стану фліпу
+	# До фліпу завжди вгору, після фліпу завжди вниз
+	current_direction = "down" if flip_half_done else "up"
+	var direction_action = DOWN_ACTION if current_direction == "down" else UP_ACTION
 	
-	# Показуємо стрілку для напрямку
+	# Оновлюємо текстуру стрілки - завантажуємо відповідну текстуру замість обертання
+	%DirectionArrow.texture = InputManager.get_button_texture(direction_action)
 	%DirectionArrow.visible = true
-	%DirectionArrow.rotation = PI if current_direction == "down" else 0  # Повертаємо стрілку вниз або вгору
 	
-	# Встановлюємо таймер для автоматичного завершення фази
-	direction_timer.wait_time = reaction_time * 0.7  # Менше часу на вибір напрямку
+	# Прибираємо обертання, оскільки використовуємо правильну текстуру
+	%DirectionArrow.rotation = 0
+	
+	# Більше часу на вибір напрямку
+	direction_timer.wait_time = reaction_time * 0.9  # Збільшено з 0.7 до 0.9
 	direction_timer.start()
 	
-	# Показуємо підказку для гравця
-	%InstructionsLabel.text = "Натисніть стрілку " + ("↓" if current_direction == "down" else "↑")
+	var button_name = InputManager.get_button_display_name(direction_action)
+	%InstructionsLabel.text = "Натисніть %s" % button_name
 
 func _on_direction_timer_timeout():
 	# Якщо гравець не вибрав напрямок вчасно
@@ -288,41 +392,28 @@ func _on_direction_timer_timeout():
 		handle_direction(0)  # 0 = не вибрано
 
 func handle_direction(quality: int):
-	# Додаємо очки за вибір напрямку
+	# Визначаємо очки за вибір напрямку
+	var direction_points = 0
+	
 	match quality:
 		2:  # Точний вибір
-			current_score += 2
+			direction_points = 2
 			show_hit_feedback("Точний напрямок!", Color(0, 1, 0))
 		1:  # Запізнілий вибір
-			current_score += 1
+			direction_points = 1
 			show_hit_feedback("Запізнілий напрямок", Color(1, 1, 0))
 		0:  # Неправильний або не вибрано
-			current_score += 0
+			direction_points = 0
 			show_hit_feedback("Пропущено напрямок", Color(1, 0, 0))
 	
-	# Збільшуємо лічильник ударів
-	current_hits += 1
-	update_hit_counter()
+	# Виводимо інформацію в консоль
+	print("НАПРЯМОК: якість = %d, очки за напрямок = %d" % [quality, direction_points])
 	
-	# Перевіряємо необхідність перевертання
-	var need_flip = false
-	if current_hits == total_hits_required / 2 and not flip_half_done:
-		need_flip = true
-		flip_half_done = true
+	# Додаємо очки
+	current_score += direction_points
 	
-	# Перевіряємо охолодження
-	check_cooling()
-	
-	# Перевіряємо завершення гри
-	if current_hits >= total_hits_required:
-		end_game(true)
-		return
-	
-	# Переходимо до наступної фази
-	if need_flip:
-		start_flip_phase()
-	else:
-		start_hit_phase()
+	# Переходимо до фази удару
+	start_hit_phase()
 
 func start_flip_phase():
 	current_phase = GAME_PHASE.FLIP
@@ -336,6 +427,10 @@ func start_flip_phase():
 	%HitButtonX.visible = false
 	%HitButtonY.visible = false
 	
+	# Оновлюємо текстуру для кнопки перевертання
+	%FlipButton.texture = InputManager.get_button_texture("ui_left")  # Можна вибрати будь-яку з двох
+	%FlipButton.visible = true
+	
 	# Показуємо кнопку перевертання
 	%FlipButton.visible = true
 	
@@ -343,8 +438,9 @@ func start_flip_phase():
 	flip_timer.wait_time = reaction_time * 1.3  # Більше часу на перевертання
 	flip_timer.start()
 	
-	# Показуємо підказку для гравця
-	%InstructionsLabel.text = "Переверніть заготовку (стрілки ← →)"
+	var left_button = InputManager.get_button_display_name("ui_left")
+	var right_button = InputManager.get_button_display_name("ui_right")
+	%InstructionsLabel.text = "Переверніть заготовку (%s або %s)" % [left_button, right_button]
 
 func _on_flip_timer_timeout():
 	# Якщо гравець не перевернув вчасно
@@ -352,17 +448,35 @@ func _on_flip_timer_timeout():
 		handle_flip(0)  # 0 = не перевернуто
 
 func handle_flip(quality: int):
-	# Додаємо очки за перевертання
+	# Визначаємо очки за перевертання
+	var flip_points = 0
+	
 	match quality:
 		2:  # Ідеальне перевертання
-			current_score += 10
+			flip_points = 10
 			show_hit_feedback("Ідеальне перевертання!", Color(0, 1, 0))
 		1:  # Хороше перевертання
-			current_score += 7
+			flip_points = 7
 			show_hit_feedback("Хороше перевертання", Color(0.5, 1, 0))
 		0:  # Запізніле або не перевернуто
-			current_score += 3
+			flip_points = 3
 			show_hit_feedback("Запізніле перевертання", Color(1, 1, 0))
+	
+	# Виводимо інформацію в консоль
+	print("ПЕРЕВЕРТАННЯ: якість = %d, очки за перевертання = %d" % [quality, flip_points])
+	
+	# Додаємо очки
+	current_score += flip_points
+	
+	# Перемикаємо параметр перевертання в шейдері
+	var material = %TemperatureIndicator.material
+	if material:
+		material.set_shader_parameter("flip_done", true)
+	
+	# Оновлюємо позицію, щоб підготуватись до руху вниз
+	# Перший удар після перевертання матиме індекс hits_per_phase + 1
+	var region_position = 1.0 / total_hits_required  # Перша позиція після перевертання
+	update_workpiece_region(region_position)
 	
 	# Переходимо до фази удару
 	start_hit_phase()
@@ -446,6 +560,10 @@ func _input(event):
 			else:
 				hit_quality = 0  # Промах
 			
+			var random_pitch :float = randf_range(0.95, 1.05)
+			%AnvilHit.pitch_scale = random_pitch
+			%AnvilHit.play()
+			
 			handle_hit(hit_quality)
 		elif event.is_action_pressed("hit_button_a") or event.is_action_pressed("hit_button_b") or \
 			 event.is_action_pressed("hit_button_x") or event.is_action_pressed("hit_button_y"):
@@ -459,33 +577,44 @@ func _input(event):
 		
 		if (event.is_action_pressed(UP_ACTION) and current_direction == "up") or \
 		   (event.is_action_pressed(DOWN_ACTION) and current_direction == "down"):
+			# Визначаємо якість вибору напрямку на основі часу реакції
+			var wait_time = direction_timer.wait_time
+			var elapsed_time = wait_time - direction_timer.time_left
+			var time_percentage = elapsed_time / wait_time * 100
+			
+			print("Час реакції для напрямку: %.2f / %.2f (%.1f%%)" % [elapsed_time, wait_time, time_percentage])
+			
+			# Зупиняємо таймер ПІСЛЯ отримання часу, що залишився
 			direction_timer.stop()
 			
-			# Визначаємо якість вибору напрямку на основі часу реакції
-			var elapsed_time = reaction_time * 0.7 - direction_timer.time_left
-			if elapsed_time < reaction_time * 0.3:
+			# Перевіряємо час реакції
+			if time_percentage < 20:  # Перша частина доступного часу
 				direction_quality = 2  # Точний вибір
 			else:
 				direction_quality = 1  # Запізнілий вибір
-		elif event.is_action_pressed(UP_ACTION) or event.is_action_pressed(DOWN_ACTION):
-			direction_timer.stop()
-			direction_quality = 0  # Неправильний вибір
-		
-		if direction_quality > 0:
+				
 			handle_direction(direction_quality)
+		elif event.is_action_pressed(UP_ACTION) or event.is_action_pressed(DOWN_ACTION):
+			# Неправильний напрямок натиснуто
+			direction_timer.stop()
+			handle_direction(0)  # Неправильний вибір
 	
 	# Обробка натискання для фази перевертання
 	elif current_phase == GAME_PHASE.FLIP:
 		if event.is_action_pressed(LEFT_ACTION) or event.is_action_pressed(RIGHT_ACTION):
+			# Зберігаємо значення time_left перед зупинкою таймера
+			var wait_time = flip_timer.wait_time
+			var elapsed_time = wait_time - flip_timer.time_left
+			var time_percentage = elapsed_time / wait_time * 100
+			
 			flip_timer.stop()
 			
-			# Визначаємо якість перевертання на основі часу реакції
-			var elapsed_time = reaction_time * 1.3 - flip_timer.time_left
 			var flip_quality
 			
-			if elapsed_time < reaction_time * 0.4:
+			# Перевіряємо за процентним відношенням
+			if time_percentage < 30:
 				flip_quality = 2  # Ідеальне перевертання
-			elif elapsed_time < reaction_time * 0.8:
+			elif time_percentage < 60:
 				flip_quality = 1  # Хороше перевертання
 			else:
 				flip_quality = 0  # Запізніле перевертання
@@ -497,9 +626,55 @@ func _input(event):
 		cancel_game()
 
 func end_game(success: bool):
+	# Виводимо детальний результат у консоль
+	print("==========================================")
+	print("РЕЗУЛЬТАТ МІНІ-ГРИ КОВАДЛО")
+	print("==========================================")
+	print("Тип зброї: " + ["Кинджал", "Короткий меч", "Довгий меч"][weapon_type])
+	print("Рівень майстерності: " + ["Учень", "Підмайстер", "Коваль", "Майстер-коваль"][skill_level])
+	print("Фінальний рахунок: %d" % current_score)
+	
+	# Якість зброї
+	var quality = "звичайний"
+	if current_score > 90:
+		quality = "легендарний"
+	elif current_score > 75:
+		quality = "видатний"
+	elif current_score > 60:
+		quality = "хороший"
+	elif current_score > 40:
+		quality = "середній"
+	
+	print("\nЯкість виготовленої зброї: %s" % quality)
+	print("==========================================")
+	
+	# Приховуємо UI
 	visible = false
+	
+	# Відправляємо сигнал про завершення з результатом
 	mini_game_completed.emit(success, current_score)
 
 func cancel_game():
 	visible = false
 	mini_game_cancelled.emit()
+
+func setup_temperature_shader():
+	# Створюємо шейдер матеріал
+	var shader_material = ShaderMaterial.new()
+	shader_material.shader = load("res://shaders/workpiece_shader.gdshader")
+	
+	%TemperatureIndicator.material = shader_material
+	
+	# Налаштування шейдера з кращою видимістю
+	shader_material.set_shader_parameter("highlight_color", Color(1.0, 0.9, 0.1, 0.9))
+	shader_material.set_shader_parameter("highlight_size", 0.5)
+	
+	# Початкові налаштування шейдера - починаємо з нижньої частини
+	update_workpiece_region(1.0, true)
+
+func update_workpiece_region(position: float, active: bool = true):
+	var material = %TemperatureIndicator.material
+	if material:
+		material.set_shader_parameter("highlight_position", position)
+		material.set_shader_parameter("highlight_active", active)
+		material.set_shader_parameter("flip_done", flip_half_done)

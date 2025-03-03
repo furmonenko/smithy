@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djdnke5h4urtr"
-path="res://.godot/imported/xbox_button_color_b.png-c46a1062e9f572741ea276d1a5b1187d.ctex"
+uid="uid://pp18hjkhq6p4"
+path="res://.godot/imported/key_c.png-16f7426d182b22fc559f69e43d006a6d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/xbox_button_color_b.png"
-dest_files=["res://.godot/imported/xbox_button_color_b.png-c46a1062e9f572741ea276d1a5b1187d.ctex"]
+source_file="res://assets/buttons/keyboard/key_c.png"
+dest_files=["res://.godot/imported/key_c.png-16f7426d182b22fc559f69e43d006a6d.ctex"]
 
 [params]
 

@@ -1,12 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://xxxxxxxxxxxx"]
+[gd_scene load_steps=9 format=3 uid="uid://xxxxxxxxxxxx"]
 
 [ext_resource type="Script" path="res://mini games/anvil_mini_game.gd" id="1_pbr6s"]
-[ext_resource type="Texture2D" uid="uid://dgj8y8186ujxh" path="res://assets/xbox_button_color_a.png" id="2_s4asg"]
-[ext_resource type="Texture2D" uid="uid://djdnke5h4urtr" path="res://assets/xbox_button_color_b.png" id="3_3kd2l"]
-[ext_resource type="Texture2D" uid="uid://dgm0djgd8s537" path="res://assets/xbox_button_color_x.png" id="4_nrj0d"]
-[ext_resource type="Texture2D" uid="uid://6vujpumyjbaj" path="res://assets/xbox_button_color_y.png" id="5_rhkl6"]
-[ext_resource type="Texture2D" uid="uid://boij53y3dv10l" path="res://assets/arrow_up.png" id="6_vpi0n"]
+[ext_resource type="Texture2D" uid="uid://dpe3i42rqkkng" path="res://assets/buttons/keyboard/key_down.png" id="2_j0gml"]
+[ext_resource type="Texture2D" uid="uid://c3w0toplyah77" path="res://assets/buttons/keyboard/key_left.png" id="2_pii2r"]
 [ext_resource type="Texture2D" uid="uid://dvckcjc8t3ei2" path="res://assets/buttons/crosshair123.png" id="8_1mr3p"]
+[ext_resource type="AudioStream" uid="uid://bykecjav52vwo" path="res://assets/sfx/mini games/anvil/anvil_hit.wav" id="8_nuycr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp6gl"]
 bg_color = Color(0.133333, 0.133333, 0.133333, 0.65098)
@@ -31,8 +29,8 @@ corner_radius_bottom_left = 10
 
 [node name="AnvilMiniGame" type="CanvasLayer"]
 script = ExtResource("1_pbr6s")
-starting_shringing_circe_scale = Vector2(5, 5)
-starting_target_ring_scale = Vector2(3, 3)
+skill_level = 3
+weapon_type = 1
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -86,18 +84,42 @@ horizontal_alignment = 1
 
 [node name="WorkpieceContainer" type="Panel" parent="UI/RightPanel"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -80.0
-offset_top = -160.0
-offset_right = 80.0
-offset_bottom = 160.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i7s8e")
+
+[node name="TemperatureLabel" type="Label" parent="UI/RightPanel/WorkpieceContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -88.0
+offset_top = 20.0
+offset_right = 90.0
+offset_bottom = 46.0
+grow_horizontal = 2
+pivot_offset = Vector2(89, 13)
+theme_override_font_sizes/font_size = 12
+text = "Ідеальна температура (100%)"
+
+[node name="TemperatureIndicator" type="ColorRect" parent="UI/RightPanel/WorkpieceContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = 42.0
+offset_right = 74.0
+offset_bottom = -42.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.6, 0, 1)
 
 [node name="DirectionArrow" type="TextureRect" parent="UI/RightPanel"]
 unique_name_in_owner = true
@@ -107,31 +129,32 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -230.0
-offset_top = 139.0
-offset_right = -150.0
-offset_bottom = 219.0
+offset_left = -254.0
+offset_top = 115.0
+offset_right = -126.0
+offset_bottom = 243.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(40, 40)
-texture = ExtResource("6_vpi0n")
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("2_j0gml")
 stretch_mode = 5
 
 [node name="FlipButton" type="TextureRect" parent="UI/RightPanel"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -620.0
-offset_top = -40.0
-offset_right = -540.0
-offset_bottom = 40.0
+offset_left = -254.0
+offset_top = 115.0
+offset_right = -126.0
+offset_bottom = 243.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("2_pii2r")
 stretch_mode = 5
 
 [node name="ShrinkingCircle" type="TextureRect" parent="UI/RightPanel"]
@@ -184,7 +207,6 @@ offset_bottom = 243.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(64, 64)
-texture = ExtResource("2_s4asg")
 stretch_mode = 5
 
 [node name="HitButtonB" type="TextureRect" parent="UI/RightPanel"]
@@ -202,7 +224,6 @@ offset_right = -126.0
 offset_bottom = 243.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_3kd2l")
 stretch_mode = 5
 
 [node name="HitButtonX" type="TextureRect" parent="UI/RightPanel"]
@@ -220,7 +241,6 @@ offset_right = -126.0
 offset_bottom = 243.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("4_nrj0d")
 stretch_mode = 5
 
 [node name="HitButtonY" type="TextureRect" parent="UI/RightPanel"]
@@ -238,42 +258,7 @@ offset_right = -126.0
 offset_bottom = 243.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("5_rhkl6")
 stretch_mode = 5
-
-[node name="TemperatureIndicator" type="ColorRect" parent="UI"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -380.0
-offset_top = -150.0
-offset_right = -280.0
-offset_bottom = 150.0
-grow_horizontal = 0
-grow_vertical = 2
-color = Color(1, 0.6, 0, 1)
-
-[node name="TemperatureLabel" type="Label" parent="UI"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -330.0
-offset_top = -180.0
-offset_right = -220.0
-offset_bottom = -154.0
-grow_horizontal = 0
-grow_vertical = 2
-theme_override_font_sizes/font_size = 12
-text = "Ідеальна температура (100%)"
-horizontal_alignment = 1
 
 [node name="WorkpieceLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
@@ -378,3 +363,10 @@ theme_override_font_sizes/font_size = 12
 text = "Натисніть кнопку коли коло співпадає з цільовою зоною"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="AnvilHit" type="AudioStreamPlayer" parent="SFX"]
+unique_name_in_owner = true
+stream = ExtResource("8_nuycr")
+volume_db = -10.0
