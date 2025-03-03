@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://xxxxxxxxxxxx"]
+[gd_scene load_steps=10 format=3 uid="uid://xxxxxxxxxxxx"]
 
 [ext_resource type="Script" path="res://mini games/anvil_mini_game.gd" id="1_pbr6s"]
 [ext_resource type="Texture2D" uid="uid://dpe3i42rqkkng" path="res://assets/buttons/keyboard/key_down.png" id="2_j0gml"]
 [ext_resource type="Texture2D" uid="uid://c3w0toplyah77" path="res://assets/buttons/keyboard/key_left.png" id="2_pii2r"]
+[ext_resource type="Texture2D" uid="uid://dmuq6d4yl7422" path="res://assets/smithing/pngimg.com - sword_PNG5525.png" id="2_tx81m"]
 [ext_resource type="Texture2D" uid="uid://dvckcjc8t3ei2" path="res://assets/buttons/crosshair123.png" id="8_1mr3p"]
 [ext_resource type="AudioStream" uid="uid://bykecjav52vwo" path="res://assets/sfx/mini games/anvil/anvil_hit.wav" id="8_nuycr"]
 
@@ -87,6 +88,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = 112.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i7s8e")
@@ -106,20 +108,24 @@ pivot_offset = Vector2(89, 13)
 theme_override_font_sizes/font_size = 12
 text = "Ідеальна температура (100%)"
 
-[node name="TemperatureIndicator" type="ColorRect" parent="UI/RightPanel/WorkpieceContainer"]
+[node name="TemperatureIndicator" type="TextureRect" parent="UI/RightPanel/WorkpieceContainer"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -74.0
-offset_top = 42.0
-offset_right = 74.0
-offset_bottom = -42.0
+offset_left = -250.0
+offset_top = 46.0
+offset_right = 262.0
+offset_bottom = -46.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0.6, 0, 1)
+rotation = 1.5708
+pivot_offset = Vector2(256, 210)
+texture = ExtResource("2_tx81m")
+expand_mode = 2
+stretch_mode = 5
 
 [node name="DirectionArrow" type="TextureRect" parent="UI/RightPanel"]
 unique_name_in_owner = true

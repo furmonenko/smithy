@@ -28,13 +28,13 @@ position = Vector2(1115, 1000)
 
 [node name="Bugle" parent="." instance=ExtResource("3_yob46")]
 position = Vector2(994, 553)
-scale = Vector2(0.151601, 0.151601)
+scale = Vector2(0.117718, 0.117718)
 collision_layer = 2
 layer = 2
 
 [node name="Bugle2" parent="." instance=ExtResource("3_yob46")]
 position = Vector2(1275, 551)
-scale = Vector2(0.134382, 0.134382)
+scale = Vector2(0.104213, 0.104213)
 collision_layer = 2
 layer = 2
 
@@ -71,7 +71,7 @@ layer_manager = NodePath("../../LayerManager")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-489, 633)
-scale = Vector2(0.0877954, 0.0877954)
+scale = Vector2(0.0716849, 0.0716849)
 collision_layer = 512
 collision_mask = 0
 metadata/_edit_group_ = true

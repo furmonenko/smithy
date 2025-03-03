@@ -52,10 +52,71 @@ var current_hit_button: String = ""   # Поточна кнопка для уд�
 var starting_shringing_circe_scale: Vector2
 var starting_target_ring_scale: Vector2
 
+# Поточний етап кування для шейдера
+var current_forge_stage: int = 0
+
 # Таймери
 var ring_timer: Timer
 var direction_timer: Timer
 var flip_timer: Timer
+
+# Налаштування кування меча для шейдера
+var forging_stages = [
+	{
+		"name": "Початкова заготовка",
+		"forge_progress": 0.0,
+		"initial_deform": Vector2(0.6, 0.6), # більше стискання для явної деформації
+		"impact_radius": 0.5,
+		"bulge_strength": 0.35, # збільшена сила випучування
+		"noise_influence": 0.4, # збільшена нерівність поверхні
+		"description": "Холодна заготовка металу"
+	},
+	{
+		"name": "Початок розковування",
+		"forge_progress": 0.2,
+		"initial_deform": Vector2(0.6, 0.6),
+		"impact_radius": 0.45,
+		"bulge_strength": 0.3,
+		"noise_influence": 0.35,
+		"description": "Початкове формування заготовки"
+	},
+	{
+		"name": "Формування стержня",
+		"forge_progress": 0.4,
+		"initial_deform": Vector2(0.6, 0.6),
+		"impact_radius": 0.4,
+		"bulge_strength": 0.25,
+		"noise_influence": 0.3,
+		"description": "Подовження центральної частини"
+	},
+	{
+		"name": "Початок формування леза",
+		"forge_progress": 0.6,
+		"initial_deform": Vector2(0.6, 0.6),
+		"impact_radius": 0.35,
+		"bulge_strength": 0.2,
+		"noise_influence": 0.2,
+		"description": "Загальна форма клинка стає видимою"
+	},
+	{
+		"name": "Формування кромки",
+		"forge_progress": 0.8,
+		"initial_deform": Vector2(0.6, 0.6),
+		"impact_radius": 0.3,
+		"bulge_strength": 0.15,
+		"noise_influence": 0.1,
+		"description": "Клинок набуває чіткої форми, кромка вирівнюється"
+	},
+	{
+		"name": "Фінальна обробка",
+		"forge_progress": 1.0,
+		"initial_deform": Vector2(0.6, 0.6),
+		"impact_radius": 0.2,
+		"bulge_strength": 0.0,
+		"noise_influence": 0.0,
+		"description": "Готовий клинок, всі деформації усунуті"
+	}
+]
 
 func _ready():
 	# Налаштовуємо параметри залежно від рівня майстерності
@@ -86,7 +147,7 @@ func _ready():
 		WEAPON_TYPE.LONG_SWORD:
 			total_hits_required = 10
 	
-# Створюємо і налаштовуємо таймери
+	# Створюємо і налаштовуємо таймери
 	ring_timer = Timer.new()
 	ring_timer.one_shot = true
 	ring_timer.timeout.connect(_on_ring_timer_timeout)
@@ -112,6 +173,7 @@ func _ready():
 	
 	# Приховуємо на початку
 	visible = false
+	setup_shader_for_workpiece()
 	start_game()
 
 func _on_input_type_changed(_device_type):
@@ -143,9 +205,6 @@ func setup_ui():
 	
 	# Налаштовуємо кнопки удару
 	setup_hit_buttons()
-	
-	# Налаштовуємо шейдер для індикатора температури
-	setup_temperature_shader()
 
 # Оновлена функція setup_hit_buttons, яка призначає текстури
 func setup_hit_buttons():
@@ -168,6 +227,90 @@ func setup_hit_buttons():
 	if %FlipButton:
 		%FlipButton.texture = InputManager.get_button_texture("ui_left")  # Початкова текстура для фліпу
 
+func setup_shader_for_workpiece():
+	# Створюємо текстуру шуму для деформацій
+	var noise = FastNoiseLite.new()
+	noise.seed = randi()
+	noise.frequency = 0.1
+	noise.fractal_octaves = 3
+	
+	var noise_texture = NoiseTexture2D.new()
+	noise_texture.width = 256
+	noise_texture.height = 256
+	noise_texture.noise = noise
+	
+	# Завантажуємо текстури для заготовки і фінального вигляду
+	var billet_texture
+	var final_texture
+	
+	match weapon_type:
+		WEAPON_TYPE.DAGGER:
+			billet_texture = load("res://assets/smithing/pngimg.com - sword_PNG5525.png")
+			final_texture = load("res://assets/smithing/pngimg.com - sword_PNG5525.png")
+		WEAPON_TYPE.SHORT_SWORD:
+			billet_texture = load("res://assets/smithing/pngimg.com - sword_PNG5525.png")
+			final_texture = load("res://assets/smithing/pngimg.com - sword_PNG5525.png")
+		WEAPON_TYPE.LONG_SWORD:
+			billet_texture = load("res://assets/smithing/pngimg.com - sword_PNG5525.png")
+			final_texture = load("res://assets/smithing/pngimg.com - sword_PNG5525.png")
+	
+	# Якщо текстури не завантажилися, використовуємо заглушки
+	if not billet_texture:
+		billet_texture = preload("res://assets/smithing/pngimg.com - sword_PNG5525.png")
+	if not final_texture:
+		final_texture = preload("res://assets/smithing/pngimg.com - sword_PNG5525.png")
+	
+	# Створюємо шейдер-матеріал
+	var shader_material = ShaderMaterial.new()
+	shader_material.shader = load("res://shaders/workpiece_shader.gdshader")
+	
+	# Застосовуємо матеріал до існуючого ColorRect
+	%TemperatureIndicator.material = shader_material
+	
+	# Встановлюємо параметри шейдера
+	shader_material.set_shader_parameter("displacement_noise", noise_texture)
+	shader_material.set_shader_parameter("billet_texture", billet_texture)
+	shader_material.set_shader_parameter("TEXTURE", final_texture)  # Встановлюємо текстуру готового виробу
+	shader_material.set_shader_parameter("flip_done", false)
+	
+	# Застосовуємо початкові параметри для етапу кування
+	update_forge_stage(0)
+
+func update_forge_stage(stage_index):
+	if stage_index < 0 or stage_index >= forging_stages.size():
+		return
+		
+	current_forge_stage = stage_index
+	var stage = forging_stages[stage_index]
+	
+	if %TemperatureIndicator and %TemperatureIndicator.material:
+		var shader_material = %TemperatureIndicator.material
+		
+		# Оновлюємо параметри шейдера
+		shader_material.set_shader_parameter("forge_progress", stage.forge_progress)
+		shader_material.set_shader_parameter("initial_deform", stage.initial_deform)
+		shader_material.set_shader_parameter("impact_radius", stage.impact_radius)
+		shader_material.set_shader_parameter("bulge_strength", stage.bulge_strength)
+		shader_material.set_shader_parameter("noise_influence", stage.noise_influence)
+		
+		# Оновлюємо положення центру кування
+		update_forge_position(0.5)
+	
+	print("Етап кування: ", stage.name)
+	print(stage.description)
+
+func update_forge_position(vertical_position):
+	if %TemperatureIndicator and %TemperatureIndicator.material:
+		var shader_material = %TemperatureIndicator.material
+		
+		# Перетворюємо в координати шейдера (0.0-1.0)
+		var forge_center = Vector2(0.5, vertical_position)
+		shader_material.set_shader_parameter("forge_center", forge_center)
+		
+		# Оновлюємо позицію підсвічування
+		shader_material.set_shader_parameter("highlight_position", vertical_position)
+		shader_material.set_shader_parameter("highlight_active", true)
+
 func start_game():
 	visible = true
 	current_temperature = TEMPERATURE_STATE.PERFECT
@@ -177,10 +320,18 @@ func start_game():
 	perfect_hits_streak = 0
 	flip_half_done = false
 	current_direction = "up"
+	current_forge_stage = 0
 	
 	# Скидаємо і оновлюємо UI
 	update_hit_counter()
 	update_temperature_indicator()
+	
+	# Скидаємо параметри шейдера
+	if %TemperatureIndicator and %TemperatureIndicator.material:
+		var shader_material = %TemperatureIndicator.material
+		shader_material.set_shader_parameter("flip_done", false)
+		shader_material.set_shader_parameter("forge_progress", 0.0)
+		shader_material.set_shader_parameter("heat_amount", 0.9) # Починаємо з гарячим металом
 	
 	# Починаємо з фази удару
 	start_hit_phase()
@@ -209,7 +360,7 @@ func start_hit_phase():
 		# Починаємо з позиції 1.0 (низ) і рухаємося до 0.0 (верх)
 		region_position = 1.0 - phase_progress
 	
-	# Оновлюємо шейдер
+	# Оновлюємо шейдер з новою позицією удару
 	update_workpiece_region(region_position)
 	
 	# Вибираємо випадкову кнопку для удару
@@ -307,7 +458,7 @@ func handle_hit(quality: int):
 	# Визначаємо множник температури
 	match current_temperature:
 		TEMPERATURE_STATE.PERFECT:
-			temp_multiplier = 1.0
+			temp_multiplier = 0.9
 		TEMPERATURE_STATE.GOOD:
 			temp_multiplier = 0.75
 		TEMPERATURE_STATE.SATISFACTORY:
@@ -334,6 +485,9 @@ func handle_hit(quality: int):
 	current_hits += 1
 	update_hit_counter()
 	
+	# Симулюємо удар молотом на заготовці
+	hammer_strike()
+	
 	# Перевіряємо охолодження (тут, після удару)
 	check_cooling()
 	
@@ -355,6 +509,46 @@ func handle_hit(quality: int):
 	
 	# Інакше переходимо до фази вибору напрямку
 	start_direction_phase()
+
+func hammer_strike():
+	var random_pitch: float = randf_range(0.95, 1.05)
+	%AnvilHit.pitch_scale = random_pitch
+	%AnvilHit.play()
+	
+	# Оновлюємо етап кування в шейдері на основі прогресу
+	var progress_percentage = float(current_hits) / total_hits_required
+	var stage_index = int(progress_percentage * (forging_stages.size() - 1))
+	
+	# Переходимо на новий етап, якщо необхідно
+	if stage_index > current_forge_stage:
+		update_forge_stage(stage_index)
+	
+	# Додаємо ефект тимчасового збільшення нагріву в місці удару
+	if %TemperatureIndicator and %TemperatureIndicator.material:
+		var shader_material = %TemperatureIndicator.material
+		var current_heat = 0.0
+		
+		match current_temperature:
+			TEMPERATURE_STATE.PERFECT:
+				current_heat = 0.9
+			TEMPERATURE_STATE.GOOD:
+				current_heat = 0.8  # Це значення було неправильним (було 0.6)
+			TEMPERATURE_STATE.SATISFACTORY:
+				current_heat = 0.6
+			TEMPERATURE_STATE.COLD:
+				current_heat = 0.2  # Зробив холоднішим для кращого візуального контрасту
+		
+		shader_material.set_shader_parameter("heat_amount", current_heat)
+		
+		# Додаємо ефект тимчасового збільшення нагріву в місці удару
+		if current_heat > 0.0:
+			var tween = create_tween()
+			tween.tween_method(Callable(self, "_update_heat_amount"), current_heat, current_heat + 0.1, 0.1)
+			tween.tween_method(Callable(self, "_update_heat_amount"), current_heat + 0.1, current_heat, 0.5)
+
+func _update_heat_amount(heat: float):
+	if %TemperatureIndicator and %TemperatureIndicator.material:
+		%TemperatureIndicator.material.set_shader_parameter("heat_amount", heat)
 
 func start_direction_phase():
 	current_phase = GAME_PHASE.DIRECTION
@@ -385,6 +579,10 @@ func start_direction_phase():
 	
 	var button_name = InputManager.get_button_display_name(direction_action)
 	%InstructionsLabel.text = "Натисніть %s" % button_name
+	
+	# Оновлюємо шейдер, щоб показати напрямок удару
+	var direction_position = 0.0 if current_direction == "up" else 1.0
+	update_workpiece_region(direction_position)
 
 func _on_direction_timer_timeout():
 	# Якщо гравець не вибрав напрямок вчасно
@@ -448,44 +646,42 @@ func _on_flip_timer_timeout():
 		handle_flip(0)  # 0 = не перевернуто
 
 func handle_flip(quality: int):
-	# Визначаємо очки за перевертання
 	var flip_points = 0
 	
 	match quality:
-		2:  # Ідеальне перевертання
+		2: 
 			flip_points = 10
 			show_hit_feedback("Ідеальне перевертання!", Color(0, 1, 0))
-		1:  # Хороше перевертання
+		1:  
 			flip_points = 7
 			show_hit_feedback("Хороше перевертання", Color(0.5, 1, 0))
-		0:  # Запізніле або не перевернуто
+		0:  
 			flip_points = 3
 			show_hit_feedback("Запізніле перевертання", Color(1, 1, 0))
 	
-	# Виводимо інформацію в консоль
 	print("ПЕРЕВЕРТАННЯ: якість = %d, очки за перевертання = %d" % [quality, flip_points])
 	
-	# Додаємо очки
 	current_score += flip_points
 	
-	# Перемикаємо параметр перевертання в шейдері
-	var material = %TemperatureIndicator.material
-	if material:
-		material.set_shader_parameter("flip_done", true)
+	# Встановлюємо прапорець перевертання
+	flip_half_done = true
+	
+	# Оновлюємо параметр шейдера
+	if %TemperatureIndicator and %TemperatureIndicator.material:
+		%TemperatureIndicator.material.set_shader_parameter("flip_done", true)
 	
 	# Оновлюємо позицію, щоб підготуватись до руху вниз
-	# Перший удар після перевертання матиме індекс hits_per_phase + 1
 	var region_position = 1.0 / total_hits_required  # Перша позиція після перевертання
 	update_workpiece_region(region_position)
 	
 	# Переходимо до фази удару
 	start_hit_phase()
 
+
+
 func check_cooling():
-	# Розраховуємо кількість ударів для охолодження на одиницю
 	var hits_per_cooling = total_hits_required * cooling_rate
 	
-	# Визначаємо новий рівень температури на основі кількості ударів
 	var cooling_stages = floor(current_hits / hits_per_cooling)
 	
 	if cooling_stages == 0:
@@ -497,23 +693,34 @@ func check_cooling():
 	else:
 		current_temperature = TEMPERATURE_STATE.COLD
 	
-	# Оновлюємо індикатор температури
 	update_temperature_indicator()
+	
+	if %TemperatureIndicator and %TemperatureIndicator.material:
+		var shader_material = %TemperatureIndicator.material
+		var heat_amount = 0.0
+		
+		match current_temperature:
+			TEMPERATURE_STATE.PERFECT:
+				heat_amount = 0.9     
+			TEMPERATURE_STATE.GOOD:
+				heat_amount = 0.8  # Це значення було неправильним в hammer_strike()     
+			TEMPERATURE_STATE.SATISFACTORY:
+				heat_amount = 0.6      
+			TEMPERATURE_STATE.COLD:
+				heat_amount = 0.2  # Зробив холоднішим для кращого візуального контрасту   
+		
+		shader_material.set_shader_parameter("heat_amount", heat_amount)
 
 func update_temperature_indicator():
-	# Оновлюємо відображення температури
+	# Оновлюємо текст температури
 	match current_temperature:
 		TEMPERATURE_STATE.PERFECT:
-			%TemperatureIndicator.color = Color(1, 0.6, 0)  # Помаранчевий
 			%TemperatureLabel.text = "Ідеальна температура (100%)"
 		TEMPERATURE_STATE.GOOD:
-			%TemperatureIndicator.color = Color(1, 0, 0)  # Червоний
 			%TemperatureLabel.text = "Хороша температура (75%)"
 		TEMPERATURE_STATE.SATISFACTORY:
-			%TemperatureIndicator.color = Color(0.7, 0, 0)  # Темно-червоний
 			%TemperatureLabel.text = "Задовільна температура (50%)"
 		TEMPERATURE_STATE.COLD:
-			%TemperatureIndicator.color = Color(0.5, 0.5, 0.5)  # Сірий
 			%TemperatureLabel.text = "Холодна температура (25%)"
 
 func update_hit_counter():
@@ -534,6 +741,20 @@ func show_hit_feedback(text: String, color: Color):
 
 func _hide_feedback():
 	%FeedbackLabel.visible = false
+
+
+func update_workpiece_region(position: float, active: bool = true):
+	if %TemperatureIndicator and %TemperatureIndicator.material:
+		var shader_material = %TemperatureIndicator.material
+		
+		# Встановлюємо параметр flip_done, але вимикаємо підсвічування
+		shader_material.set_shader_parameter("flip_done", flip_half_done)
+		
+		# Відключаємо підсвічування, встановлюючи highlight_active = false
+		shader_material.set_shader_parameter("highlight_active", false)
+		
+		# Можна також встановити highlight_size = 0 для додаткової гарантії
+		shader_material.set_shader_parameter("highlight_size", 0.0)
 
 func _input(event):
 	if not visible:
@@ -559,10 +780,6 @@ func _input(event):
 				hit_quality = 1  # Задовільний удар
 			else:
 				hit_quality = 0  # Промах
-			
-			var random_pitch :float = randf_range(0.95, 1.05)
-			%AnvilHit.pitch_scale = random_pitch
-			%AnvilHit.play()
 			
 			handle_hit(hit_quality)
 		elif event.is_action_pressed("hit_button_a") or event.is_action_pressed("hit_button_b") or \
@@ -655,26 +872,5 @@ func end_game(success: bool):
 	mini_game_completed.emit(success, current_score)
 
 func cancel_game():
-	visible = false
+	#visible = false
 	mini_game_cancelled.emit()
-
-func setup_temperature_shader():
-	# Створюємо шейдер матеріал
-	var shader_material = ShaderMaterial.new()
-	shader_material.shader = load("res://shaders/workpiece_shader.gdshader")
-	
-	%TemperatureIndicator.material = shader_material
-	
-	# Налаштування шейдера з кращою видимістю
-	shader_material.set_shader_parameter("highlight_color", Color(1.0, 0.9, 0.1, 0.9))
-	shader_material.set_shader_parameter("highlight_size", 0.5)
-	
-	# Початкові налаштування шейдера - починаємо з нижньої частини
-	update_workpiece_region(1.0, true)
-
-func update_workpiece_region(position: float, active: bool = true):
-	var material = %TemperatureIndicator.material
-	if material:
-		material.set_shader_parameter("highlight_position", position)
-		material.set_shader_parameter("highlight_active", active)
-		material.set_shader_parameter("flip_done", flip_half_done)
