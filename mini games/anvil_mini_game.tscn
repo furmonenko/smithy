@@ -1,11 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://xxxxxxxxxxxx"]
+[gd_scene load_steps=14 format=3 uid="uid://xxxxxxxxxxxx"]
 
 [ext_resource type="Script" uid="uid://5f46gg4tuxfv" path="res://mini games/anvil_mini_game.gd" id="1_pbr6s"]
 [ext_resource type="Texture2D" uid="uid://dpe3i42rqkkng" path="res://assets/buttons/keyboard/key_down.png" id="2_j0gml"]
 [ext_resource type="Texture2D" uid="uid://c3w0toplyah77" path="res://assets/buttons/keyboard/key_left.png" id="2_pii2r"]
 [ext_resource type="Shader" uid="uid://r3nsaproj2ap" path="res://shaders/workpiece_shader.gdshader" id="2_t4qx3"]
 [ext_resource type="Texture2D" uid="uid://dmuq6d4yl7422" path="res://assets/smithing/pngimg.com - sword_PNG5525.png" id="2_tx81m"]
-[ext_resource type="Texture2D" uid="uid://dvckcjc8t3ei2" path="res://assets/buttons/crosshair123.png" id="8_1mr3p"]
+[ext_resource type="Texture2D" uid="uid://cxobr12vcikg" path="res://assets/buttons/xbox_gamepad/dpad_down.png" id="6_roavf"]
+[ext_resource type="Shader" uid="uid://c1irjdxk18g22" path="res://shaders/hit_indicator.gdshader" id="6_t4qx3"]
 [ext_resource type="AudioStream" uid="uid://bykecjav52vwo" path="res://assets/sfx/mini games/anvil/anvil_hit.wav" id="8_nuycr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp6gl"]
@@ -43,7 +44,22 @@ shader_parameter/impact_intensity = 0.0
 shader_parameter/impact_band_width = 0.1
 shader_parameter/impact_color = Color(1, 1, 1, 1)
 shader_parameter/flip_done = false
-shader_parameter/impact_y_position = 0.5
+shader_parameter/impact_y_position = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0s2cp"]
+shader = ExtResource("6_t4qx3")
+shader_parameter/target_size = 0.28
+shader_parameter/good_zone_outer = 0.34
+shader_parameter/satisfactory_zone_outer = 0.4
+shader_parameter/current_size = 0.5
+shader_parameter/ring_thickness = 0.08
+shader_parameter/perfect_color = Color(0, 1, 0, 1)
+shader_parameter/good_color = Color(1, 1, 0, 1)
+shader_parameter/satisfactory_color = Color(1, 1, 0, 1)
+shader_parameter/moving_color = Color(0.8, 0.8, 0.8, 1)
+shader_parameter/show_result_only = false
+shader_parameter/result_quality = 0
+shader_parameter/flash_intensity = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vkm8r"]
 bg_color = Color(0.784314, 0.392157, 0, 1)
@@ -146,6 +162,7 @@ offset_right = 100.0
 offset_bottom = -57.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.2, 1.2)
 pivot_offset = Vector2(100, 256)
 texture = ExtResource("2_tx81m")
 expand_mode = 5
@@ -172,7 +189,6 @@ stretch_mode = 5
 
 [node name="FlipButton" type="TextureRect" parent="UI/RightPanel"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -187,41 +203,6 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(64, 64)
 texture = ExtResource("2_pii2r")
-stretch_mode = 5
-
-[node name="ShrinkingCircle" type="TextureRect" parent="UI/RightPanel"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = -54.0
-offset_top = -85.0
-offset_right = 74.0
-offset_bottom = 43.0
-grow_vertical = 0
-scale = Vector2(5, 5)
-pivot_offset = Vector2(64, 64)
-texture = ExtResource("8_1mr3p")
-stretch_mode = 4
-
-[node name="TargetRing" type="TextureRect" parent="UI/RightPanel"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -254.0
-offset_top = 115.0
-offset_right = -126.0
-offset_bottom = 243.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(5, 5)
-pivot_offset = Vector2(64, 64)
-texture = ExtResource("8_1mr3p")
 stretch_mode = 5
 
 [node name="HitButtonA" type="TextureRect" parent="UI/RightPanel"]
@@ -290,6 +271,24 @@ offset_right = -126.0
 offset_bottom = 243.0
 grow_horizontal = 2
 grow_vertical = 2
+stretch_mode = 5
+
+[node name="HitIndicator" type="TextureRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_0s2cp")
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -92.0
+offset_right = 68.0
+offset_bottom = 36.0
+grow_vertical = 0
+scale = Vector2(4, 4)
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("6_roavf")
+expand_mode = 1
 stretch_mode = 5
 
 [node name="WorkpieceLabel" type="Label" parent="UI"]
