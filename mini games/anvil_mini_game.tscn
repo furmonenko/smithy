@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://xxxxxxxxxxxx"]
+[gd_scene load_steps=12 format=3 uid="uid://xxxxxxxxxxxx"]
 
-[ext_resource type="Script" path="res://mini games/anvil_mini_game.gd" id="1_pbr6s"]
+[ext_resource type="Script" uid="uid://5f46gg4tuxfv" path="res://mini games/anvil_mini_game.gd" id="1_pbr6s"]
 [ext_resource type="Texture2D" uid="uid://dpe3i42rqkkng" path="res://assets/buttons/keyboard/key_down.png" id="2_j0gml"]
 [ext_resource type="Texture2D" uid="uid://c3w0toplyah77" path="res://assets/buttons/keyboard/key_left.png" id="2_pii2r"]
+[ext_resource type="Shader" uid="uid://r3nsaproj2ap" path="res://shaders/workpiece_shader.gdshader" id="2_t4qx3"]
 [ext_resource type="Texture2D" uid="uid://dmuq6d4yl7422" path="res://assets/smithing/pngimg.com - sword_PNG5525.png" id="2_tx81m"]
 [ext_resource type="Texture2D" uid="uid://dvckcjc8t3ei2" path="res://assets/buttons/crosshair123.png" id="8_1mr3p"]
 [ext_resource type="AudioStream" uid="uid://bykecjav52vwo" path="res://assets/sfx/mini games/anvil/anvil_hit.wav" id="8_nuycr"]
@@ -20,6 +21,29 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_roavf"]
+shader = ExtResource("2_t4qx3")
+shader_parameter/forge_progress = 1.0
+shader_parameter/initial_deform = Vector2(3, 3)
+shader_parameter/forge_center = Vector2(0.2, 0.2)
+shader_parameter/impact_radius = 0.4
+shader_parameter/bulge_strength = 0.17
+shader_parameter/noise_influence = 0.05
+shader_parameter/heat_amount = 1.0
+shader_parameter/heat_at_top = false
+shader_parameter/heat_spread = 2.0
+shader_parameter/heat_min_level = 0.2
+shader_parameter/heat_gradient_power = 0.8
+shader_parameter/heat_gradient_smooth = 0.7
+shader_parameter/heat_glow_threshold = 0.3
+shader_parameter/heat_glow_intensity = 0.6
+shader_parameter/heat_color_intensity = 0.85
+shader_parameter/impact_intensity = 0.0
+shader_parameter/impact_band_width = 0.1
+shader_parameter/impact_color = Color(1, 1, 1, 1)
+shader_parameter/flip_done = false
+shader_parameter/impact_y_position = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vkm8r"]
 bg_color = Color(0.784314, 0.392157, 0, 1)
@@ -110,25 +134,26 @@ text = "Ідеальна температура (100%)"
 
 [node name="TemperatureIndicator" type="TextureRect" parent="UI/RightPanel/WorkpieceContainer"]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_roavf")
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = 46.0
-offset_right = 262.0
-offset_bottom = -46.0
+offset_left = -100.0
+offset_top = 59.0
+offset_right = 100.0
+offset_bottom = -57.0
 grow_horizontal = 2
 grow_vertical = 2
-rotation = 1.5708
-pivot_offset = Vector2(256, 210)
+pivot_offset = Vector2(100, 256)
 texture = ExtResource("2_tx81m")
-expand_mode = 2
+expand_mode = 5
 stretch_mode = 5
 
-[node name="DirectionArrow" type="TextureRect" parent="UI/RightPanel"]
+[node name="DirectionArrow" type="TextureRect" parent="UI/RightPanel/WorkpieceContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -136,9 +161,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -254.0
-offset_top = 115.0
+offset_top = 59.0
 offset_right = -126.0
-offset_bottom = 243.0
+offset_bottom = 187.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(64, 64)
@@ -147,6 +172,7 @@ stretch_mode = 5
 
 [node name="FlipButton" type="TextureRect" parent="UI/RightPanel"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
