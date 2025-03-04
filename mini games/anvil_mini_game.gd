@@ -49,8 +49,8 @@ var last_hit_quality: int = 0  # 0 = промах, 1 = задовільно, 2 =
 var flip_half_done: bool = false  # Чи був зроблений переворот на половині
 var current_direction: String = "up"  # Поточний напрямок (вгору/вниз)
 var current_hit_button: String = ""   # Поточна кнопка для удару
-var starting_shringing_circe_scale: Vector2
-var starting_target_ring_scale: Vector2
+# var starting_shringing_circe_scale: Vector2
+# var starting_target_ring_scale: Vector2
 
 # Поточний етап кування для шейдера
 var current_forge_stage: int = 0
@@ -169,8 +169,8 @@ func _ready():
 	
 	InputManager.input_type_changed.connect(_on_input_type_changed)
 	
-	starting_shringing_circe_scale = %ShrinkingCircle.scale
-	starting_target_ring_scale = %ShrinkingCircle.scale
+	# starting_shringing_circe_scale = %ShrinkingCircle.scale
+	# starting_target_ring_scale = %ShrinkingCircle.scale
 	
 	# Налаштовуємо UI елементи
 	setup_ui()
@@ -182,6 +182,393 @@ func _ready():
 	visible = false
 	setup_shader_for_workpiece()
 	start_game()
+
+# Оновлена функція setup_hit_indicator
+func setup_hit_indicator():
+	# Створюємо матеріал шейдера
+	var shader_material = ShaderMaterial.new()
+	var hit_indicator = %HitIndicator
+		
+	shader_material.shader = load("res://shaders/hit_indicator.gdshader")
+	
+	# Створюємо TextureRect для шейдера, якщо його ще немає
+	if !"%HitIndicator":
+		hit_indicator = TextureRect.new()
+		hit_indicator.name = "HitIndicator"
+		hit_indicator.unique_name_in_owner = true
+		hit_indicator.custom_minimum_size = Vector2(200, 200)
+		hit_indicator.expand = true
+		hit_indicator.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		
+		# Створюємо базову текстуру
+		var texture = load("res://assets/buttons/crosshair123.png")
+		hit_indicator.texture = texture
+		
+		# Додаємо TextureRect до сцени
+		$UI/RightPanel.add_child(hit_indicator)
+		
+	hit_indicator.material = shader_material
+
+	# Налаштовуємо шейдерні параметри - зони зовні зеленого кільця
+	var target_size = target_ring_size
+	var ring_thickness = 0.04
+	
+	shader_material.set_shader_parameter("target_size", target_size)
+	shader_material.set_shader_parameter("good_zone_outer", target_size * 1.2)  # Салатова зона зовні зеленої
+	shader_material.set_shader_parameter("satisfactory_zone_outer", target_size * 1.4)  # Жовта зона ще далі
+	
+	shader_material.set_shader_parameter("current_size", 1.0)  # Початкове значення - повний розмір
+	shader_material.set_shader_parameter("ring_thickness", ring_thickness)
+
+	# Встановлюємо кольори для різних станів
+	shader_material.set_shader_parameter("perfect_color", Color(0.0, 1.0, 0.0, 0.8))       # Зелений
+	shader_material.set_shader_parameter("good_color", Color(0.5, 1.0, 0.0, 0.8))          # Салатовий
+	shader_material.set_shader_parameter("satisfactory_color", Color(1.0, 1.0, 0.0, 0.8))  # Жовтий
+	shader_material.set_shader_parameter("moving_color", Color(0.8, 0.8, 0.8, 0.8))        # Сірий
+	
+	# Режими відображення
+	shader_material.set_shader_parameter("show_result_only", false)
+	shader_material.set_shader_parameter("result_quality", 0)
+	shader_material.set_shader_parameter("flash_intensity", 1.0)
+	
+	# Виводимо налаштування в лог для діагностики
+	print("HIT INDICATOR SETUP: target_size = ", target_size, 
+		  ", ring_thickness = ", ring_thickness,
+		  ", perfect_inner = ", target_size - ring_thickness/2.0,
+		  ", perfect_outer = ", target_size + ring_thickness/2.0,
+		  ", good_outer = ", target_size * 1.2, 
+		  ", satisfactory_outer = ", target_size * 1.4)
+
+# Функція для оновлення розміру в шейдері
+func set_shader_current_size(size: float):
+	if has_node("%HitIndicator") and %HitIndicator.material:
+		%HitIndicator.material.set_shader_parameter("current_size", size)
+
+# Функція для швидшого блимання після удару
+func show_hit_result(quality: int):
+	if has_node("%HitIndicator") and %HitIndicator.material:
+		# Переключаємось в режим відображення результату
+		%HitIndicator.material.set_shader_parameter("show_result_only", true)
+		%HitIndicator.material.set_shader_parameter("result_quality", quality)
+		
+		# Створюємо ефект швидшого блимання (0.25 секунди замість 0.5)
+		var tween = create_tween()
+		tween.tween_method(Callable(self, "_update_flash_intensity"), 1.0, 0.0, 0.25)
+		tween.tween_callback(Callable(self, "_hide_hit_indicator"))
+
+# Функція для оновлення інтенсивності блимання
+func _update_flash_intensity(intensity: float):
+	if has_node("%HitIndicator") and %HitIndicator.material:
+		%HitIndicator.material.set_shader_parameter("flash_intensity", intensity)
+
+# Функція для приховування індикатора удару
+func _hide_hit_indicator():
+	if has_node("%HitIndicator"):
+		%HitIndicator.visible = false
+
+# Модифікована функція start_hit_phase для використання шейдера
+func start_hit_phase(update_shader_position: bool = true):
+	current_phase = GAME_PHASE.HIT
+	
+	# Визначаємо позицію наступного удару
+	var next_hit_position = 0.5 # За замовчуванням середина
+	
+	if current_hits < hit_positions.size():
+		next_hit_position = hit_positions[current_hits]
+	
+	# Оновлюємо тільки позицію в шейдері для підготовки до наступного удару
+	if update_shader_position and %TemperatureIndicator and %TemperatureIndicator.material:
+		%TemperatureIndicator.material.set_shader_parameter("forge_center", Vector2(0.5, next_hit_position))
+		%TemperatureIndicator.material.set_shader_parameter("impact_y_position", next_hit_position)
+	
+	# Вибираємо випадкову кнопку для удару
+	current_hit_button = HIT_ACTIONS[randi() % HIT_ACTIONS.size()]
+	
+	# Приховуємо всі кнопки спочатку
+	%HitButtonA.visible = false
+	%HitButtonB.visible = false
+	%HitButtonX.visible = false
+	%HitButtonY.visible = false
+	
+	# Показуємо поточну кнопку з правильною текстурою
+	match current_hit_button:
+		"hit_button_a":
+			%HitButtonA.texture = InputManager.get_button_texture("hit_button_a")
+			%HitButtonA.visible = true
+		"hit_button_b":
+			%HitButtonB.texture = InputManager.get_button_texture("hit_button_b")
+			%HitButtonB.visible = true
+		"hit_button_x":
+			%HitButtonX.texture = InputManager.get_button_texture("hit_button_x")
+			%HitButtonX.visible = true
+		"hit_button_y":
+			%HitButtonY.texture = InputManager.get_button_texture("hit_button_y")
+			%HitButtonY.visible = true
+	
+	# Показуємо індикатор удару і переключаємо в звичайний режим
+	if has_node("%HitIndicator"):
+		%HitIndicator.visible = true
+		%HitIndicator.material.set_shader_parameter("show_result_only", false)
+		%HitIndicator.material.set_shader_parameter("current_size", 1.0)  # Починаємо з максимального розміру
+	
+	# Ховаємо елементи інших фаз
+	%DirectionArrow.visible = false
+	%FlipButton.visible = false
+	
+	# Скасовуємо попередній tween, якщо він існує
+	var existing_tweens = get_tree().get_processed_tweens()
+	for tween in existing_tweens:
+		if tween.is_valid():
+			tween.kill()
+	
+	# Запускаємо анімацію зміни розміру в шейдері
+	var tween = create_tween()
+	var adjusted_time = reaction_time / shrinking_speed_factor
+	tween.tween_method(Callable(self, "set_shader_current_size"), 1.0, 0.0, adjusted_time)
+	
+	# Встановлюємо таймер для автоматичного завершення фази
+	ring_timer.wait_time = adjusted_time
+	ring_timer.start()
+	
+	var button_name = InputManager.get_button_display_name(current_hit_button)
+	%InstructionsLabel.text = "Натисніть %s коли коло співпадає з цільовою зоною" % button_name
+
+# Модифікована функція handle_hit для показу результату після удару
+func handle_hit(quality: int = -1):
+	# Зупиняємо всі тайм-лайни та таймери
+	ring_timer.stop()
+	var existing_tweens = get_tree().get_processed_tweens()
+	for tween in existing_tweens:
+		if tween.is_valid():
+			tween.kill()
+	
+	# Визначаємо якість удару, якщо не передана
+	if quality == -1 and has_node("%HitIndicator") and %HitIndicator.material:
+		var current_shader_size = %HitIndicator.material.get_shader_parameter("current_size")
+		var target_shader_size = %HitIndicator.material.get_shader_parameter("target_size")
+		var good_zone_outer = %HitIndicator.material.get_shader_parameter("good_zone_outer")
+		var satisfactory_zone_outer = %HitIndicator.material.get_shader_parameter("satisfactory_zone_outer")
+		
+		var diff = abs(current_shader_size - target_shader_size)
+		
+		if diff < 0.01:
+			quality = 3  # Ідеальний удар
+		elif current_shader_size <= good_zone_outer:
+			quality = 2  # Хороший удар
+		elif current_shader_size <= satisfactory_zone_outer:
+			quality = 1  # Задовільний удар
+		else:
+			quality = 0  # Промах
+
+	last_hit_quality = quality
+	
+	# Показуємо візуальний результат удару
+	show_hit_result(quality)
+	
+	# Обчислюємо очки за удар залежно від якості і температури
+	var hit_points = 0
+	var base_points = 0
+	var temp_multiplier = 0.0
+	var combo_multiplier = 1.0
+	
+	# Визначаємо базові очки
+	match quality:
+		3:  # Ідеальний удар
+			base_points = 6
+			perfect_hits_streak += 1
+			show_hit_feedback("Ідеально!", Color(0, 1, 0))
+		2:  # Хороший удар
+			base_points = 4
+			perfect_hits_streak = 0
+			show_hit_feedback("Добре", Color(0.5, 1, 0))
+		1:  # Задовільний удар
+			base_points = 2
+			perfect_hits_streak = 0
+			show_hit_feedback("Задовільно", Color(1, 1, 0))
+		0:  # Промах
+			base_points = 0
+			perfect_hits_streak = 0
+			show_hit_feedback("Промах!", Color(1, 0, 0))
+	
+	# Визначаємо множник температури
+	match current_temperature:
+		TEMPERATURE_STATE.PERFECT:
+			temp_multiplier = 0.9
+		TEMPERATURE_STATE.GOOD:
+			temp_multiplier = 0.75
+		TEMPERATURE_STATE.SATISFACTORY:
+			temp_multiplier = 0.5
+		TEMPERATURE_STATE.COLD:
+			temp_multiplier = 0.25
+	
+	# Визначаємо комбо-множник
+	if perfect_hits_streak >= 5:
+		combo_multiplier = 2.0  # x2 за 5+ послідовних ідеальних ударів
+	elif perfect_hits_streak >= 3:
+		combo_multiplier = 1.5  # x1.5 за 3-4 послідовні ідеальні удари
+	
+	# Розраховуємо очки за удар
+	hit_points = base_points * temp_multiplier * combo_multiplier
+	
+	# Виводимо інформацію в консоль
+	print("УДАР: базові очки = %d, множник температури = %.2f, комбо-множник = %.1f, очки за удар = %.1f" % [base_points, temp_multiplier, combo_multiplier, hit_points])
+	
+	# Додаємо очки
+	current_score += hit_points
+	
+	# Збільшуємо лічильник ударів
+	current_hits += 1
+	update_hit_counter()
+	
+	# Симулюємо удар молотом на заготовці
+	hammer_strike()
+	
+	# Перевіряємо охолодження (тут, після удару)
+	check_cooling()
+	
+	# Перевіряємо завершення гри
+	if current_hits >= total_hits_required:
+		end_game(true)
+		return
+	
+	# Визначаємо, чи це був останній удар перед перевертанням
+	var hits_per_phase = total_hits_required / 2
+	var need_flip = (current_hits == hits_per_phase) and not flip_half_done
+	
+	# Якщо це був останній удар перед перевертанням, оновлюємо позицію до 0.0 (верх)
+	if need_flip:
+		update_workpiece_region(0.0)  # Досягаємо верху перед перевертанням
+		flip_half_done = true
+		# Затримка перед показом наступної фази
+		# await get_tree().create_timer(0.5).timeout
+		start_flip_phase()
+		return
+	
+	# Затримка перед показом фази вибору напрямку
+	# await get_tree().create_timer(0.2).timeout
+	start_direction_phase()
+
+func setup_ui():
+	# Налаштовуємо параметри шейдера відповідно до рівня майстерності
+	setup_hit_indicator()
+	
+	# Оновлюємо лічильник ударів
+	update_hit_counter()
+	
+	# Оновлюємо температурний індикатор
+	update_temperature_indicator()
+	
+	# Налаштовуємо кнопки удару
+	setup_hit_buttons()
+
+func _input(event):
+	if not visible:
+		return
+	
+	# Обробка натискання для фази удару
+	if current_phase == GAME_PHASE.HIT:
+		if event.is_action_pressed(current_hit_button):
+			ring_timer.stop()
+			
+			# Визначаємо якість удару на основі поточного розміру шейдера
+			if has_node("%HitIndicator") and %HitIndicator.material:
+				var current_shader_size = %HitIndicator.material.get_shader_parameter("current_size")
+				var target_shader_size = %HitIndicator.material.get_shader_parameter("target_size")
+				var good_zone_outer = %HitIndicator.material.get_shader_parameter("good_zone_outer")
+				var satisfactory_zone_outer = %HitIndicator.material.get_shader_parameter("satisfactory_zone_outer")
+				var ring_thickness = %HitIndicator.material.get_shader_parameter("ring_thickness")
+				
+				var hit_quality
+				
+				# Обчислюємо внутрішню і зовнішню межу зеленої зони
+				var perfect_inner = target_shader_size - ring_thickness/2.0
+				var perfect_outer = target_shader_size + ring_thickness/2.0
+				
+				# КЛЮЧОВА ЗМІНА: перевіряємо, чи сіре коло НЕ стало менше за зелене
+				if current_shader_size < perfect_inner:
+					# Сіре коло пройшло повз зелене і стало меншим - це промах
+					hit_quality = 0
+				# Далі звичайна логіка для зовнішніх зон
+				elif current_shader_size >= perfect_inner and current_shader_size <= perfect_outer:
+					# В межах ідеальної зеленої зони
+					var diff = abs(current_shader_size - target_shader_size)
+					if diff < 0.01:
+						hit_quality = 3  # Ідеальний удар
+					else:
+						hit_quality = 2  # Хороший удар всередині зеленої зони
+				elif current_shader_size <= good_zone_outer:
+					# В межах хорошої зони (салатової)
+					hit_quality = 2  # Хороший удар
+				elif current_shader_size <= satisfactory_zone_outer:
+					# В межах задовільної зони (жовтої)
+					hit_quality = 1  # Задовільний удар
+				else:
+					# Поза всіма зонами
+					hit_quality = 0  # Промах
+				
+				handle_hit(hit_quality)
+			else:
+				# Резервний варіант, якщо шейдер недоступний
+				handle_hit(0)
+		elif event.is_action_pressed("hit_button_a") or event.is_action_pressed("hit_button_b") or \
+			 event.is_action_pressed("hit_button_x") or event.is_action_pressed("hit_button_y"):
+			# Натиснута неправильна кнопка
+			ring_timer.stop()
+			handle_hit(0)  # Промах
+	
+	# Обробка натискання для фази вибору напрямку
+	elif current_phase == GAME_PHASE.DIRECTION:
+		var direction_quality = 0
+		
+		if (event.is_action_pressed(UP_ACTION) and current_direction == "up") or \
+		   (event.is_action_pressed(DOWN_ACTION) and current_direction == "down"):
+			# Визначаємо якість вибору напрямку на основі часу реакції
+			var wait_time = direction_timer.wait_time
+			var elapsed_time = wait_time - direction_timer.time_left
+			var time_percentage = elapsed_time / wait_time * 100
+			
+			# print("Час реакції для напрямку: %.2f / %.2f (%.1f%%)" % [elapsed_time, wait_time, time_percentage])
+			
+			# Зупиняємо таймер ПІСЛЯ отримання часу, що залишився
+			direction_timer.stop()
+			
+			# Перевіряємо час реакції
+			if time_percentage < 20:  # Перша частина доступного часу
+				direction_quality = 2  # Точний вибір
+			else:
+				direction_quality = 1  # Запізнілий вибір
+				
+			handle_direction(direction_quality)
+		elif event.is_action_pressed(UP_ACTION) or event.is_action_pressed(DOWN_ACTION):
+			# Неправильний напрямок натиснуто
+			direction_timer.stop()
+			handle_direction(0)  # Неправильний вибір
+	
+	# Обробка натискання для фази перевертання
+	elif current_phase == GAME_PHASE.FLIP:
+		if event.is_action_pressed(LEFT_ACTION) or event.is_action_pressed(RIGHT_ACTION):
+			# Зберігаємо значення time_left перед зупинкою таймера
+			var wait_time = flip_timer.wait_time
+			var elapsed_time = wait_time - flip_timer.time_left
+			var time_percentage = elapsed_time / wait_time * 100
+			
+			flip_timer.stop()
+			
+			var flip_quality
+			
+			# Перевіряємо за процентним відношенням
+			if time_percentage < 30:
+				flip_quality = 2  # Ідеальне перевертання
+			elif time_percentage < 60:
+				flip_quality = 1  # Хороше перевертання
+			else:
+				flip_quality = 0  # Запізніле перевертання
+			
+			handle_flip(flip_quality)
+	
+	# Скасування гри за допомогою Escape
+	if event.is_action_pressed("ui_cancel"):
+		cancel_game()
 
 # Функція для генерації позицій ударів
 func generate_hit_positions():
@@ -251,13 +638,6 @@ func update_forge_progression():
 		
 		# Застосовуємо нові параметри деформації
 		apply_forge_stage(current_forge_stage)
-		
-		print("Оновлення деформації: з етапу %d (%s) до етапу %d (%s)" % [
-			previous_stage, 
-			forging_stages[previous_stage].name,
-			current_forge_stage,
-			forging_stages[current_forge_stage].name
-		])
 
 func apply_forge_stage(stage_index):
 	if stage_index < 0 or stage_index >= forging_stages.size():
@@ -321,71 +701,6 @@ func update_forge_stage(stage_index):
 	
 	print("Етап кування: ", stage.name)
 	print(stage.description)
-
-func start_hit_phase():
-	current_phase = GAME_PHASE.HIT
-	
-	# Визначаємо позицію наступного удару
-	var next_hit_position = 0.5 # За замовчуванням середина
-	
-	if current_hits < hit_positions.size():
-		next_hit_position = hit_positions[current_hits]
-	
-	# Оновлюємо тільки позицію в шейдері для підготовки до наступного удару
-	if %TemperatureIndicator and %TemperatureIndicator.material:
-		%TemperatureIndicator.material.set_shader_parameter("forge_center", Vector2(0.5, next_hit_position))
-		%TemperatureIndicator.material.set_shader_parameter("impact_y_position", next_hit_position)
-	
-	# Вибираємо випадкову кнопку для удару
-	current_hit_button = HIT_ACTIONS[randi() % HIT_ACTIONS.size()]
-	
-	# Приховуємо всі кнопки спочатку
-	%HitButtonA.visible = false
-	%HitButtonB.visible = false
-	%HitButtonX.visible = false
-	%HitButtonY.visible = false
-	
-	# Показуємо поточну кнопку з правильною текстурою
-	match current_hit_button:
-		"hit_button_a":
-			%HitButtonA.texture = InputManager.get_button_texture("hit_button_a")
-			%HitButtonA.visible = true
-		"hit_button_b":
-			%HitButtonB.texture = InputManager.get_button_texture("hit_button_b")
-			%HitButtonB.visible = true
-		"hit_button_x":
-			%HitButtonX.texture = InputManager.get_button_texture("hit_button_x")
-			%HitButtonX.visible = true
-		"hit_button_y":
-			%HitButtonY.texture = InputManager.get_button_texture("hit_button_y")
-			%HitButtonY.visible = true
-	
-	# Обов'язково показуємо елементи
-	%ShrinkingCircle.visible = true
-	%ShrinkingCircle.scale = starting_shringing_circe_scale
-	%TargetRing.visible = true
-	
-	# Ховаємо елементи інших фаз
-	%DirectionArrow.visible = false
-	%FlipButton.visible = false
-	
-	# Скасовуємо попередній tween, якщо він існує
-	var existing_tweens = get_tree().get_processed_tweens()
-	for tween in existing_tweens:
-		if tween.is_valid():
-			tween.kill()
-	
-	# Запускаємо анімацію кола з урахуванням множника швидкості
-	var tween = create_tween()
-	var adjusted_time = reaction_time / shrinking_speed_factor
-	tween.tween_property(%ShrinkingCircle, "scale", Vector2(0, 0), adjusted_time)
-	
-	# Встановлюємо таймер для автоматичного завершення фази
-	ring_timer.wait_time = adjusted_time
-	ring_timer.start()
-	
-	var button_name = InputManager.get_button_display_name(current_hit_button)
-	%InstructionsLabel.text = "Натисніть %s коли коло співпадає з цільовою зоною" % button_name
 
 # Функція для показу імпакту в поточному положенні
 func show_impact_at_current_position():
@@ -531,22 +846,7 @@ func _on_input_type_changed(_device_type):
 		GAME_PHASE.FLIP:
 			# Оновлюємо кнопку перевертання
 			start_flip_phase()
-	
 
-func setup_ui():
-	# Налаштовуємо розмір цільового кільця відповідно до рівня майстерності
-	%TargetRing.scale = starting_target_ring_scale * target_ring_size
-
-	# Оновлюємо лічильник ударів
-	update_hit_counter()
-	
-	# Оновлюємо температурний індикатор
-	update_temperature_indicator()
-	
-	# Налаштовуємо кнопки удару
-	setup_hit_buttons()
-
-# Оновлена функція setup_hit_buttons, яка призначає текстури
 func setup_hit_buttons():
 	# Приховуємо всі кнопки спочатку
 	%HitButtonA.visible = false
@@ -597,93 +897,6 @@ func _on_ring_timer_timeout():
 	if current_phase == GAME_PHASE.HIT:
 		handle_hit(0)  # 0 = промах
 
-func handle_hit(quality: int):
-	# print("handle_hit викликано з якістю: ", quality)
-	# print("Поточна фаза: ", current_phase)
-	# print_stack()  # Це покаже стек викликів
-	
-	last_hit_quality = quality
-	
-	# Обчислюємо очки за удар залежно від якості і температури
-	var hit_points = 0
-	var base_points = 0
-	var temp_multiplier = 0.0
-	var combo_multiplier = 1.0
-	
-	# Визначаємо базові очки
-	match quality:
-		3:  # Ідеальний удар
-			base_points = 6
-			perfect_hits_streak += 1
-			show_hit_feedback("Ідеально!", Color(0, 1, 0))
-		2:  # Хороший удар
-			base_points = 4
-			perfect_hits_streak = 0
-			show_hit_feedback("Добре", Color(0.5, 1, 0))
-		1:  # Задовільний удар
-			base_points = 2
-			perfect_hits_streak = 0
-			show_hit_feedback("Задовільно", Color(1, 1, 0))
-		0:  # Промах
-			base_points = 0
-			perfect_hits_streak = 0
-			show_hit_feedback("Промах!", Color(1, 0, 0))
-	
-	# Визначаємо множник температури
-	match current_temperature:
-		TEMPERATURE_STATE.PERFECT:
-			temp_multiplier = 0.9
-		TEMPERATURE_STATE.GOOD:
-			temp_multiplier = 0.75
-		TEMPERATURE_STATE.SATISFACTORY:
-			temp_multiplier = 0.5
-		TEMPERATURE_STATE.COLD:
-			temp_multiplier = 0.25
-	
-	# Визначаємо комбо-множник
-	if perfect_hits_streak >= 5:
-		combo_multiplier = 2.0  # x2 за 5+ послідовних ідеальних ударів
-	elif perfect_hits_streak >= 3:
-		combo_multiplier = 1.5  # x1.5 за 3-4 послідовні ідеальні удари
-	
-	# Розраховуємо очки за удар
-	hit_points = base_points * temp_multiplier * combo_multiplier
-	
-	# Виводимо інформацію в консоль
-	print("УДАР: базові очки = %d, множник температури = %.2f, комбо-множник = %.1f, очки за удар = %.1f" % [base_points, temp_multiplier, combo_multiplier, hit_points])
-	
-	# Додаємо очки
-	current_score += hit_points
-	
-	# Збільшуємо лічильник ударів
-	current_hits += 1
-	update_hit_counter()
-	
-	# Симулюємо удар молотом на заготовці
-	hammer_strike()
-	
-	# Перевіряємо охолодження (тут, після удару)
-	check_cooling()
-	
-	# Перевіряємо завершення гри
-	if current_hits >= total_hits_required:
-		end_game(true)
-		return
-	
-	# Визначаємо, чи це був останній удар перед перевертанням
-	var hits_per_phase = total_hits_required / 2
-	var need_flip = (current_hits == hits_per_phase) and not flip_half_done
-	
-	# Якщо це був останній удар перед перевертанням, оновлюємо позицію до 0.0 (верх)
-	if need_flip:
-		update_workpiece_region(0.0)  # Досягаємо верху перед перевертанням
-		flip_half_done = true
-		start_flip_phase()
-		return
-	
-	# Інакше переходимо до фази вибору напрямку
-	start_direction_phase()
-
 func _update_heat_amount(heat: float):
 	if %TemperatureIndicator and %TemperatureIndicator.material:
 		%TemperatureIndicator.material.set_shader_parameter("heat_amount", heat)
@@ -691,9 +904,6 @@ func _update_heat_amount(heat: float):
 func start_direction_phase():
 	current_phase = GAME_PHASE.DIRECTION
 	
-	# Ховаємо коло і кнопки удару
-	%ShrinkingCircle.visible = false
-	%TargetRing.visible = false
 	%HitButtonA.visible = false
 	%HitButtonB.visible = false
 	%HitButtonX.visible = false
@@ -720,7 +930,7 @@ func start_direction_phase():
 	
 	# Оновлюємо шейдер, щоб показати напрямок удару
 	var direction_position = 0.0 if current_direction == "up" else 1.0
-	update_workpiece_region(direction_position)
+	# update_workpiece_region(direction_position)
 
 func _on_direction_timer_timeout():
 	# Якщо гравець не вибрав напрямок вчасно
@@ -749,14 +959,14 @@ func handle_direction(quality: int):
 	current_score += direction_points
 	
 	# Переходимо до фази удару
-	start_hit_phase()
+	start_hit_phase(false)
 
 func start_flip_phase():
 	current_phase = GAME_PHASE.FLIP
 	
 	# Ховаємо попередні елементи
-	%ShrinkingCircle.visible = false
-	%TargetRing.visible = false
+	# %ShrinkingCircle.visible = false
+	# %TargetRing.visible = false
 	%DirectionArrow.visible = false
 	%HitButtonA.visible = false
 	%HitButtonB.visible = false
@@ -851,100 +1061,14 @@ func update_workpiece_region(position: float, active: bool = true):
 	if %TemperatureIndicator and %TemperatureIndicator.material:
 		var shader_material = %TemperatureIndicator.material
 		
-		# Встановлюємо параметр flip_done, але вимикаємо підсвічування
+		# Встановлюємо параметр flip_done
 		shader_material.set_shader_parameter("flip_done", flip_half_done)
 		
-		# Відключаємо підсвічування, встановлюючи highlight_active = false
-		shader_material.set_shader_parameter("highlight_active", false)
+		# Встановлюємо позицію центру кування на основі переданої позиції
+		shader_material.set_shader_parameter("forge_center", Vector2(0.5, position))
 		
-		# Можна також встановити highlight_size = 0 для додаткової гарантії
-		shader_material.set_shader_parameter("highlight_size", 0.0)
-
-func _input(event):
-	if not visible:
-		return
-	
-	# Обробка натискання для фази удару
-	if current_phase == GAME_PHASE.HIT:
-		if event.is_action_pressed(current_hit_button):
-			ring_timer.stop()
-			
-			# Визначаємо якість удару на основі порівняння поточного масштабу з цільовим
-			var current_scale = %ShrinkingCircle.scale.x / starting_shringing_circe_scale.x  # Нормалізуємо до 0-1
-			var target_scale = %TargetRing.scale.x / starting_target_ring_scale.x  # Нормалізуємо цільовий розмір
-			
-			var hit_quality
-			
-			# Перевіряємо, наскільки близько поточний масштаб до цільового
-			if abs(current_scale - target_scale) < 0.01:
-				hit_quality = 3  # Ідеальний удар
-			elif abs(current_scale - target_scale) < 0.04:
-				hit_quality = 2  # Хороший удар
-			elif abs(current_scale - target_scale) < 0.1:
-				hit_quality = 1  # Задовільний удар
-			else:
-				hit_quality = 0  # Промах
-			
-			handle_hit(hit_quality)
-		elif event.is_action_pressed("hit_button_a") or event.is_action_pressed("hit_button_b") or \
-			 event.is_action_pressed("hit_button_x") or event.is_action_pressed("hit_button_y"):
-			# Натиснута неправильна кнопка
-			ring_timer.stop()
-			handle_hit(0)  # Промах
-	
-	# Обробка натискання для фази вибору напрямку
-	elif current_phase == GAME_PHASE.DIRECTION:
-		var direction_quality = 0
-		
-		if (event.is_action_pressed(UP_ACTION) and current_direction == "up") or \
-		   (event.is_action_pressed(DOWN_ACTION) and current_direction == "down"):
-			# Визначаємо якість вибору напрямку на основі часу реакції
-			var wait_time = direction_timer.wait_time
-			var elapsed_time = wait_time - direction_timer.time_left
-			var time_percentage = elapsed_time / wait_time * 100
-			
-			print("Час реакції для напрямку: %.2f / %.2f (%.1f%%)" % [elapsed_time, wait_time, time_percentage])
-			
-			# Зупиняємо таймер ПІСЛЯ отримання часу, що залишився
-			direction_timer.stop()
-			
-			# Перевіряємо час реакції
-			if time_percentage < 20:  # Перша частина доступного часу
-				direction_quality = 2  # Точний вибір
-			else:
-				direction_quality = 1  # Запізнілий вибір
-				
-			handle_direction(direction_quality)
-		elif event.is_action_pressed(UP_ACTION) or event.is_action_pressed(DOWN_ACTION):
-			# Неправильний напрямок натиснуто
-			direction_timer.stop()
-			handle_direction(0)  # Неправильний вибір
-	
-	# Обробка натискання для фази перевертання
-	elif current_phase == GAME_PHASE.FLIP:
-		if event.is_action_pressed(LEFT_ACTION) or event.is_action_pressed(RIGHT_ACTION):
-			# Зберігаємо значення time_left перед зупинкою таймера
-			var wait_time = flip_timer.wait_time
-			var elapsed_time = wait_time - flip_timer.time_left
-			var time_percentage = elapsed_time / wait_time * 100
-			
-			flip_timer.stop()
-			
-			var flip_quality
-			
-			# Перевіряємо за процентним відношенням
-			if time_percentage < 30:
-				flip_quality = 2  # Ідеальне перевертання
-			elif time_percentage < 60:
-				flip_quality = 1  # Хороше перевертання
-			else:
-				flip_quality = 0  # Запізніле перевертання
-			
-			handle_flip(flip_quality)
-	
-	# Скасування гри за допомогою Escape
-	if event.is_action_pressed("ui_cancel"):
-		cancel_game()
+		# Встановлюємо позицію імпакту
+		shader_material.set_shader_parameter("impact_y_position", position)
 
 func end_game(success: bool):
 	# Виводимо детальний результат у консоль
