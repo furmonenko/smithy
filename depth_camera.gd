@@ -22,6 +22,9 @@ var layer_offsets: Array[Vector2] = [
 	Vector2(0, 100)      # Задній шар (більше зміщення вгору)
 ]
 
+# Додаємо прапорець для режиму міні-гри
+var _mini_game_mode: bool = false
+
 func _ready():
 	# Отримуємо посилання на гравця
 	if layer_manager.has_signal("layer_changed"):
@@ -43,6 +46,10 @@ func _ready():
 	target_position = Vector2.ZERO
 
 func _process(delta):
+	# Пропускаємо lerp, якщо ми в режимі міні-гри
+	if _mini_game_mode:
+		return
+		
 	# Плавно змінюємо зум
 	zoom = zoom.lerp(target_zoom, transition_speed * delta)
 	
@@ -51,12 +58,20 @@ func _process(delta):
 	
 # Обробник зміни шару
 func _on_layer_changed(object, old_layer, new_layer):
+	# Пропускаємо, якщо ми в режимі міні-гри
+	if _mini_game_mode:
+		return
+		
 	# Перевіряємо, чи це наш гравець змінив шар
 	if object == player:
 		update_camera_for_layer(new_layer)
 
 # Оновлення камери при зміні шару
 func update_camera_for_layer(new_layer: int):
+	# Пропускаємо, якщо ми в режимі міні-гри
+	if _mini_game_mode:
+		return
+		
 	current_layer = new_layer
 	
 	# Оновлюємо цільовий зум
@@ -67,5 +82,14 @@ func update_camera_for_layer(new_layer: int):
 
 # Публічний метод для встановлення шару напряму
 func set_layer(layer: int):
+	# Пропускаємо, якщо ми в режимі міні-гри
+	if _mini_game_mode:
+		return
+		
 	if layer >= 0 and layer < layer_zooms.size():
 		update_camera_for_layer(layer)
+
+# Додаємо новий метод для переключення режиму міні-гри
+func set_mini_game_mode(enabled: bool):
+	_mini_game_mode = enabled
+	print("DepthCamera: Режим міні-гри ", "увімкнено" if enabled else "вимкнено")

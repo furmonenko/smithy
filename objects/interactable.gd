@@ -1,13 +1,19 @@
-# Interactable.gd (базовий клас)
+# Interactable.gd (modified)
 extends Area2D
 class_name Interactable
 
-@export var interaction_text: String = "Press E to interact"
-@export var layer: int = 0
+@export var interaction_text: String = "Interact"
+@export var layer: int = 0  # Default to front layer
 
-func interact() -> void:
-	# Базова реалізація, яку перевизначать нащадки
-	print("Interacting with %s" % name)
+signal interaction_activated(interactable)
+
+func _ready():
+	# Add to the interactables group so main can find it
+	add_to_group("interactables")
+
+func interact():
+	# Base method to be overridden by child classes
+	interaction_activated.emit(self)
 
 func show_interaction_promt():
 	%InteractionLabel.visible = true
