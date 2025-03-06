@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://g4ya6k88ptd2"]
 
+[ext_resource type="Script" uid="uid://c108hofdxfow4" path="res://main.gd" id="1_7mycd"]
 [ext_resource type="Script" uid="uid://dnjlyacgvik5m" path="res://layer_manager.gd" id="1_qrecu"]
 [ext_resource type="PackedScene" uid="uid://bx8ek002jwy3h" path="res://blacksmith.tscn" id="2_71qyi"]
 [ext_resource type="PackedScene" uid="uid://de0p5f556732l" path="res://objects/anvil.tscn" id="2_rsqs0"]
 [ext_resource type="Script" uid="uid://b4c0bs3h53rv2" path="res://depth_camera.gd" id="3_rvftn"]
-[ext_resource type="PackedScene" uid="uid://5tk0iuuul53k" path="res://objects/bugle.tscn" id="3_yob46"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6v1v1"]
 size = Vector2(662, 4040)
@@ -14,6 +14,10 @@ size = Vector2(1264, 8084)
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_7mycd")
+mini_game_camera_zoom = Vector2(1, 1)
+mini_game_camera_offset = Vector2(200, 140)
+transition_duration = 1.0
 
 [node name="LayerManager" type="Node" parent="."]
 script = ExtResource("1_qrecu")
@@ -23,19 +27,20 @@ back_layer_path = NodePath("../LayerBack")
 y_positions = Array[float]([1000.0, 800.0, 600.0])
 scales = Array[float]([1.0, 0.9, 0.8])
 
+[node name="Interactables" type="Node2D" parent="."]
+scale = Vector2(0.25, 0.25)
+
 [node name="Anvil" parent="." instance=ExtResource("2_rsqs0")]
-position = Vector2(1115, 1000)
+position = Vector2(1147, 1006)
 
-[node name="Bugle" parent="." instance=ExtResource("3_yob46")]
-position = Vector2(994, 553)
-scale = Vector2(0.117718, 0.117718)
-collision_layer = 2
-layer = 2
+[node name="Anvil2" parent="." instance=ExtResource("2_rsqs0")]
+position = Vector2(1229, 820)
+scale = Vector2(0.91, 0.91)
+layer = 1
 
-[node name="Bugle2" parent="." instance=ExtResource("3_yob46")]
-position = Vector2(1275, 551)
-scale = Vector2(0.104213, 0.104213)
-collision_layer = 2
+[node name="Anvil3" parent="." instance=ExtResource("2_rsqs0")]
+position = Vector2(1364, 641)
+scale = Vector2(0.8205, 0.8205)
 layer = 2
 
 [node name="LayerBack" type="Node2D" parent="."]
@@ -50,6 +55,7 @@ z_index = 20
 y_sort_enabled = true
 
 [node name="Blacksmith" parent="." node_paths=PackedStringArray("layer_manager") instance=ExtResource("2_71qyi")]
+unique_name_in_owner = true
 position = Vector2(467, 1038)
 collision_layer = 0
 collision_mask = 512
@@ -65,13 +71,12 @@ limit_right = 2100
 limit_smoothed = true
 drag_horizontal_enabled = true
 script = ExtResource("3_rvftn")
-transition_speed = 0.8
 player = NodePath("..")
 layer_manager = NodePath("../../LayerManager")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-489, 633)
-scale = Vector2(0.0716849, 0.0716849)
+scale = Vector2(0.0477903, 0.0477903)
 collision_layer = 512
 collision_mask = 0
 metadata/_edit_group_ = true

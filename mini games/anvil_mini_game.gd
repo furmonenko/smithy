@@ -1,9 +1,6 @@
 # anvil_mini_game.gd
-extends CanvasLayer
+extends MiniGame
 class_name AnvilMiniGame
-
-signal mini_game_completed(success, score)
-signal mini_game_cancelled
 
 # Типи зброї, що можна кувати
 enum WEAPON_TYPE { DAGGER = 0, SHORT_SWORD = 1, LONG_SWORD = 2 }
@@ -49,8 +46,6 @@ var last_hit_quality: int = 0  # 0 = промах, 1 = задовільно, 2 =
 var flip_half_done: bool = false  # Чи був зроблений переворот на половині
 var current_direction: String = "up"  # Поточний напрямок (вгору/вниз)
 var current_hit_button: String = ""   # Поточна кнопка для удару
-# var starting_shringing_circe_scale: Vector2
-# var starting_target_ring_scale: Vector2
 
 # Поточний етап кування для шейдера
 var current_forge_stage: int = 0
@@ -232,12 +227,12 @@ func setup_hit_indicator():
 	shader_material.set_shader_parameter("flash_intensity", 1.0)
 	
 	# Виводимо налаштування в лог для діагностики
-	print("HIT INDICATOR SETUP: target_size = ", target_size, 
-		  ", ring_thickness = ", ring_thickness,
-		  ", perfect_inner = ", target_size - ring_thickness/2.0,
-		  ", perfect_outer = ", target_size + ring_thickness/2.0,
-		  ", good_outer = ", target_size * 1.2, 
-		  ", satisfactory_outer = ", target_size * 1.4)
+	# print("HIT INDICATOR SETUP: target_size = ", target_size, 
+	#	  ", ring_thickness = ", ring_thickness,
+	#	  ", perfect_inner = ", target_size - ring_thickness/2.0,
+	#	  ", perfect_outer = ", target_size + ring_thickness/2.0,
+	#	  ", good_outer = ", target_size * 1.2, 
+	#	  ", satisfactory_outer = ", target_size * 1.4)
 
 # Функція для оновлення розміру в шейдері
 func set_shader_current_size(size: float):
@@ -411,7 +406,7 @@ func handle_hit(quality: int = -1):
 	hit_points = base_points * temp_multiplier * combo_multiplier
 	
 	# Виводимо інформацію в консоль
-	print("УДАР: базові очки = %d, множник температури = %.2f, комбо-множник = %.1f, очки за удар = %.1f" % [base_points, temp_multiplier, combo_multiplier, hit_points])
+	# print("УДАР: базові очки = %d, множник температури = %.2f, комбо-множник = %.1f, очки за удар = %.1f" % [base_points, temp_multiplier, combo_multiplier, hit_points])
 	
 	# Додаємо очки
 	current_score += hit_points
@@ -699,8 +694,8 @@ func update_forge_stage(stage_index):
 		# Оновлюємо тільки поточну позицію центру кування
 		update_forge_position(0.5)
 	
-	print("Етап кування: ", stage.name)
-	print(stage.description)
+	# print("Етап кування: ", stage.name)
+	# print(stage.description)
 
 # Функція для показу імпакту в поточному положенні
 func show_impact_at_current_position():
@@ -709,7 +704,7 @@ func show_impact_at_current_position():
 		# Визначаємо поточну позицію
 		var current_position = hit_positions[current_hits - 1]
 		
-		print("Показ імпакту в позиції: ", current_position)
+		# print("Показ імпакту в позиції: ", current_position)
 		
 		# Оновлюємо позицію центру кування та смуги імпакту
 		if %TemperatureIndicator and %TemperatureIndicator.material:
@@ -831,6 +826,7 @@ func setup_shader_for_workpiece():
 	
 	# Застосовуємо початкові параметри для етапу кування
 	update_forge_stage(0)
+
 func _on_input_type_changed(_device_type):
 	# Оновлюємо текстури всіх кнопок
 	setup_hit_buttons()
@@ -1070,7 +1066,7 @@ func update_workpiece_region(position: float, active: bool = true):
 		# Встановлюємо позицію імпакту
 		shader_material.set_shader_parameter("impact_y_position", position)
 
-func end_game(success: bool):
+func end_game(success: bool, score: int = 0):	
 	# Виводимо детальний результат у консоль
 	print("==========================================")
 	print("РЕЗУЛЬТАТ МІНІ-ГРИ КОВАДЛО")
@@ -1100,5 +1096,6 @@ func end_game(success: bool):
 	mini_game_completed.emit(success, current_score)
 
 func cancel_game():
-	#visible = false
+	visible = false
 	mini_game_cancelled.emit()
+	queue_free()

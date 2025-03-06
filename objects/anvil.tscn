@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://de0p5f556732l"]
+[gd_scene load_steps=6 format=3 uid="uid://de0p5f556732l"]
 
 [ext_resource type="PackedScene" uid="uid://bs06etu5ptjxj" path="res://objects/interactable.tscn" id="1_ddr7x"]
+[ext_resource type="Script" uid="uid://bc78prqvq85ll" path="res://objects/mini_game_interactable.gd" id="2_f4isv"]
 [ext_resource type="Texture2D" uid="uid://dagkilv6jnegt" path="res://assets/Screenshot 2025-03-01 at 17.40.33.png" id="2_tajo4"]
+[ext_resource type="PackedScene" uid="uid://xxxxxxxxxxxx" path="res://mini games/anvil_mini_game.tscn" id="3_qhqie"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tdhgi"]
 resource_local_to_scene = true
@@ -9,14 +11,16 @@ size = Vector2(478, 368)
 
 [node name="Anvil" instance=ExtResource("1_ddr7x")]
 collision_layer = 2
+script = ExtResource("2_f4isv")
+mini_game_scene = ExtResource("3_qhqie")
 
-[node name="CollisionShape2D" parent="." index="0"]
-position = Vector2(0, -184)
-shape = SubResource("RectangleShape2D_tdhgi")
-
-[node name="Sprite2D" parent="." index="1"]
+[node name="Sprite2D" parent="." index="0"]
 position = Vector2(0, -158)
 texture = ExtResource("2_tajo4")
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, -184)
+shape = SubResource("RectangleShape2D_tdhgi")
 
 [node name="InteractionLabel" parent="." index="2"]
 offset_left = 0.0
