@@ -71,6 +71,7 @@ func _on_game_timer_timeout():
 			# В режимі очікування трохи охолоджуємо заготовку
 			if current_heat_level > 0:
 				current_heat_level = max(0.0, current_heat_level - cooling_power * delta)
+				update_heat_indicator()
 		
 		GAME_STATE.HEATING:
 			# Зменшуємо час дії міхів
@@ -85,15 +86,18 @@ func _on_game_timer_timeout():
 			
 			# Збільшуємо нагрів з урахуванням коливань
 			current_heat_level = min(120.0, current_heat_level + (bellows_power + heat_fluctuation) * delta)
-			
+			update_heat_indicator()
 	
 	# Автоматичне завершення гри при критичному перегріві
 	if current_heat_level > overheat_threshold:
-		# Заглушка для ефектів перегріву через частинки
-		# Тут можна додати ефекти частинок в майбутньому
-		
 		extract_workpiece()
 
+func update_heat_indicator():
+	# Оновлюємо шейдер для відображення нагріву
+	if has_node("%HeatIndicator") and %HeatIndicator.material:
+		var normalized_heat = current_heat_level / 100.0
+		%HeatIndicator.material.set_shader_parameter("heat_amount", normalized_heat)
+		
 # Функції для допоміжних методів, які викликаються в інших місцях
 func _update_heat_amount(heat: float):
 	if has_node("%HeatIndicator") and %HeatIndicator.material:
@@ -102,14 +106,6 @@ func _update_heat_amount(heat: float):
 func _update_fire_intensity(intensity: float):
 	if has_node("%HeatIndicator") and %HeatIndicator.material:
 		%HeatIndicator.material.set_shader_parameter("heat_glow_intensity", intensity)
-
-func update_particles_intensity(intensity: float):
-	# Заглушка для частинок
-	pass
-
-func emit_sparks():
-	# Заглушка для іскор
-	pass
 
 func animate_heat_indicator_hint():
 	# Функція для анімації початкового нагріву як підказки гравцю
@@ -156,7 +152,7 @@ func _ready():
 	# Створюємо і налаштовуємо таймери
 	game_timer = Timer.new()
 	game_timer.one_shot = false
-	game_timer.wait_time = 0.1  # Оновлюємо стан кожні 0.1 секунди
+	game_timer.wait_time =.1  # Оновлюємо стан кожні 0.1 секунди
 	game_timer.timeout.connect(_on_game_timer_timeout)
 	add_child(game_timer)
 	
@@ -213,8 +209,11 @@ func setup_shader_for_workpiece():
 		
 		# Налаштовуємо параметри шейдера для відображення нагріву
 		material.set_shader_parameter("heat_amount", 0.0)
-		material.set_shader_parameter("heat_at_top", false)
-		material.set_shader_parameter("heat_spread", 2.0)
+		material.set_shader_parameter("heat_at_top", false) 
+		material.set_shader_parameter("heat_spread", 0.5)   
+		material.set_shader_parameter("heat_gradient_power", 0.3) 
+		material.set_shader_parameter("heat_gradient_smooth", 0.9)
+		material.set_shader_parameter("forge_center", Vector2(0.5, 0.5))  # Встановлюємо центр нагріву
 		material.set_shader_parameter("heat_min_level", 0.2)
 		material.set_shader_parameter("heat_gradient_power", 0.8)
 		material.set_shader_parameter("heat_gradient_smooth", 0.7)
@@ -239,7 +238,6 @@ func setup_shader_for_workpiece():
 				material.set_shader_parameter("initial_deform", Vector2(1.0, 1.0))
 				material.set_shader_parameter("impact_radius", 0.3)
 		
-		# TODO: ЗАМІСТЬ 0.0 тут має бути актуальний прогрес
 		material.set_shader_parameter("forge_progress", 0.0)
 		
 func setup_ui():
@@ -263,15 +261,6 @@ func setup_buttons():
 	var bellows_button_name = InputManager.get_button_display_name(BELLOWS_ACTION)
 	var extract_button_name = InputManager.get_button_display_name(EXTRACT_ACTION)
 	%InstructionsLabel.text = "Натисніть %s для активації міхів\nНатисніть %s коли досягнете потрібної температури" % [bellows_button_name, extract_button_name]
-
-func setup_particles():
-	# Налаштовуємо частинки вогню
-	if has_node("%FireParticles"):
-		%FireParticles.emitting = false
-		
-	# Налаштовуємо частинки іскор
-	if has_node("%SparksParticles"):
-		%SparksParticles.emitting = false
 
 func start_game():
 	visible = true
@@ -300,7 +289,6 @@ func _input(event):
 		return
 	
 	# Обробка натискання для активації міхів
-	# Прибрали перевірку "and current_state != GAME_STATE.COOLING"
 	if event.is_action_pressed(BELLOWS_ACTION):
 		activate_bellows()
 	
@@ -327,9 +315,6 @@ func activate_bellows():
 	
 	bellows_power = adjusted_power
 	bellows_active_time = bellows_duration
-	
-	# Заглушка для звуку міхів
-	# play_bellows_sound(current_heat_level / 100.0)
 	
 	# Запускаємо анімацію міхів
 	animate_bellows()
@@ -433,18 +418,20 @@ func extract_workpiece():
 	end_game(success, final_score)
 
 func animate_bellows():
+	# Анімація кнопки міхів
+	if bellows_tween != null and bellows_tween.is_valid():
+		bellows_tween.kill()
 	
+	bellows_tween = create_tween()
+	bellows_tween.tween_property(%BellowsButton, "scale", Vector2(1.2, 1.2), 0.1)
+	bellows_tween.tween_property(%BellowsButton, "scale", Vector2(1.0, 1.0), 0.2)
+	
+	# Додаємо інтенсивність вогню в шейдері
 	if has_node("%HeatIndicator") and %HeatIndicator.material:
 		var current_glow = %HeatIndicator.material.get_shader_parameter("heat_glow_intensity")
 		var tween = create_tween()
 		tween.tween_method(Callable(self, "_update_fire_intensity"), current_glow, current_glow + 0.3, 0.2)
 		tween.tween_method(Callable(self, "_update_fire_intensity"), current_glow + 0.3, current_glow, 0.5)
-	
-	# Генеруємо спалах іскор
-	emit_sparks()
-	
-	# Оновлюємо інтенсивність частинок вогню
-	update_particles_intensity(current_heat_level / 100.0)
 	
 func show_tooltip(text: String, color: Color = Color(1, 1, 1)):
 	%TooltipLabel.text = text
@@ -466,33 +453,24 @@ func show_detailed_result(quality_message: String, score: int, color: Color):
 	tween.tween_property(%TooltipLabel, "scale", Vector2(1.0, 1.0), 0.2)
 	
 	# Додаємо анімацію фінального ефекту нагріву - спалах
-	if has_node("%BlacksmithImage") and %BlacksmithImage.material:
+	if has_node("%HeatIndicator") and %HeatIndicator.material:
 		var heat_tween = create_tween()
-		var current_heat = %BlacksmithImage.material.get_shader_parameter("heat_amount")
+		var current_heat = %HeatIndicator.material.get_shader_parameter("heat_amount")
 		
 		if score > 90:
 			# Ідеальний результат - красивий золотий спалах
 			heat_tween.tween_method(Callable(self, "_update_heat_amount"), current_heat, 1.0, 0.3)
 			heat_tween.tween_method(Callable(self, "_update_heat_amount"), 1.0, current_heat, 0.5)
 			
-			# Заглушка для частинок для ідеального результату
-			# Тут можна додати ефекти частинок в майбутньому
-			
 		elif score > 0:
 			# Звичайний результат - невеликий спалах
 			heat_tween.tween_method(Callable(self, "_update_heat_amount"), current_heat, current_heat + 0.2, 0.3)
 			heat_tween.tween_method(Callable(self, "_update_heat_amount"), current_heat + 0.2, current_heat, 0.5)
 			
-			# Заглушка для частинок для звичайного результату
-			# Тут можна додати ефекти частинок в майбутньому
-			
 		else:
 			# Провал - ефект згоряння
 			heat_tween.tween_method(Callable(self, "_update_heat_amount"), current_heat, 1.2, 0.3)
 			heat_tween.tween_method(Callable(self, "_update_heat_amount"), 1.2, 0.1, 0.7)
-			
-			# Заглушка для частинок для провального результату
-			# Тут можна додати ефекти частинок в майбутньому
 	
 	# Додаємо другий рядок з оцінкою після короткої паузи
 	await get_tree().create_timer(0.5).timeout

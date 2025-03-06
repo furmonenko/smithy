@@ -93,6 +93,7 @@ corner_radius_bottom_left = 5
 
 [node name="ForgeMiniGame" type="CanvasLayer"]
 script = ExtResource("1_sicwk")
+heating_power = 10.0
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
