@@ -70,8 +70,6 @@ corner_radius_bottom_left = 10
 
 [node name="AnvilMiniGame" type="CanvasLayer"]
 script = ExtResource("1_pbr6s")
-skill_level = 3
-weapon_type = 1
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
