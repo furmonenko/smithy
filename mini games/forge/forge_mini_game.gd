@@ -238,7 +238,7 @@ func setup_shader_for_workpiece():
 				material.set_shader_parameter("initial_deform", Vector2(1.0, 1.0))
 				material.set_shader_parameter("impact_radius", 0.3)
 		
-		material.set_shader_parameter("forge_progress", 0.0)
+		material.set_shader_parameter("forge_progress", 1.0)
 		
 func setup_ui():
 	# Налаштовуємо кнопки

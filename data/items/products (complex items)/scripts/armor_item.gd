@@ -1,0 +1,2 @@
+extends ComplexItem
+class_name ArmorItem

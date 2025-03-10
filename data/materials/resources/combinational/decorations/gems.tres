@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CraftMaterial" load_steps=2 format=3 uid="uid://cmwy7jjvn77lh"]
+
+[ext_resource type="Script" uid="uid://lid45dqs8qs7" path="res://data/materials/scripts/craft_material.gd" id="1_lg28t"]
+
+[resource]
+script = ExtResource("1_lg28t")
+name = "Gems"
+quality = 100
+cost = 500
+rarity = 4
+required_level = 3
+material_type = 4
+is_combinable = true
+metadata/_custom_type_script = "uid://lid45dqs8qs7"

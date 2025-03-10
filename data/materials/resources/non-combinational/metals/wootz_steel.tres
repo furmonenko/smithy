@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CraftMaterial" load_steps=2 format=3 uid="uid://c631cp2oodt4x"]
+
+[ext_resource type="Script" uid="uid://lid45dqs8qs7" path="res://data/materials/scripts/craft_material.gd" id="1_wn5tx"]
+
+[resource]
+script = ExtResource("1_wn5tx")
+name = "Wootz Steel"
+quality = 70
+cost = 120
+rarity = 3
+required_level = 2
+material_type = 0
+is_combinable = false
+metadata/_custom_type_script = "uid://lid45dqs8qs7"

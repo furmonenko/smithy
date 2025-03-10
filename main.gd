@@ -15,8 +15,11 @@ var сamera_in_mini_game_mode: bool = false  # Прапорець для кон�
 @onready var player: PlayerController = %Blacksmith
 @onready var camera: Camera2D = $Blacksmith/Camera2D
 
+@export var test_item: ItemData
+
 func _ready():
 	сonnect_interactables()
+	print("qualirt: ", test_item.calculate_quality())
 
 func сonnect_interactables():
 	var interactables = get_tree().get_nodes_in_group("interactables")

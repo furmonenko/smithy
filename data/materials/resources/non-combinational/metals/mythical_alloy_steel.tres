@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CraftMaterial" load_steps=2 format=3 uid="uid://bvi7wjubyuyyf"]
+
+[ext_resource type="Script" uid="uid://lid45dqs8qs7" path="res://data/materials/scripts/craft_material.gd" id="1_kg506"]
+
+[resource]
+script = ExtResource("1_kg506")
+name = "Mythical Alloy Steel"
+quality = 90
+cost = 500
+rarity = 5
+required_level = 3
+material_type = 0
+is_combinable = false
+metadata/_custom_type_script = "uid://lid45dqs8qs7"

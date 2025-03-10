@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CraftMaterial" load_steps=2 format=3 uid="uid://dkgjrl1srycko"]
+
+[ext_resource type="Script" uid="uid://lid45dqs8qs7" path="res://data/materials/scripts/craft_material.gd" id="1_p0pgx"]
+
+[resource]
+script = ExtResource("1_p0pgx")
+name = "Linen"
+quality = 40
+cost = 8
+rarity = 1
+required_level = 1
+material_type = 2
+is_combinable = true
+metadata/_custom_type_script = "uid://lid45dqs8qs7"

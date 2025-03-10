@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://g4ya6k88ptd2"]
+[gd_scene load_steps=9 format=3 uid="uid://g4ya6k88ptd2"]
 
 [ext_resource type="Script" uid="uid://c108hofdxfow4" path="res://main.gd" id="1_7mycd"]
 [ext_resource type="Script" uid="uid://dnjlyacgvik5m" path="res://layer_manager.gd" id="1_qrecu"]
+[ext_resource type="Resource" uid="uid://of2puhfavt8r" path="res://data/items/components (simple items)/weapon components/resources/one_handed_sword_blade.tres" id="2_7mycd"]
 [ext_resource type="PackedScene" uid="uid://bx8ek002jwy3h" path="res://blacksmith.tscn" id="2_71qyi"]
 [ext_resource type="PackedScene" uid="uid://de0p5f556732l" path="res://objects/anvil.tscn" id="2_rsqs0"]
 [ext_resource type="Script" uid="uid://b4c0bs3h53rv2" path="res://depth_camera.gd" id="3_rvftn"]
@@ -18,6 +19,7 @@ script = ExtResource("1_7mycd")
 mini_game_camera_zoom = Vector2(1, 1)
 mini_game_camera_offset = Vector2(200, 140)
 transition_duration = 1.0
+test_item = ExtResource("2_7mycd")
 
 [node name="LayerManager" type="Node" parent="."]
 script = ExtResource("1_qrecu")
@@ -28,19 +30,19 @@ y_positions = Array[float]([1000.0, 800.0, 600.0])
 scales = Array[float]([1.0, 0.9, 0.8])
 
 [node name="Interactables" type="Node2D" parent="."]
-scale = Vector2(0.125, 0.125)
+scale = Vector2(0.015625, 0.015625)
 
 [node name="Anvil" parent="." instance=ExtResource("2_rsqs0")]
 position = Vector2(1147, 1006)
 
 [node name="Anvil2" parent="." instance=ExtResource("2_rsqs0")]
 position = Vector2(1229, 820)
-scale = Vector2(0.8281, 0.8281)
+scale = Vector2(0.516761, 0.516761)
 layer = 1
 
 [node name="Anvil3" parent="." instance=ExtResource("2_rsqs0")]
 position = Vector2(1364, 641)
-scale = Vector2(0.67322, 0.67322)
+scale = Vector2(0.250351, 0.250351)
 layer = 2
 
 [node name="LayerBack" type="Node2D" parent="."]

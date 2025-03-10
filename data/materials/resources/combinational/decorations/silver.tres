@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CraftMaterial" load_steps=2 format=3 uid="uid://j61rrd6sjhux"]
+
+[ext_resource type="Script" uid="uid://lid45dqs8qs7" path="res://data/materials/scripts/craft_material.gd" id="1_sqofe"]
+
+[resource]
+script = ExtResource("1_sqofe")
+name = "Silver"
+quality = 60
+cost = 100
+rarity = 2
+required_level = 2
+material_type = 4
+is_combinable = true
+metadata/_custom_type_script = "uid://lid45dqs8qs7"

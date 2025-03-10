@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CraftMaterial" load_steps=2 format=3 uid="uid://bfrsaqm2p2386"]
+
+[ext_resource type="Script" uid="uid://lid45dqs8qs7" path="res://data/materials/scripts/craft_material.gd" id="1_h1a5j"]
+
+[resource]
+script = ExtResource("1_h1a5j")
+name = "Ash"
+quality = 50
+cost = 10
+rarity = 1
+required_level = 1
+material_type = 1
+is_combinable = false
+metadata/_custom_type_script = "uid://lid45dqs8qs7"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="OneHandedCutWeaponComponent" load_steps=3 format=3 uid="uid://of2puhfavt8r"]
+
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="1_c2lrc"]
+[ext_resource type="Script" uid="uid://1vvnpf41k0sm" path="res://data/items/components (simple items)/weapon components/scripts/one_handed_cut_weapon_component.gd" id="2_mdvx7"]
+
+[resource]
+script = ExtResource("2_mdvx7")
+one_handed_cut_weapon_type = 0
+weapon_type = 0
+item_complexity = 2
+material_slots = Array[ExtResource("1_c2lrc")]([])
+name = "One-Handed Sword Blade"
+description = ""
+metadata/_custom_type_script = "uid://1vvnpf41k0sm"

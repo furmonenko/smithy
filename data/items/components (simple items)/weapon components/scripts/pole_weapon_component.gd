@@ -1,0 +1,2 @@
+extends WeaponComponent
+class_name PoleWeaponComponent
