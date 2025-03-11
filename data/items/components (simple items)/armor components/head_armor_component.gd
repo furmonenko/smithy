@@ -10,6 +10,24 @@ enum HeadArmorType {
 
 @export var head_armor_type: HeadArmorType
 
+func initialize_subcategory_materials() -> void:
+	match head_armor_type:
+		HeadArmorType.DOME:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 3
+			}
+		
+		HeadArmorType.VISOR:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 2
+			}
+		
+		HeadArmorType.HEAD_LINER:
+			subcategory_materials = {
+				Enums.MaterialType.FABRIC: 1,
+				Enums.MaterialType.LEATHER: 1
+			}
+
 # Специфічна послідовність крафтингу для компонентів шолома
 func start_crafting_minigame() -> void:
 	match head_armor_type:

@@ -12,6 +12,34 @@ enum BodyArmorType {
 
 @export var body_armor_type: BodyArmorType
 
+func initialize_subcategory_materials() -> void:
+	match body_armor_type:
+		BodyArmorType.TORSO_ARMOR:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 5
+			}
+		
+		BodyArmorType.ARMS_ARMOR:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 3
+			}
+		
+		BodyArmorType.LEGS_ARMOR:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 4
+			}
+		
+		BodyArmorType.BODY_LINER:
+			subcategory_materials = {
+				Enums.MaterialType.FABRIC: 2,
+				Enums.MaterialType.LEATHER: 1
+			}
+		
+		BodyArmorType.LIMB_LINER:
+			subcategory_materials = {
+				Enums.MaterialType.FABRIC: 1
+			}
+
 # Специфічна послідовність крафтингу для компонентів броні тіла
 func start_crafting_minigame() -> void:
 	match body_armor_type:

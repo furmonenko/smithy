@@ -9,6 +9,20 @@ enum HeavyWeaponType {
 
 @export var heavy_weapon_type: HeavyWeaponType
 
+func initialize_subcategory_materials() -> void:
+	match heavy_weapon_type:
+		HeavyWeaponType.HEAVY_WEAPON_HEAD:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 3
+			}
+		
+		HeavyWeaponType.HEAVY_WEAPON_HANDLE:
+			subcategory_materials = {
+				Enums.MaterialType.WOOD: 1,
+				Enums.MaterialType.LEATHER: 1,
+				Enums.MaterialType.METAL: 1
+			}
+
 func start_crafting_minigame() -> void:
 	match heavy_weapon_type:
 		HeavyWeaponType.HEAVY_WEAPON_HEAD:

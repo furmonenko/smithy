@@ -3,6 +3,8 @@ class_name ToolComponent
 
 enum ToolComponentType {
 	AXE_HEAD,
+	HAND_HOE_HEAD,
+	SCYTHE_HEAD,
 	HAMMER_HEAD,
 	SHOVEL_HEAD,
 	PICKAXE_HEAD,
@@ -10,6 +12,38 @@ enum ToolComponentType {
 }
 
 @export var tool_type: ToolComponentType
+
+func initialize_subcategory_materials() -> void:
+	match tool_type:
+		ToolComponentType.AXE_HEAD:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 2
+			}
+		
+		ToolComponentType.HAND_HOE_HEAD:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 2
+			}
+		
+		ToolComponentType.SCYTHE_HEAD:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 2
+			}
+		
+		ToolComponentType.SHOVEL_HEAD:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 2
+			}
+		
+		ToolComponentType.PICKAXE_HEAD:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 2
+			}
+		
+		ToolComponentType.TOOL_HANDLE:
+			subcategory_materials = {
+				Enums.MaterialType.WOOD: 2
+			}
 
 # Перевизначення методів для специфіки інструментів
 func get_base_prestige() -> int:

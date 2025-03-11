@@ -12,6 +12,34 @@ enum OneHandedCutWeaponType {
 
 @export var one_handed_cut_weapon_type: OneHandedCutWeaponType
 
+func initialize_subcategory_materials() -> void:
+	match one_handed_cut_weapon_type:
+		OneHandedCutWeaponType.ONE_HANDED_SWORD_BLADE:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 4
+			}
+		
+		OneHandedCutWeaponType.SABER_BLADE:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 4
+			}
+		
+		OneHandedCutWeaponType.ONE_HANDED_GUARD:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 1
+			}
+		
+		OneHandedCutWeaponType.ONE_HANDED_POMMEL:
+			subcategory_materials = {
+				Enums.MaterialType.METAL: 1
+			}
+		
+		OneHandedCutWeaponType.ONE_HANDED_HANDLE:
+			subcategory_materials = {
+				Enums.MaterialType.WOOD: 1,
+				Enums.MaterialType.LEATHER: 1
+			}
+
 func start_crafting_minigame() -> void:
 	match one_handed_cut_weapon_type:
 		OneHandedCutWeaponType.ONE_HANDED_SWORD_BLADE, OneHandedCutWeaponType.SABER_BLADE:

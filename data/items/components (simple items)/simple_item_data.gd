@@ -1,6 +1,26 @@
 extends ItemData
 class_name SimpleItem
 
+var subcategory_materials: Dictionary
+
+# В базовому класі SimpleItem
+func initialize_subcategory_materials() -> void:
+	# Буде перевизначено в нащадках
+	subcategory_materials = {}
+
+# Нова функція для визначення ціни на основі якості
+func calculate_price_for_quality(desired_quality: int) -> int:
+	var total_price = 0
+	
+	for material_type in subcategory_materials.keys():
+		var quantity = subcategory_materials[material_type]
+		var material = CraftMaterialsManager.get_cheapest_material_by_type_and_quality(material_type, desired_quality)
+		
+		if material:
+			total_price += material.cost * quantity
+	
+	return total_price
+
 # Отримати коефіцієнт складності на основі типу виробу
 func get_complexity_coefficient() -> float:
 	match creation_difficulty:
