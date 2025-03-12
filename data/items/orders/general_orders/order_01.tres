@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GeneralOrder" load_steps=2 format=3 uid="uid://dilsukrsg2g5m"]
+
+[ext_resource type="Script" uid="uid://dlo3bbnrmbv8x" path="res://data/items/orders/general_order.gd" id="1_1ubm0"]
+
+[resource]
+script = ExtResource("1_1ubm0")
+creation_difficulty = 0
+required_quality_min = 0
+base_price = 0
+price_limit = 0
+duration_days = 1
+reputation_impact = 0
+description = ""
+completed = false
+metadata/_custom_type_script = "uid://dlo3bbnrmbv8x"

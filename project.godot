@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 InputManager="*res://singletons/input_manager.gd"
 Enums="*res://singletons/enums.gd"
 CraftMaterialsManager="*res://singletons/craft_materials_manager.gd"
+GameTime="*res://singletons/game_time.gd"
 
 [display]
 
