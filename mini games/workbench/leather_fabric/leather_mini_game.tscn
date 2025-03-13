@@ -1,0 +1,199 @@
+[gd_scene load_steps=5 format=3 uid="uid://6cnmj6jksgs5"]
+
+[ext_resource type="Script" uid="uid://c52sd1b4bq65y" path="res://mini games/workbench/leather_fabric/leather_mini_game.gd" id="1_1gu0r"]
+[ext_resource type="Texture2D" uid="uid://cxobr12vcikg" path="res://assets/buttons/xbox_gamepad/dpad_down.png" id="2_xxxx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp6gl"]
+bg_color = Color(0.133333, 0.133333, 0.133333, 0.65098)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vkm8r"]
+bg_color = Color(0.784314, 0.392157, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="LeatherMiniGame" type="CanvasLayer"]
+script = ExtResource("1_1gu0r")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameTitle" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -92.0
+offset_top = 40.0
+offset_right = 92.0
+offset_bottom = 75.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Вирізання по шкірі"
+horizontal_alignment = 1
+
+[node name="RightPanel" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -580.0
+offset_top = -200.0
+offset_right = -180.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dp6gl")
+
+[node name="DetailedViewLabel" type="Label" parent="UI/RightPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 20.0
+offset_right = 100.0
+offset_bottom = 46.0
+grow_horizontal = 2
+text = "Деталізований вигляд"
+horizontal_alignment = 1
+
+[node name="WorkpieceRect" type="ColorRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -150.0
+offset_right = 190.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.6, 0.4, 0.2, 1)
+
+[node name="NextDirectionButton" type="TextureRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -180.0
+offset_right = 80.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.2, 1.2)
+pivot_offset = Vector2(80, 80)
+texture = ExtResource("2_xxxx")
+stretch_mode = 5
+
+[node name="FeedbackLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Ідеально!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 180.0
+offset_top = -100.0
+offset_right = -180.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = SubResource("StyleBoxFlat_dp6gl")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vkm8r")
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="ProgressLabel" type="Label" parent="UI/ProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.0
+offset_top = -13.0
+offset_right = 23.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Прогрес"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 46.0
+grow_horizontal = 0
+text = "Рахунок: 100"
+horizontal_alignment = 2
+
+[node name="InstructionsLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -70.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Натисніть кнопку для початку"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="CuttingSound" type="AudioStreamPlayer" parent="SFX"]
+unique_name_in_owner = true
+volume_db = -10.0
