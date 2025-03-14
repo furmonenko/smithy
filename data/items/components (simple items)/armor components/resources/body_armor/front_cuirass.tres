@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyArmorComponent" load_steps=5 format=3 uid="uid://bbyevjiosnco2"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_xiloy"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_3dbab"]
+[ext_resource type="Script" uid="uid://dyyks6satm6td" path="res://data/items/components (simple items)/armor components/body_armor_component.gd" id="3_acjje"]
+
+[sub_resource type="Resource" id="Resource_tf0oq"]
+script = ExtResource("2_3dbab")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 5
+
+[resource]
+script = ExtResource("3_acjje")
+body_armor_type = 0
+name = "Front Cuirass"
+description = "A finely crafted piece of armor that might just save your life one day."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_xiloy")]([SubResource("Resource_tf0oq")])

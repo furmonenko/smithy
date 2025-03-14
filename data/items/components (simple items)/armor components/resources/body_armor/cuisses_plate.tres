@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyArmorComponent" load_steps=5 format=3 uid="uid://xci0v73dg352"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_jf8ph"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_sw117"]
+[ext_resource type="Script" uid="uid://dyyks6satm6td" path="res://data/items/components (simple items)/armor components/body_armor_component.gd" id="3_l1wmc"]
+
+[sub_resource type="Resource" id="Resource_3fd1v"]
+script = ExtResource("2_sw117")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 2
+
+[resource]
+script = ExtResource("3_l1wmc")
+body_armor_type = 4
+name = "Cuisses Plate"
+description = "Guaranteed to reduce the effectiveness of edged weapons by at least 30%."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_jf8ph")]([SubResource("Resource_3fd1v")])

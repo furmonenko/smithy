@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ToolComponent" load_steps=5 format=3 uid="uid://bqjrgql7wol11"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_w57xc"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_2o5ht"]
+[ext_resource type="Script" uid="uid://8qtbmjhqr804" path="res://data/items/components (simple items)/tool components/scripts/tool_component.gd" id="3_1miya"]
+
+[sub_resource type="Resource" id="Resource_orhho"]
+script = ExtResource("2_2o5ht")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 2
+
+[resource]
+script = ExtResource("3_1miya")
+tool_type = 2
+name = "Scythe Head"
+description = "Like Death's favorite tool, but for wheat instead of souls."
+creation_difficulty = 1
+produced_quantity = 1
+component_slots = Array[ExtResource("1_w57xc")]([SubResource("Resource_orhho")])

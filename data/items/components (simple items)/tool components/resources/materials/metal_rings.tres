@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="UsableMaterialComponent" load_steps=5 format=3 uid="uid://bn25kw2nyir5p"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_ve6vq"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_h6f41"]
+[ext_resource type="Script" uid="uid://jyu20qttbabb" path="res://data/items/components (simple items)/tool components/scripts/usable_material_component.gd" id="3_0ryyx"]
+
+[sub_resource type="Resource" id="Resource_q5ht5"]
+script = ExtResource("2_h6f41")
+material_type = 5
+weight = 3
+is_required = true
+max_stack = 1
+
+[resource]
+script = ExtResource("3_0ryyx")
+usable_material_type = 1
+material_component_type = 0
+name = "Metal Rings"
+description = "The building blocks of chainmail and annoying jangly sounds."
+creation_difficulty = 1
+produced_quantity = 5
+component_slots = Array[ExtResource("1_ve6vq")]([SubResource("Resource_q5ht5")])

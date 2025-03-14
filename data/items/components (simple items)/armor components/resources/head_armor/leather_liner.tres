@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="HeadArmorComponent" load_steps=5 format=3 uid="uid://dp1p2jes6g7pp"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_r8xs7"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_gmq8u"]
+[ext_resource type="Script" uid="uid://cqk12n4kt8wiq" path="res://data/items/components (simple items)/armor components/head_armor_component.gd" id="3_xdb01"]
+
+[sub_resource type="Resource" id="Resource_54gr4"]
+script = ExtResource("2_gmq8u")
+material_type = 3
+weight = 1
+is_required = true
+max_stack = 3
+
+[resource]
+script = ExtResource("3_xdb01")
+head_armor_type = 2
+name = "Leather Liner"
+description = "Transforms uncomfortable metal into slightly less uncomfortable metal."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_r8xs7")]([SubResource("Resource_54gr4")])

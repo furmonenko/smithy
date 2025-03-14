@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ToolComponent" load_steps=5 format=3 uid="uid://ct5irslia7l5g"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_rom8f"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_sr32p"]
+[ext_resource type="Script" uid="uid://8qtbmjhqr804" path="res://data/items/components (simple items)/tool components/scripts/tool_component.gd" id="3_fbkfc"]
+
+[sub_resource type="Resource" id="Resource_q2k21"]
+script = ExtResource("2_sr32p")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 2
+
+[resource]
+script = ExtResource("3_fbkfc")
+tool_type = 5
+name = "Pickaxe Head"
+description = "Makes trees regret their life choices since the Bronze Age."
+creation_difficulty = 1
+produced_quantity = 1
+component_slots = Array[ExtResource("1_rom8f")]([SubResource("Resource_q2k21")])

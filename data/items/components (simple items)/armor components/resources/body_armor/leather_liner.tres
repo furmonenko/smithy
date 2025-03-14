@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyArmorComponent" load_steps=5 format=3 uid="uid://c7plw5crssdwo"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_4276b"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_x0w0j"]
+[ext_resource type="Script" uid="uid://dyyks6satm6td" path="res://data/items/components (simple items)/armor components/body_armor_component.gd" id="3_vha0i"]
+
+[sub_resource type="Resource" id="Resource_4276b"]
+script = ExtResource("2_x0w0j")
+material_type = 3
+weight = 1
+is_required = true
+max_stack = 2
+
+[resource]
+script = ExtResource("3_vha0i")
+body_armor_type = 2
+name = "Leather Liner"
+description = "Turns armor from 'torture device' to 'merely uncomfortable'."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_4276b")]([SubResource("Resource_4276b")])

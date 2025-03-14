@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyArmorComponent" load_steps=5 format=3 uid="uid://bftp0r3nyufkp"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_faqyw"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_j4yli"]
+[ext_resource type="Script" uid="uid://dyyks6satm6td" path="res://data/items/components (simple items)/armor components/body_armor_component.gd" id="3_icopt"]
+
+[sub_resource type="Resource" id="Resource_faqyw"]
+script = ExtResource("2_j4yli")
+material_type = 2
+weight = 1
+is_required = true
+max_stack = 2
+
+[resource]
+script = ExtResource("3_icopt")
+body_armor_type = 2
+name = "Fabric Liner"
+description = "Absorbs sweat so your armor doesn't have to."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_faqyw")]([SubResource("Resource_faqyw")])

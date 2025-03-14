@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="UnusableMaterialComponent" load_steps=5 format=3 uid="uid://d4a8u5ombg6lb"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_ppbs3"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_k2d31"]
+[ext_resource type="Script" uid="uid://bsf61ga4stqsb" path="res://data/items/components (simple items)/tool components/scripts/unusable_material_component.gd" id="3_ojvlr"]
+
+[sub_resource type="Resource" id="Resource_h2t6q"]
+script = ExtResource("2_k2d31")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 1
+
+[resource]
+script = ExtResource("3_ojvlr")
+unusable_material_type = 1
+material_component_type = 1
+name = "Horseshoe"
+description = "Turns hard dirt into slightly less hard dirt. Agricultural innovation at its finest."
+creation_difficulty = 1
+produced_quantity = 1
+component_slots = Array[ExtResource("1_ppbs3")]([SubResource("Resource_h2t6q")])
