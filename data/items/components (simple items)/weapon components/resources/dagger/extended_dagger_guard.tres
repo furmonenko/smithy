@@ -1,22 +1,22 @@
-[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://8adp6vhn2lfi"]
+[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://cvd34gdkyr8ji"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_83qub"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_y728r"]
 [ext_resource type="Script" uid="uid://d05dtpuvtjjgo" path="res://data/items/components (simple items)/weapon components/scripts/dagger_component.gd" id="3_yorxy"]
 
-[sub_resource type="Resource" id="Resource_pqryi"]
+[sub_resource type="Resource" id="Resource_83qub"]
 script = ExtResource("2_y728r")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 3
+max_stack = 1
 
 [resource]
 script = ExtResource("3_yorxy")
 dagger_type = 3
 weapon_type = 2
 name = "Extended Dagger Guard"
-description = "Компонент зброї: Extended Dagger Guard"
+description = "Fancier than necessary, but who's counting?"
 creation_difficulty = 2
 produced_quantity = 1
-component_slots = Array[ExtResource("1_83qub")]([SubResource("Resource_pqryi")])
+component_slots = Array[ExtResource("1_83qub")]([SubResource("Resource_83qub")])

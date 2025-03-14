@@ -1,22 +1,22 @@
-[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://ds5huj80k82me"]
+[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://debe7tx7bpa08"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_8ug72"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_12167"]
 [ext_resource type="Script" uid="uid://d05dtpuvtjjgo" path="res://data/items/components (simple items)/weapon components/scripts/dagger_component.gd" id="3_3cru0"]
 
-[sub_resource type="Resource" id="Resource_jei80"]
+[sub_resource type="Resource" id="Resource_8ug72"]
 script = ExtResource("2_12167")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 4
+max_stack = 2
 
 [resource]
 script = ExtResource("3_3cru0")
 dagger_type = 0
 weapon_type = 2
 name = "Knife Blade"
-description = "Компонент зброї: Knife Blade"
+description = "The pointy end goes toward the enemy. We can't stress this enough."
 creation_difficulty = 1
 produced_quantity = 1
-component_slots = Array[ExtResource("1_8ug72")]([SubResource("Resource_jei80")])
+component_slots = Array[ExtResource("1_8ug72")]([SubResource("Resource_8ug72")])

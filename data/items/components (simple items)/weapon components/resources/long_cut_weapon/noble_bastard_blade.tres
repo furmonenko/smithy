@@ -1,29 +1,29 @@
-[gd_resource type="Resource" script_class="LongCutWeaponComponent" load_steps=6 format=3 uid="uid://b4gbdtt6q1a07"]
+[gd_resource type="Resource" script_class="LongCutWeaponComponent" load_steps=6 format=3 uid="uid://dwm8apyyyowxy"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_2w6li"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_rx60r"]
 [ext_resource type="Script" uid="uid://cum7qn3or7k3x" path="res://data/items/components (simple items)/weapon components/scripts/long_cut_weapon_component.gd" id="3_f1gaa"]
 
-[sub_resource type="Resource" id="Resource_1qxsk"]
+[sub_resource type="Resource" id="Resource_2w6li"]
 script = ExtResource("2_rx60r")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 8
+max_stack = 6
 
-[sub_resource type="Resource" id="Resource_ewroe"]
+[sub_resource type="Resource" id="Resource_rx60r"]
 script = ExtResource("2_rx60r")
 material_type = 4
 weight = 2
 is_required = true
-max_stack = 5
+max_stack = 3
 
 [resource]
 script = ExtResource("3_f1gaa")
 long_cut_weapon_type = 0
 weapon_type = 1
 name = "Noble Bastard Blade"
-description = "Компонент зброї: Noble Bastard Blade"
+description = "Unnecessarily ornate. Nobles pay extra for the privilege of dying prettily."
 creation_difficulty = 4
 produced_quantity = 1
-component_slots = Array[ExtResource("1_2w6li")]([SubResource("Resource_1qxsk"), SubResource("Resource_ewroe")])
+component_slots = Array[ExtResource("1_2w6li")]([SubResource("Resource_2w6li"), SubResource("Resource_rx60r")])

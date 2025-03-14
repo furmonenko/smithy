@@ -926,7 +926,9 @@ func create_weapon_component(item_data, script_class_name: String, component_typ
 	
 	# Встановлюємо базові властивості
 	component.name = item_data.name
-	component.description = "Компонент зброї: " + item_data.name
+	
+	# Генеруємо цікавий опис англійською
+	component.description = generate_description(item_data.name, script_class_name, component_type)
 	
 	# Отримуємо інформацію про тип компонента з scripts_map
 	var script_info = null
@@ -989,6 +991,128 @@ func create_weapon_component(item_data, script_class_name: String, component_typ
 	else:
 		push_error("Помилка при збереженні компонента: " + str(result))
 
+# Функція для генерації унікальних описів
+func generate_description(item_name: String, script_class_name: String, component_type) -> String:
+	# Словники описів для різних типів компонентів
+	var blade_descriptions = [
+		"Slices through armor and ego with equal ease.",
+		"Not quite Excalibur, but it'll do the job.",
+		"Guaranteed to cut at least 50% of what you swing at!",
+		"Keeps its edge longer than most marriages.",
+		"The preferred choice of heroes with more courage than sense.",
+		"So sharp it can cut through awkward conversations.",
+		"Comes with a free tetanus booster.",
+		"May occasionally whisper dark thoughts in the moonlight.",
+		"Elegant, deadly, and guaranteed not to turn into a snake... probably.",
+		"The pointy end goes toward the enemy. We can't stress this enough."
+	]
+	
+	var guard_descriptions = [
+		"Keeps your hand attached to your arm. Usually.",
+		"Deflects blows and criticism with similar efficiency.",
+		"Fancier than necessary, but who's counting?",
+		"Protected the hands of nobles and peasants alike. No discrimination here!",
+		"Not just decorative, but mostly decorative.",
+		"Functional protection with a touch of medieval swagger.",
+		"Prevents unplanned finger removal during combat.",
+		"More practical than fashionable, like most armor."
+	]
+	
+	var pommel_descriptions = [
+		"Perfect for ending opponents rightly.",
+		"Can double as an emergency hammer in household disputes.",
+		"Adds balance, weight, and a certain je ne sais quoi.",
+		"Useful for cracking nuts and skulls alike.",
+		"The unsung hero of sword components.",
+		"A satisfying knob to finish off your weapon.",
+		"Heavy enough to use as a doorstop when not slaying dragons."
+	]
+	
+	var handle_descriptions = [
+		"Ergonomically designed for maximum stabbing comfort.",
+		"Provides grip even when covered in blood, sweat, or tears.",
+		"Hand-tested by actual humans with hands.",
+		"Feels better in your palm than that time you held hands with the village blacksmith's daughter.",
+		"Won't give you splinters... we think.",
+		"Wrapped with only the finest leather from cows who died of natural causes.",
+		"The part you hold, in case that wasn't obvious."
+	]
+	
+	var pole_descriptions = [
+		"Reach out and touch someone... with extreme prejudice.",
+		"Keep your enemies at bay and your allies confused.",
+		"Long enough to compensate for any battlefield insecurities.",
+		"Perfect for poking things you'd rather not get close to.",
+		"Makes a decent fishing pole in peacetime.",
+		"Doubles as an excellent way to retrieve items from high shelves."
+	]
+	
+	var heavy_descriptions = [
+		"When subtlety isn't in your vocabulary.",
+		"Makes diplomacy obsolete and skulls concave.",
+		"Recommended by 9 out of 10 berserkers.",
+		"Because sometimes you just need to smash something.",
+		"Warning: May cause unintended structural renovations.",
+		"Solves arguments with satisfying finality."
+	]
+	
+	var dagger_descriptions = [
+		"For when your sword is just too obvious.",
+		"Small but ambitious.",
+		"The thinking assassin's weapon of choice.",
+		"Perfect for butter, bread, and backstabbing.",
+		"Concealable, practical, and morally ambiguous.",
+		"For the stabby moments that arise in everyday medieval life."
+	]
+	
+	# Вибір списку описів на основі типу компонента
+	var descriptions = []
+	var component_name_lower = item_name.to_lower()
+	
+	if "blade" in component_name_lower:
+		descriptions = blade_descriptions
+	elif "guard" in component_name_lower:
+		descriptions = guard_descriptions
+	elif "pommel" in component_name_lower:
+		descriptions = pommel_descriptions
+	elif "handle" in component_name_lower:
+		descriptions = handle_descriptions
+	elif "pole" in component_name_lower or "spear" in component_name_lower:
+		descriptions = pole_descriptions
+	elif "mace" in component_name_lower or "hammer" in component_name_lower or "axe" in component_name_lower:
+		descriptions = heavy_descriptions
+	elif "dagger" in component_name_lower or "knife" in component_name_lower:
+		descriptions = dagger_descriptions
+	else:
+		# Якщо не знайдено відповідність, використовуємо загальні описи
+		return "A finely crafted component that would make any blacksmith proud."
+	
+	# Додаємо специфічні описи для деяких особливих типів предметів
+	if "decorated" in component_name_lower or "noble" in component_name_lower:
+		return "Unnecessarily ornate. Nobles pay extra for the privilege of dying prettily."
+	
+	if "simple" in component_name_lower:
+		return "No frills, no nonsense, just honest craftsmanship. Boring but reliable."
+	
+	if "estoc" in component_name_lower:
+		return "Pointy enough to find the gaps in armor and in arguments."
+	
+	if "falchion" in component_name_lower:
+		return "Curved, single-edged, and doesn't care about your feelings."
+	
+	if "zweihänder" in component_name_lower:
+		return "Two hands, one sword, infinite regrets for your enemies."
+	
+	if "claymore" in component_name_lower:
+		return "Scottish ingenuity: a sword large enough to compensate for any shortcomings."
+	
+	# Вибір випадкового опису зі списку
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var index = rng.randi_range(0, descriptions.size() - 1)
+	
+	return descriptions[index]
+
 # Налаштування слотів для матеріалів
 func setup_material_slots(component, materials_str: String):
 	if materials_str.is_empty():
@@ -1041,7 +1165,6 @@ func setup_material_slots(component, materials_str: String):
 		material_slot.quantity = quantity
 		
 		# Встановлюємо вагу відповідно до типу матеріалу
-		# Метал має найбільшу вагу для розрахунку якості
 		match material_type:
 			"Metal":
 				material_slot.weight = 3
@@ -1055,8 +1178,8 @@ func setup_material_slots(component, materials_str: String):
 		# Встановлюємо обов'язковість
 		material_slot.is_required = true
 		
-		# Встановлюємо максимальний стек
-		material_slot.max_stack = max(3, quantity + 2)  # Мінімум 3, але завжди більше ніж потрібна кількість
+		# Виправлена версія - встановлюємо max_stack рівним точній кількості
+		material_slot.max_stack = quantity
 		
 		# Додаємо слот до компонента
 		component.component_slots.append(material_slot)

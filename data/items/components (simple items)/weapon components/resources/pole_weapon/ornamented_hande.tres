@@ -1,29 +1,29 @@
-[gd_resource type="Resource" script_class="PoleWeaponComponent" load_steps=6 format=3 uid="uid://clmmpulxnhu8l"]
+[gd_resource type="Resource" script_class="PoleWeaponComponent" load_steps=6 format=3 uid="uid://bwl81ssxwwkn"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_3yd8l"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_dhkky"]
 [ext_resource type="Script" uid="uid://mi5k6wmyyjpy" path="res://data/items/components (simple items)/weapon components/scripts/pole_weapon_component.gd" id="3_rkk52"]
 
-[sub_resource type="Resource" id="Resource_l0btk"]
+[sub_resource type="Resource" id="Resource_3yd8l"]
 script = ExtResource("2_dhkky")
 material_type = 1
 weight = 2
 is_required = true
-max_stack = 6
+max_stack = 4
 
-[sub_resource type="Resource" id="Resource_so8n5"]
+[sub_resource type="Resource" id="Resource_dhkky"]
 script = ExtResource("2_dhkky")
 material_type = 4
 weight = 2
 is_required = true
-max_stack = 4
+max_stack = 2
 
 [resource]
 script = ExtResource("3_rkk52")
 pole_weapon_type = 1
 weapon_type = 5
 name = "Ornamented Hande"
-description = "Компонент зброї: Ornamented Hande"
+description = "A finely crafted component that would make any blacksmith proud."
 creation_difficulty = 4
 produced_quantity = 1
-component_slots = Array[ExtResource("1_3yd8l")]([SubResource("Resource_l0btk"), SubResource("Resource_so8n5")])
+component_slots = Array[ExtResource("1_3yd8l")]([SubResource("Resource_3yd8l"), SubResource("Resource_dhkky")])

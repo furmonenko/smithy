@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://bya314qnw7fc7"]
+[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://dr37nbjlhps8c"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_ibkkn"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_xy0e4"]
@@ -9,14 +9,14 @@ script = ExtResource("2_xy0e4")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 3
+max_stack = 1
 
 [resource]
 script = ExtResource("3_r8q0l")
 dagger_type = 2
 weapon_type = 2
 name = "Simple Dagger Pommel"
-description = "Компонент зброї: Simple Dagger Pommel"
+description = "No frills, no nonsense, just honest craftsmanship. Boring but reliable."
 creation_difficulty = 1
 produced_quantity = 1
 component_slots = Array[ExtResource("1_ibkkn")]([SubResource("Resource_ibkkn")])

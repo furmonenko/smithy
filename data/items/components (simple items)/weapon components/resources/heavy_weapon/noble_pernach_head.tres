@@ -1,29 +1,29 @@
-[gd_resource type="Resource" script_class="HeavyWeaponComponent" load_steps=6 format=3 uid="uid://cuwj1kqnxhqx3"]
+[gd_resource type="Resource" script_class="HeavyWeaponComponent" load_steps=6 format=3 uid="uid://de8dw8pnck313"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_dmwnu"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_bg3g0"]
 [ext_resource type="Script" uid="uid://5tu6mq5d5d4c" path="res://data/items/components (simple items)/weapon components/scripts/heavy_weapon_component.gd" id="3_3h77f"]
 
-[sub_resource type="Resource" id="Resource_q8xge"]
+[sub_resource type="Resource" id="Resource_dmwnu"]
 script = ExtResource("2_bg3g0")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 5
+max_stack = 3
 
-[sub_resource type="Resource" id="Resource_65vbf"]
+[sub_resource type="Resource" id="Resource_bg3g0"]
 script = ExtResource("2_bg3g0")
 material_type = 4
 weight = 2
 is_required = true
-max_stack = 4
+max_stack = 2
 
 [resource]
 script = ExtResource("3_3h77f")
 heavy_weapon_type = 0
 weapon_type = 3
 name = "Noble Pernach Head"
-description = "Компонент зброї: Noble Pernach Head"
+description = "A finely crafted component that would make any blacksmith proud."
 creation_difficulty = 4
 produced_quantity = 1
-component_slots = Array[ExtResource("1_dmwnu")]([SubResource("Resource_q8xge"), SubResource("Resource_65vbf")])
+component_slots = Array[ExtResource("1_dmwnu")]([SubResource("Resource_dmwnu"), SubResource("Resource_bg3g0")])

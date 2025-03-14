@@ -1,22 +1,22 @@
-[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://8ytocr7vip77"]
+[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://b0lertgktph5j"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_ysv0r"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_i0kji"]
 [ext_resource type="Script" uid="uid://d05dtpuvtjjgo" path="res://data/items/components (simple items)/weapon components/scripts/dagger_component.gd" id="3_2e28f"]
 
-[sub_resource type="Resource" id="Resource_4muke"]
+[sub_resource type="Resource" id="Resource_ysv0r"]
 script = ExtResource("2_i0kji")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 5
+max_stack = 3
 
 [resource]
 script = ExtResource("3_2e28f")
 dagger_type = 0
 weapon_type = 2
 name = "Knights Dagger Blade"
-description = "Компонент зброї: Knights Dagger Blade"
+description = "May occasionally whisper dark thoughts in the moonlight."
 creation_difficulty = 2
 produced_quantity = 1
-component_slots = Array[ExtResource("1_ysv0r")]([SubResource("Resource_4muke")])
+component_slots = Array[ExtResource("1_ysv0r")]([SubResource("Resource_ysv0r")])

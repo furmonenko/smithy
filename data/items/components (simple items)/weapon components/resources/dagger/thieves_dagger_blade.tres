@@ -1,22 +1,22 @@
-[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://cj7hnwr1ehmq1"]
+[gd_resource type="Resource" script_class="DaggerComponent" load_steps=5 format=3 uid="uid://cp78gpd6q6y70"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_wsv12"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_4nthl"]
 [ext_resource type="Script" uid="uid://d05dtpuvtjjgo" path="res://data/items/components (simple items)/weapon components/scripts/dagger_component.gd" id="3_q5ns4"]
 
-[sub_resource type="Resource" id="Resource_7d1rr"]
+[sub_resource type="Resource" id="Resource_wsv12"]
 script = ExtResource("2_4nthl")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 5
+max_stack = 3
 
 [resource]
 script = ExtResource("3_q5ns4")
 dagger_type = 0
 weapon_type = 2
 name = "Thieves Dagger Blade"
-description = "Компонент зброї: Thieves Dagger Blade"
+description = "Elegant, deadly, and guaranteed not to turn into a snake... probably."
 creation_difficulty = 1
 produced_quantity = 1
-component_slots = Array[ExtResource("1_wsv12")]([SubResource("Resource_7d1rr")])
+component_slots = Array[ExtResource("1_wsv12")]([SubResource("Resource_wsv12")])

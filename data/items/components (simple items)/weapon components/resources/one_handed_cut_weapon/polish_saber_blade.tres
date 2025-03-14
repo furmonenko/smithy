@@ -1,22 +1,22 @@
-[gd_resource type="Resource" script_class="OneHandedCutWeaponComponent" load_steps=5 format=3 uid="uid://3eg3dwt8kow8"]
+[gd_resource type="Resource" script_class="OneHandedCutWeaponComponent" load_steps=5 format=3 uid="uid://be0sybdxi86hd"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_h0j8d"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_n1c8b"]
 [ext_resource type="Script" uid="uid://1vvnpf41k0sm" path="res://data/items/components (simple items)/weapon components/scripts/one_handed_cut_weapon_component.gd" id="3_1hf38"]
 
-[sub_resource type="Resource" id="Resource_5bq3w"]
+[sub_resource type="Resource" id="Resource_h0j8d"]
 script = ExtResource("2_n1c8b")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 5
+max_stack = 3
 
 [resource]
 script = ExtResource("3_1hf38")
 one_handed_cut_weapon_type = 1
 weapon_type = 0
 name = "Polish Saber Blade"
-description = "Компонент зброї: Polish Saber Blade"
+description = "The preferred choice of heroes with more courage than sense."
 creation_difficulty = 3
 produced_quantity = 1
-component_slots = Array[ExtResource("1_h0j8d")]([SubResource("Resource_5bq3w")])
+component_slots = Array[ExtResource("1_h0j8d")]([SubResource("Resource_h0j8d")])

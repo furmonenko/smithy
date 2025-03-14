@@ -1,22 +1,22 @@
-[gd_resource type="Resource" script_class="LongCutWeaponComponent" load_steps=5 format=3 uid="uid://72jxweft85ao"]
+[gd_resource type="Resource" script_class="LongCutWeaponComponent" load_steps=5 format=3 uid="uid://clltkh8hji7xs"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_kwlxb"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_jyypw"]
 [ext_resource type="Script" uid="uid://cum7qn3or7k3x" path="res://data/items/components (simple items)/weapon components/scripts/long_cut_weapon_component.gd" id="3_7ye7w"]
 
-[sub_resource type="Resource" id="Resource_tukg4"]
+[sub_resource type="Resource" id="Resource_kwlxb"]
 script = ExtResource("2_jyypw")
 material_type = 0
 weight = 3
 is_required = true
-max_stack = 8
+max_stack = 6
 
 [resource]
 script = ExtResource("3_7ye7w")
 long_cut_weapon_type = 0
 weapon_type = 1
 name = "Bastard Sword Blade"
-description = "Компонент зброї: Bastard Sword Blade"
+description = "Keeps its edge longer than most marriages."
 creation_difficulty = 2
 produced_quantity = 1
-component_slots = Array[ExtResource("1_kwlxb")]([SubResource("Resource_tukg4")])
+component_slots = Array[ExtResource("1_kwlxb")]([SubResource("Resource_kwlxb")])
