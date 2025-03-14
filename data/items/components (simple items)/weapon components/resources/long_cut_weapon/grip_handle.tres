@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="LongCutWeaponComponent" load_steps=6 format=3 uid="uid://dakp62jubqiq1"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_6w6fm"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_alyn8"]
+[ext_resource type="Script" uid="uid://cum7qn3or7k3x" path="res://data/items/components (simple items)/weapon components/scripts/long_cut_weapon_component.gd" id="3_bdtnu"]
+
+[sub_resource type="Resource" id="Resource_vnef0"]
+script = ExtResource("2_alyn8")
+material_type = 1
+weight = 2
+is_required = true
+max_stack = 5
+
+[sub_resource type="Resource" id="Resource_81mc6"]
+script = ExtResource("2_alyn8")
+material_type = 3
+weight = 1
+is_required = true
+max_stack = 3
+
+[resource]
+script = ExtResource("3_bdtnu")
+long_cut_weapon_type = 3
+weapon_type = 5
+name = "Grip Handle"
+description = "Компонент зброї: Grip Handle"
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_6w6fm")]([SubResource("Resource_vnef0"), SubResource("Resource_81mc6")])

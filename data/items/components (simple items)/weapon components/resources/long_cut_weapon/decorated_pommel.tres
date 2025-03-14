@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="LongCutWeaponComponent" load_steps=6 format=3 uid="uid://6n10m8qoimnp"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_okre7"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_olml8"]
+[ext_resource type="Script" uid="uid://cum7qn3or7k3x" path="res://data/items/components (simple items)/weapon components/scripts/long_cut_weapon_component.gd" id="3_7miie"]
+
+[sub_resource type="Resource" id="Resource_307bs"]
+script = ExtResource("2_olml8")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 4
+
+[sub_resource type="Resource" id="Resource_72cwk"]
+script = ExtResource("2_olml8")
+material_type = 4
+weight = 2
+is_required = true
+max_stack = 3
+
+[resource]
+script = ExtResource("3_7miie")
+long_cut_weapon_type = 2
+weapon_type = 1
+name = "Decorated Pommel"
+description = "Компонент зброї: Decorated Pommel"
+creation_difficulty = 4
+produced_quantity = 1
+component_slots = Array[ExtResource("1_okre7")]([SubResource("Resource_307bs"), SubResource("Resource_72cwk")])

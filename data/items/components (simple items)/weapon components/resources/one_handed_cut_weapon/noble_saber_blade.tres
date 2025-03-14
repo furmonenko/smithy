@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="OneHandedCutWeaponComponent" load_steps=6 format=3 uid="uid://dxu6lqn11ijxc"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_y6fww"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_pqmtl"]
+[ext_resource type="Script" uid="uid://1vvnpf41k0sm" path="res://data/items/components (simple items)/weapon components/scripts/one_handed_cut_weapon_component.gd" id="3_nacvy"]
+
+[sub_resource type="Resource" id="Resource_hncxv"]
+script = ExtResource("2_pqmtl")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 6
+
+[sub_resource type="Resource" id="Resource_of5g1"]
+script = ExtResource("2_pqmtl")
+material_type = 4
+weight = 2
+is_required = true
+max_stack = 4
+
+[resource]
+script = ExtResource("3_nacvy")
+one_handed_cut_weapon_type = 1
+weapon_type = 0
+name = "Noble Saber Blade"
+description = "Компонент зброї: Noble Saber Blade"
+creation_difficulty = 4
+produced_quantity = 1
+component_slots = Array[ExtResource("1_y6fww")]([SubResource("Resource_hncxv"), SubResource("Resource_of5g1")])

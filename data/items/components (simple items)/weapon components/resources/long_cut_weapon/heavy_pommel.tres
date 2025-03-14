@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="LongCutWeaponComponent" load_steps=5 format=3 uid="uid://6jkk7qewslb0"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_4bkm3"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_csm2f"]
+[ext_resource type="Script" uid="uid://cum7qn3or7k3x" path="res://data/items/components (simple items)/weapon components/scripts/long_cut_weapon_component.gd" id="3_vd68u"]
+
+[sub_resource type="Resource" id="Resource_0l6un"]
+script = ExtResource("2_csm2f")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 5
+
+[resource]
+script = ExtResource("3_vd68u")
+long_cut_weapon_type = 2
+weapon_type = 1
+name = "Heavy Pommel"
+description = "Компонент зброї: Heavy Pommel"
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_4bkm3")]([SubResource("Resource_0l6un")])

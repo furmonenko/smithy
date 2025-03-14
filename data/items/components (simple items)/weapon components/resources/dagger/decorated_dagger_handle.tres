@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="DaggerComponent" load_steps=7 format=3 uid="uid://d1kkjsh45uttm"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_5v17h"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_qsu4y"]
+[ext_resource type="Script" uid="uid://d05dtpuvtjjgo" path="res://data/items/components (simple items)/weapon components/scripts/dagger_component.gd" id="3_6xdon"]
+
+[sub_resource type="Resource" id="Resource_lmd7i"]
+script = ExtResource("2_qsu4y")
+material_type = 1
+weight = 2
+is_required = true
+max_stack = 3
+
+[sub_resource type="Resource" id="Resource_j5b1g"]
+script = ExtResource("2_qsu4y")
+material_type = 3
+weight = 1
+is_required = true
+max_stack = 3
+
+[sub_resource type="Resource" id="Resource_oq3cq"]
+script = ExtResource("2_qsu4y")
+material_type = 4
+weight = 2
+is_required = true
+max_stack = 3
+
+[resource]
+script = ExtResource("3_6xdon")
+dagger_type = 1
+weapon_type = 5
+name = "Decorated Dagger Handle"
+description = "Компонент зброї: Decorated Dagger Handle"
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_5v17h")]([SubResource("Resource_lmd7i"), SubResource("Resource_j5b1g"), SubResource("Resource_oq3cq")])

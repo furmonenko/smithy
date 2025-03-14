@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="HeavyWeaponComponent" load_steps=6 format=3 uid="uid://b5oojjxny4wcj"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_bnvpc"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_ca3yl"]
+[ext_resource type="Script" uid="uid://5tu6mq5d5d4c" path="res://data/items/components (simple items)/weapon components/scripts/heavy_weapon_component.gd" id="3_vk8mq"]
+
+[sub_resource type="Resource" id="Resource_60brt"]
+script = ExtResource("2_ca3yl")
+material_type = 1
+weight = 2
+is_required = true
+max_stack = 4
+
+[sub_resource type="Resource" id="Resource_cex4i"]
+script = ExtResource("2_ca3yl")
+material_type = 3
+weight = 1
+is_required = true
+max_stack = 3
+
+[resource]
+script = ExtResource("3_vk8mq")
+heavy_weapon_type = 1
+weapon_type = 5
+name = "Grip Handle"
+description = "Компонент зброї: Grip Handle"
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_bnvpc")]([SubResource("Resource_60brt"), SubResource("Resource_cex4i")])

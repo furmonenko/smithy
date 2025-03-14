@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c108hofdxfow4" path="res://main.gd" id="1_7mycd"]
 [ext_resource type="Script" uid="uid://dnjlyacgvik5m" path="res://layer_manager.gd" id="1_qrecu"]
-[ext_resource type="Resource" uid="uid://of2puhfavt8r" path="res://data/items/components (simple items)/weapon components/resources/one_handed_sword_blade.tres" id="2_7mycd"]
+[ext_resource type="Resource" uid="uid://of2puhfavt8r" path="res://data/one_handed_sword_blade.tres" id="2_7mycd"]
 [ext_resource type="PackedScene" uid="uid://bx8ek002jwy3h" path="res://blacksmith.tscn" id="2_71qyi"]
 [ext_resource type="PackedScene" uid="uid://de0p5f556732l" path="res://objects/anvil.tscn" id="2_rsqs0"]
 [ext_resource type="Script" uid="uid://b4c0bs3h53rv2" path="res://depth_camera.gd" id="3_rvftn"]
@@ -37,12 +37,12 @@ position = Vector2(1147, 1006)
 
 [node name="Anvil2" parent="." instance=ExtResource("2_rsqs0")]
 position = Vector2(1229, 820)
-scale = Vector2(0.42793, 0.42793)
+scale = Vector2(0.322476, 0.322476)
 layer = 1
 
 [node name="Anvil3" parent="." instance=ExtResource("2_rsqs0")]
 position = Vector2(1364, 641)
-scale = Vector2(0.168541, 0.168541)
+scale = Vector2(0.093098, 0.093098)
 layer = 2
 
 [node name="LayerBack" type="Node2D" parent="."]

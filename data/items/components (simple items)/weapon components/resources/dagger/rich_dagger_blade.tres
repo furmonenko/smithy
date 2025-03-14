@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="DaggerComponent" load_steps=6 format=3 uid="uid://b6qayfnykhoad"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_86rul"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_sv8ge"]
+[ext_resource type="Script" uid="uid://d05dtpuvtjjgo" path="res://data/items/components (simple items)/weapon components/scripts/dagger_component.gd" id="3_fj82d"]
+
+[sub_resource type="Resource" id="Resource_mfjxj"]
+script = ExtResource("2_sv8ge")
+material_type = 0
+weight = 3
+is_required = true
+max_stack = 5
+
+[sub_resource type="Resource" id="Resource_yxwd0"]
+script = ExtResource("2_sv8ge")
+material_type = 4
+weight = 2
+is_required = true
+max_stack = 3
+
+[resource]
+script = ExtResource("3_fj82d")
+dagger_type = 0
+weapon_type = 2
+name = "Rich Dagger Blade"
+description = "Компонент зброї: Rich Dagger Blade"
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_86rul")]([SubResource("Resource_mfjxj"), SubResource("Resource_yxwd0")])
