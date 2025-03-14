@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=8 format=3 uid="uid://8yjs0bc4dlv5"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_4tqp8"]
+[ext_resource type="Resource" uid="uid://ct5irslia7l5g" path="res://data/items/components (simple items)/tool components/resources/tools/pickaxe_head.tres" id="2_nu0m4"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_no1mc"]
+[ext_resource type="Resource" uid="uid://55bx8thjrtgv" path="res://data/items/components (simple items)/tool components/resources/tools/tool_handle.tres" id="4_p4php"]
+[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/items/products (complex items)/scripts/tool_item.gd" id="5_anefq"]
+
+[sub_resource type="Resource" id="Resource_4tqp8"]
+script = ExtResource("3_no1mc")
+allowed_component = ExtResource("2_nu0m4")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_nu0m4"]
+script = ExtResource("3_no1mc")
+allowed_component = ExtResource("4_p4php")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_anefq")
+tool_type = 4
+name = "Pickaxe"
+description = "Surprisingly useful for both peaceful and desperate situations."
+creation_difficulty = 1
+produced_quantity = 1
+component_slots = Array[ExtResource("1_4tqp8")]([SubResource("Resource_4tqp8"), SubResource("Resource_nu0m4")])

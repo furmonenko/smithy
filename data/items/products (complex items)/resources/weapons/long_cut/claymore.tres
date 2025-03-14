@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://charinyqeae8l"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_jmiaa"]
+[ext_resource type="Resource" uid="uid://bagf2r3y4k6k1" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/claymore_blade.tres" id="2_cdpoh"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_wjmne"]
+[ext_resource type="Resource" uid="uid://0jp43w7lebvn" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/straight_guard.tres" id="4_06td8"]
+[ext_resource type="Resource" uid="uid://dv0jbgv8ggv25" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/heavy_pommel.tres" id="5_macwb"]
+[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="6_j40mo"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_rbci5"]
+
+[sub_resource type="Resource" id="Resource_pay6j"]
+script = ExtResource("3_wjmne")
+allowed_component = ExtResource("2_cdpoh")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_yajms"]
+script = ExtResource("3_wjmne")
+allowed_component = ExtResource("4_06td8")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_123v2"]
+script = ExtResource("3_wjmne")
+allowed_component = ExtResource("5_macwb")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_ikgt8"]
+script = ExtResource("3_wjmne")
+allowed_component = ExtResource("6_j40mo")
+weight = 2
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_rbci5")
+weapon_type = 2
+name = "Claymore"
+description = "Scottish engineering at its finest - a sword as subtle as the people who created it."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_jmiaa")]([SubResource("Resource_pay6j"), SubResource("Resource_yajms"), SubResource("Resource_123v2"), SubResource("Resource_ikgt8")])

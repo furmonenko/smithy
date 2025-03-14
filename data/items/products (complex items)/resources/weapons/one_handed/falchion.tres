@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://cc7mc2qkfh00u"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_ed77m"]
+[ext_resource type="Resource" uid="uid://brom57g06byd4" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/falchion_blade.tres" id="2_x6alp"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_kpvfk"]
+[ext_resource type="Resource" uid="uid://dvmo2luaeyhqr" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/simple_guard.tres" id="4_0e1xi"]
+[ext_resource type="Resource" uid="uid://cdgj3done3x8b" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/simple_pommel.tres" id="5_nv45u"]
+[ext_resource type="Resource" uid="uid://cif8vrevlnnws" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/simple_handle.tres" id="6_tlf4u"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_peeja"]
+
+[sub_resource type="Resource" id="Resource_ekb8h"]
+script = ExtResource("3_kpvfk")
+allowed_component = ExtResource("2_x6alp")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_ancln"]
+script = ExtResource("3_kpvfk")
+allowed_component = ExtResource("4_0e1xi")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_drc5k"]
+script = ExtResource("3_kpvfk")
+allowed_component = ExtResource("5_nv45u")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_prt7e"]
+script = ExtResource("3_kpvfk")
+allowed_component = ExtResource("6_tlf4u")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_peeja")
+weapon_type = 0
+name = "Falchion"
+description = "Perfect for making decisive points in arguments."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_ed77m")]([SubResource("Resource_ekb8h"), SubResource("Resource_ancln"), SubResource("Resource_drc5k"), SubResource("Resource_prt7e")])

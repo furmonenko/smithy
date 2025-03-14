@@ -37,7 +37,7 @@ position = Vector2(1147, 1006)
 
 [node name="Anvil2" parent="." instance=ExtResource("2_rsqs0")]
 position = Vector2(1229, 820)
-scale = Vector2(0.243008, 0.243008)
+scale = Vector2(0.166643, 0.166643)
 layer = 1
 
 [node name="Anvil3" parent="." instance=ExtResource("2_rsqs0")]

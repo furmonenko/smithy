@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://c3d6rmplq8cnf"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_fgar0"]
+[ext_resource type="Resource" uid="uid://cwfiqjnmtd2gp" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/zweihänder_blade.tres" id="2_nahcq"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_lf10y"]
+[ext_resource type="Resource" uid="uid://0jp43w7lebvn" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/straight_guard.tres" id="4_d1bgr"]
+[ext_resource type="Resource" uid="uid://dv0jbgv8ggv25" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/heavy_pommel.tres" id="5_87hft"]
+[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="6_4figv"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_gi4qu"]
+
+[sub_resource type="Resource" id="Resource_ldsmr"]
+script = ExtResource("3_lf10y")
+allowed_component = ExtResource("2_nahcq")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_kp8gx"]
+script = ExtResource("3_lf10y")
+allowed_component = ExtResource("4_d1bgr")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_k5ry3"]
+script = ExtResource("3_lf10y")
+allowed_component = ExtResource("5_87hft")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_0csok"]
+script = ExtResource("3_lf10y")
+allowed_component = ExtResource("6_4figv")
+weight = 2
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_gi4qu")
+weapon_type = 2
+name = "Zweihänder"
+description = "Impressively large and intimidating, much like its wielder should be."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_fgar0")]([SubResource("Resource_ldsmr"), SubResource("Resource_kp8gx"), SubResource("Resource_k5ry3"), SubResource("Resource_0csok")])

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://dc2ngtwka1iv0"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_2jkm5"]
+[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/items/products (complex items)/scripts/tool_item.gd" id="2_vkml3"]
+
+[resource]
+script = ExtResource("2_vkml3")
+tool_type = 0
+name = ""
+description = ""
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_2jkm5")]([])
+metadata/_custom_type_script = "uid://bbd134pghcqmk"

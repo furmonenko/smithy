@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://dfglc58r2iiqx"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_oa6sg"]
+[ext_resource type="Resource" uid="uid://cuhl1e3f7lwe0" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/noble_saber_blade.tres" id="2_j83mf"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_2ikw8"]
+[ext_resource type="Resource" uid="uid://b2ntr14lkuwmv" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_guard.tres" id="4_hlw6q"]
+[ext_resource type="Resource" uid="uid://cmvuupx7mlrtx" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_pommel.tres" id="5_lfpge"]
+[ext_resource type="Resource" uid="uid://b3jvil6h8kau" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_handle.tres" id="6_5ks1p"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_244e1"]
+
+[sub_resource type="Resource" id="Resource_ly4f0"]
+script = ExtResource("3_2ikw8")
+allowed_component = ExtResource("2_j83mf")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_sfp6o"]
+script = ExtResource("3_2ikw8")
+allowed_component = ExtResource("4_hlw6q")
+weight = 2
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_nl04i"]
+script = ExtResource("3_2ikw8")
+allowed_component = ExtResource("5_lfpge")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_32x7n"]
+script = ExtResource("3_2ikw8")
+allowed_component = ExtResource("6_5ks1p")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_244e1")
+weapon_type = 1
+name = "Noble Saber"
+description = "Unnecessarily ornate and expensive. Perfect for dying with style."
+creation_difficulty = 4
+produced_quantity = 1
+component_slots = Array[ExtResource("1_oa6sg")]([SubResource("Resource_ly4f0"), SubResource("Resource_sfp6o"), SubResource("Resource_nl04i"), SubResource("Resource_32x7n")])

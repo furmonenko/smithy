@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://1oewssbphb7k"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_bfe4s"]
+[ext_resource type="Resource" uid="uid://b500rqrpyh62l" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/mace_head.tres" id="2_vhcar"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_i3bp1"]
+[ext_resource type="Resource" uid="uid://d1r03lwttbiif" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/wooden_handle.tres" id="4_b7qyp"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_8o1wq"]
+
+[sub_resource type="Resource" id="Resource_f4aw2"]
+script = ExtResource("3_i3bp1")
+allowed_component = ExtResource("2_vhcar")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_or3rc"]
+script = ExtResource("3_i3bp1")
+allowed_component = ExtResource("4_b7qyp")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_8o1wq")
+weapon_type = 4
+name = "Mace"
+description = "Transforms armored opponents into noisy containers."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_bfe4s")]([SubResource("Resource_f4aw2"), SubResource("Resource_or3rc")])

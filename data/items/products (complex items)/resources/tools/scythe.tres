@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=8 format=3 uid="uid://b6k5gx1mhcdo"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_ddnh0"]
+[ext_resource type="Resource" uid="uid://bqjrgql7wol11" path="res://data/items/components (simple items)/tool components/resources/tools/scythe_head.tres" id="2_bhqhy"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_rvp0w"]
+[ext_resource type="Resource" uid="uid://55bx8thjrtgv" path="res://data/items/components (simple items)/tool components/resources/tools/tool_handle.tres" id="4_m0npo"]
+[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/items/products (complex items)/scripts/tool_item.gd" id="5_6dvcj"]
+
+[sub_resource type="Resource" id="Resource_ddnh0"]
+script = ExtResource("3_rvp0w")
+allowed_component = ExtResource("2_bhqhy")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_bhqhy"]
+script = ExtResource("3_rvp0w")
+allowed_component = ExtResource("4_m0npo")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_6dvcj")
+tool_type = 2
+name = "Scythe"
+description = "Not just for the Grim Reaper anymore. Works great on wheat too!"
+creation_difficulty = 1
+produced_quantity = 1
+component_slots = Array[ExtResource("1_ddnh0")]([SubResource("Resource_ddnh0"), SubResource("Resource_bhqhy")])

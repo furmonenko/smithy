@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://d3xqxf83ped1a"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_nedg5"]
+[ext_resource type="Resource" uid="uid://6ksckubmnat7" path="res://data/items/components (simple items)/weapon components/resources/pole_weapon/bardiche_head.tres" id="2_uxpyj"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_upp5i"]
+[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="4_6thd3"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_v2sy8"]
+
+[sub_resource type="Resource" id="Resource_6bw0v"]
+script = ExtResource("3_upp5i")
+allowed_component = ExtResource("2_uxpyj")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_1on44"]
+script = ExtResource("3_upp5i")
+allowed_component = ExtResource("4_6thd3")
+weight = 2
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_v2sy8")
+weapon_type = 3
+name = "Bardiche"
+description = "Perfect for keeping enemies at a comfortable distance."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_nedg5")]([SubResource("Resource_6bw0v"), SubResource("Resource_1on44")])

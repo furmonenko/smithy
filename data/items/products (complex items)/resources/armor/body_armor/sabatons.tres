@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BodyArmorItem" load_steps=8 format=3 uid="uid://y0cbkdfii7ry"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_woc86"]
+[ext_resource type="Resource" uid="uid://b34x0vy7qol0n" path="res://data/items/components (simple items)/armor components/resources/body_armor/sabatons_plate.tres" id="2_2dl03"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_m07kp"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="4_vgqjt"]
+[ext_resource type="Script" uid="uid://cph1myq4jq05p" path="res://data/items/products (complex items)/scripts/body_armor_item.gd" id="5_gg110"]
+
+[sub_resource type="Resource" id="Resource_cxuls"]
+script = ExtResource("3_m07kp")
+allowed_component = ExtResource("2_2dl03")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_a8m8p"]
+script = ExtResource("3_m07kp")
+allowed_component = ExtResource("4_vgqjt")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_gg110")
+body_armor_type = 3
+name = "Sabatons"
+description = "Protects against sword cuts, mace blows, and bad fashion choices."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_woc86")]([SubResource("Resource_cxuls"), SubResource("Resource_a8m8p")])

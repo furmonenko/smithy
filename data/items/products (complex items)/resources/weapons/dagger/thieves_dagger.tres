@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://cids2pld81fpk"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_c64wq"]
+[ext_resource type="Resource" uid="uid://cp78gpd6q6y70" path="res://data/items/components (simple items)/weapon components/resources/dagger/thieves_dagger_blade.tres" id="2_rww58"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_f6d8h"]
+[ext_resource type="Resource" uid="uid://fwkixtln3a1j" path="res://data/items/components (simple items)/weapon components/resources/dagger/grip_dagger_handle.tres" id="4_vis6b"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_u7hme"]
+
+[sub_resource type="Resource" id="Resource_c5qf4"]
+script = ExtResource("3_f6d8h")
+allowed_component = ExtResource("2_rww58")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_isjav"]
+script = ExtResource("3_f6d8h")
+allowed_component = ExtResource("4_vis6b")
+weight = 2
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_u7hme")
+weapon_type = 5
+name = "Thieves Dagger"
+description = "Makes a point quickly and efficiently."
+creation_difficulty = 1
+produced_quantity = 1
+component_slots = Array[ExtResource("1_c64wq")]([SubResource("Resource_c5qf4"), SubResource("Resource_isjav")])

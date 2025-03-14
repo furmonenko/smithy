@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://cq0b7ss13gkoh"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_vkbol"]
+[ext_resource type="Resource" uid="uid://bfjh8s028uryl" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/morning_start_head.tres" id="2_p0lwu"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_i2lca"]
+[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="4_2gxrp"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_6jeii"]
+
+[sub_resource type="Resource" id="Resource_slqr6"]
+script = ExtResource("3_i2lca")
+allowed_component = ExtResource("2_p0lwu")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_14b1s"]
+script = ExtResource("3_i2lca")
+allowed_component = ExtResource("4_2gxrp")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_6jeii")
+weapon_type = 4
+name = "Morning Star"
+description = "Substitutes finesse with raw crushing power."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_vkbol")]([SubResource("Resource_slqr6"), SubResource("Resource_14b1s")])

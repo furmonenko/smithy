@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=8 format=3 uid="uid://brkmflhe4nwx4"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_kvimt"]
+[ext_resource type="Resource" uid="uid://b15ich57fqk7i" path="res://data/items/components (simple items)/tool components/resources/tools/hand_hoe_head.tres" id="2_qmq6v"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_q2tur"]
+[ext_resource type="Resource" uid="uid://55bx8thjrtgv" path="res://data/items/components (simple items)/tool components/resources/tools/tool_handle.tres" id="4_vx4s6"]
+[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/items/products (complex items)/scripts/tool_item.gd" id="5_4o5u2"]
+
+[sub_resource type="Resource" id="Resource_kvimt"]
+script = ExtResource("3_q2tur")
+allowed_component = ExtResource("2_qmq6v")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_qmq6v"]
+script = ExtResource("3_q2tur")
+allowed_component = ExtResource("4_vx4s6")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_4o5u2")
+tool_type = 1
+name = "Hand Hoe"
+description = "Built for work, but adaptable to emergencies."
+creation_difficulty = 1
+produced_quantity = 1
+component_slots = Array[ExtResource("1_kvimt")]([SubResource("Resource_kvimt"), SubResource("Resource_qmq6v")])

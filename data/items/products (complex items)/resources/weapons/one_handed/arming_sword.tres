@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://dfypt2bar8srl"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_x6hnm"]
+[ext_resource type="Resource" uid="uid://bxjm6ewl38owf" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/arming_sword_blade.tres" id="2_5ptun"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_sslg8"]
+[ext_resource type="Resource" uid="uid://0jp43w7lebvn" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/straight_guard.tres" id="4_t0n8s"]
+[ext_resource type="Resource" uid="uid://cdgj3done3x8b" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/simple_pommel.tres" id="5_d51em"]
+[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="6_xwxmi"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_omcag"]
+
+[sub_resource type="Resource" id="Resource_4q8dm"]
+script = ExtResource("3_sslg8")
+allowed_component = ExtResource("2_5ptun")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_rwvw0"]
+script = ExtResource("3_sslg8")
+allowed_component = ExtResource("4_t0n8s")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_4dgfc"]
+script = ExtResource("3_sslg8")
+allowed_component = ExtResource("5_d51em")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_l84sx"]
+script = ExtResource("3_sslg8")
+allowed_component = ExtResource("6_xwxmi")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_omcag")
+weapon_type = 0
+name = "Arming Sword"
+description = "Classic design with excellent weight distribution and balance."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_x6hnm")]([SubResource("Resource_4q8dm"), SubResource("Resource_rwvw0"), SubResource("Resource_4dgfc"), SubResource("Resource_l84sx")])

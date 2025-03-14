@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BodyArmorItem" load_steps=8 format=3 uid="uid://e3syr63uekwy"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_11srm"]
+[ext_resource type="Resource" uid="uid://bbyevjiosnco2" path="res://data/items/components (simple items)/armor components/resources/body_armor/front_cuirass.tres" id="2_sn1gk"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_0tdpl"]
+[ext_resource type="Resource" uid="uid://dp1p2jes6g7pp" path="res://data/items/components (simple items)/armor components/resources/head_armor/leather_liner.tres" id="4_pcd4s"]
+[ext_resource type="Script" uid="uid://cph1myq4jq05p" path="res://data/items/products (complex items)/scripts/body_armor_item.gd" id="5_buwga"]
+
+[sub_resource type="Resource" id="Resource_3thnf"]
+script = ExtResource("3_0tdpl")
+allowed_component = ExtResource("2_sn1gk")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_0xhps"]
+script = ExtResource("3_0tdpl")
+allowed_component = ExtResource("4_pcd4s")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_buwga")
+body_armor_type = 0
+name = "Simple Cuirass"
+description = "Transforms deadly strikes into annoying bruises."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_11srm")]([SubResource("Resource_3thnf"), SubResource("Resource_0xhps")])

@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=8 format=3 uid="uid://0llu2wsrnvmj"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_q3pn0"]
+[ext_resource type="Resource" uid="uid://dtxja3hlsb8rx" path="res://data/items/components (simple items)/tool components/resources/tools/axe_head.tres" id="2_o38jy"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_ynrx3"]
+[ext_resource type="Resource" uid="uid://55bx8thjrtgv" path="res://data/items/components (simple items)/tool components/resources/tools/tool_handle.tres" id="4_0alu8"]
+[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/items/products (complex items)/scripts/tool_item.gd" id="5_ae601"]
+
+[sub_resource type="Resource" id="Resource_f6w1r"]
+script = ExtResource("3_ynrx3")
+allowed_component = ExtResource("2_o38jy")
+weight = 3
+is_required = true
+max_stack = 1
+metadata/_custom_type_script = "uid://m8q58xkg5dxw"
+
+[sub_resource type="Resource" id="Resource_8ei4o"]
+script = ExtResource("3_ynrx3")
+allowed_component = ExtResource("4_0alu8")
+weight = 1
+is_required = true
+max_stack = 1
+metadata/_custom_type_script = "uid://m8q58xkg5dxw"
+
+[resource]
+script = ExtResource("5_ae601")
+tool_type = 0
+name = "Axe"
+description = "The lumberjack's best friend. Trees tremble when you approach."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_q3pn0")]([SubResource("Resource_f6w1r"), SubResource("Resource_8ei4o")])
+metadata/_custom_type_script = "uid://bbd134pghcqmk"

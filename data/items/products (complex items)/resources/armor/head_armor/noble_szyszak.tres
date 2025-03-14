@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="HeadArmorItem" load_steps=10 format=3 uid="uid://bhcarrhk5hqe4"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_n3lnb"]
+[ext_resource type="Resource" uid="uid://cf8wsvd0syuhk" path="res://data/items/components (simple items)/armor components/resources/head_armor/szyszak_dome.tres" id="2_hsajj"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_o82pp"]
+[ext_resource type="Resource" uid="uid://dogeytygg2ij8" path="res://data/items/components (simple items)/armor components/resources/head_armor/nose_protection.tres" id="4_01hjh"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="5_y1d2p"]
+[ext_resource type="Script" uid="uid://d2tyofj6yx7fj" path="res://data/items/products (complex items)/scripts/head_armor_item.gd" id="6_7hykl"]
+
+[sub_resource type="Resource" id="Resource_ufrqx"]
+script = ExtResource("3_o82pp")
+allowed_component = ExtResource("2_hsajj")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_7j5qq"]
+script = ExtResource("3_o82pp")
+allowed_component = ExtResource("4_01hjh")
+weight = 2
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_a4s42"]
+script = ExtResource("3_o82pp")
+allowed_component = ExtResource("5_y1d2p")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("6_7hykl")
+head_armor_type = 1
+name = "Noble Szyszak"
+description = "Unnecessarily ornate and expensive. Perfect for dying with style."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_n3lnb")]([SubResource("Resource_ufrqx"), SubResource("Resource_7j5qq"), SubResource("Resource_a4s42")])

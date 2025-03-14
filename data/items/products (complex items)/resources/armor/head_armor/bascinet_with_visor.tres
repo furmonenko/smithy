@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="HeadArmorItem" load_steps=10 format=3 uid="uid://cxkwfy7a4rdtj"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_s27rr"]
+[ext_resource type="Resource" uid="uid://cu0cplvsmw3hw" path="res://data/items/components (simple items)/armor components/resources/head_armor/bascinet_dome.tres" id="2_fx2dw"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_pclxa"]
+[ext_resource type="Resource" uid="uid://dxscipxpnxdh8" path="res://data/items/components (simple items)/armor components/resources/head_armor/static_visor.tres" id="4_0rb7c"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="5_jbs34"]
+[ext_resource type="Script" uid="uid://d2tyofj6yx7fj" path="res://data/items/products (complex items)/scripts/head_armor_item.gd" id="6_fi2gc"]
+
+[sub_resource type="Resource" id="Resource_aiw7r"]
+script = ExtResource("3_pclxa")
+allowed_component = ExtResource("2_fx2dw")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_qsthw"]
+script = ExtResource("3_pclxa")
+allowed_component = ExtResource("4_0rb7c")
+weight = 2
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_h48ft"]
+script = ExtResource("3_pclxa")
+allowed_component = ExtResource("5_jbs34")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("6_fi2gc")
+head_armor_type = 1
+name = "Bascinet With Visor"
+description = "The fashion-forward knight's choice in battlefield headwear."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_s27rr")]([SubResource("Resource_aiw7r"), SubResource("Resource_qsthw"), SubResource("Resource_h48ft")])

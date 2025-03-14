@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://bynbfmod34j34"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_16fhf"]
+[ext_resource type="Resource" uid="uid://wkpexfltwcc0" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/battle_axe_head.tres" id="2_fnd5l"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_vbhue"]
+[ext_resource type="Resource" uid="uid://d1r03lwttbiif" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/wooden_handle.tres" id="4_odoh0"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_k7xtv"]
+
+[sub_resource type="Resource" id="Resource_paubc"]
+script = ExtResource("3_vbhue")
+allowed_component = ExtResource("2_fnd5l")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_pajxr"]
+script = ExtResource("3_vbhue")
+allowed_component = ExtResource("4_odoh0")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_k7xtv")
+weapon_type = 4
+name = "Battle Axe"
+description = "Perfect for when you need to make a dent in something."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_16fhf")]([SubResource("Resource_paubc"), SubResource("Resource_pajxr")])

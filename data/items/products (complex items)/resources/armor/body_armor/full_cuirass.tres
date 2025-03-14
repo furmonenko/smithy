@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="BodyArmorItem" load_steps=10 format=3 uid="uid://bwoodhfsos2ur"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_d2tbq"]
+[ext_resource type="Resource" uid="uid://bbyevjiosnco2" path="res://data/items/components (simple items)/armor components/resources/body_armor/front_cuirass.tres" id="2_v2w8w"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_x8ewq"]
+[ext_resource type="Resource" uid="uid://lb4pl8lkjbka" path="res://data/items/components (simple items)/armor components/resources/body_armor/back_cuirass.tres" id="4_yi113"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="5_xt7jb"]
+[ext_resource type="Script" uid="uid://cph1myq4jq05p" path="res://data/items/products (complex items)/scripts/body_armor_item.gd" id="6_jaqgt"]
+
+[sub_resource type="Resource" id="Resource_17081"]
+script = ExtResource("3_x8ewq")
+allowed_component = ExtResource("2_v2w8w")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_ibja4"]
+script = ExtResource("3_x8ewq")
+allowed_component = ExtResource("4_yi113")
+weight = 2
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_cc0c5"]
+script = ExtResource("3_x8ewq")
+allowed_component = ExtResource("5_xt7jb")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("6_jaqgt")
+body_armor_type = 0
+name = "Full Cuirass"
+description = "Protects against sword cuts, mace blows, and bad fashion choices."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_d2tbq")]([SubResource("Resource_17081"), SubResource("Resource_ibja4"), SubResource("Resource_cc0c5")])

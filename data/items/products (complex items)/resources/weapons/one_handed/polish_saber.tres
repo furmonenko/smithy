@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://bjegp7pcruxl5"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_pf5in"]
+[ext_resource type="Resource" uid="uid://be0sybdxi86hd" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/polish_saber_blade.tres" id="2_chi7g"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_m0oq1"]
+[ext_resource type="Resource" uid="uid://b5him07gv7w5d" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/curved_guard.tres" id="4_fjj0j"]
+[ext_resource type="Resource" uid="uid://biwv6ja23avtf" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/pentagon_pommel.tres" id="5_txgxv"]
+[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="6_a8rrk"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_xgl8q"]
+
+[sub_resource type="Resource" id="Resource_sl02r"]
+script = ExtResource("3_m0oq1")
+allowed_component = ExtResource("2_chi7g")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_eicam"]
+script = ExtResource("3_m0oq1")
+allowed_component = ExtResource("4_fjj0j")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_mbnis"]
+script = ExtResource("3_m0oq1")
+allowed_component = ExtResource("5_txgxv")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_xbmut"]
+script = ExtResource("3_m0oq1")
+allowed_component = ExtResource("6_a8rrk")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_xgl8q")
+weapon_type = 1
+name = "Polish Saber"
+description = "Classic design with excellent weight distribution and balance."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_pf5in")]([SubResource("Resource_sl02r"), SubResource("Resource_eicam"), SubResource("Resource_mbnis"), SubResource("Resource_xbmut")])

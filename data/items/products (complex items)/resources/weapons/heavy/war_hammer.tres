@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://d2f16qgusyoff"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_aglu3"]
+[ext_resource type="Resource" uid="uid://bnj4njfo1ptre" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/war_hammer_head.tres" id="2_e8511"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_lq030"]
+[ext_resource type="Resource" uid="uid://d1r03lwttbiif" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/wooden_handle.tres" id="4_lnlfx"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_xgmdf"]
+
+[sub_resource type="Resource" id="Resource_givya"]
+script = ExtResource("3_lq030")
+allowed_component = ExtResource("2_e8511")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_03jdf"]
+script = ExtResource("3_lq030")
+allowed_component = ExtResource("4_lnlfx")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_xgmdf")
+weapon_type = 4
+name = "War Hammer"
+description = "When you need to open a heavily armored knight like a tin can."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_aglu3")]([SubResource("Resource_givya"), SubResource("Resource_03jdf")])

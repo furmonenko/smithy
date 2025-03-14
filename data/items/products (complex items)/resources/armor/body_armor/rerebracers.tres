@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BodyArmorItem" load_steps=8 format=3 uid="uid://br3v3s80vdjg1"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_snwof"]
+[ext_resource type="Resource" uid="uid://d2qkumep11hkh" path="res://data/items/components (simple items)/armor components/resources/body_armor/rerebracers_plate.tres" id="2_j858u"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_ugnwx"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="4_ffsfj"]
+[ext_resource type="Script" uid="uid://cph1myq4jq05p" path="res://data/items/products (complex items)/scripts/body_armor_item.gd" id="5_mwktq"]
+
+[sub_resource type="Resource" id="Resource_yvrea"]
+script = ExtResource("3_ugnwx")
+allowed_component = ExtResource("2_j858u")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_jr0j0"]
+script = ExtResource("3_ugnwx")
+allowed_component = ExtResource("4_ffsfj")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_mwktq")
+body_armor_type = 2
+name = "Rerebracers"
+description = "Makes you harder to kill, but also harder to dress quickly."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_snwof")]([SubResource("Resource_yvrea"), SubResource("Resource_jr0j0")])

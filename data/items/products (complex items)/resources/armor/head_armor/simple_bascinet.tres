@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="HeadArmorItem" load_steps=8 format=3 uid="uid://cvxxh0dstwuqd"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_hs5lk"]
+[ext_resource type="Resource" uid="uid://cu0cplvsmw3hw" path="res://data/items/components (simple items)/armor components/resources/head_armor/bascinet_dome.tres" id="2_kcudo"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_7355k"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="4_ujied"]
+[ext_resource type="Script" uid="uid://d2tyofj6yx7fj" path="res://data/items/products (complex items)/scripts/head_armor_item.gd" id="5_ppslo"]
+
+[sub_resource type="Resource" id="Resource_j6j8m"]
+script = ExtResource("3_7355k")
+allowed_component = ExtResource("2_kcudo")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_00vlc"]
+script = ExtResource("3_7355k")
+allowed_component = ExtResource("4_ujied")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_ppslo")
+head_armor_type = 0
+name = "Simple Bascinet"
+description = "The fashion-forward knight's choice in battlefield headwear."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_hs5lk")]([SubResource("Resource_j6j8m"), SubResource("Resource_00vlc")])

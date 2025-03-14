@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="BodyArmorItem" load_steps=12 format=3 uid="uid://bfkandgymjmnd"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_xetph"]
+[ext_resource type="Resource" uid="uid://bbyevjiosnco2" path="res://data/items/components (simple items)/armor components/resources/body_armor/front_cuirass.tres" id="2_hqrs1"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_8ys47"]
+[ext_resource type="Resource" uid="uid://lb4pl8lkjbka" path="res://data/items/components (simple items)/armor components/resources/body_armor/back_cuirass.tres" id="4_ar1vi"]
+[ext_resource type="Resource" uid="uid://bk8rk3f55wbqs" path="res://data/items/components (simple items)/tool components/resources/materials/chainmail_piece.tres" id="5_gw1jn"]
+[ext_resource type="Resource" uid="uid://dp1p2jes6g7pp" path="res://data/items/components (simple items)/armor components/resources/head_armor/leather_liner.tres" id="6_6f4a4"]
+[ext_resource type="Script" uid="uid://cph1myq4jq05p" path="res://data/items/products (complex items)/scripts/body_armor_item.gd" id="7_trxbx"]
+
+[sub_resource type="Resource" id="Resource_ltop2"]
+script = ExtResource("3_8ys47")
+allowed_component = ExtResource("2_hqrs1")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_34c3w"]
+script = ExtResource("3_8ys47")
+allowed_component = ExtResource("4_ar1vi")
+weight = 2
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_ea438"]
+script = ExtResource("3_8ys47")
+allowed_component = ExtResource("5_gw1jn")
+weight = 2
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_3iu74"]
+script = ExtResource("3_8ys47")
+allowed_component = ExtResource("6_6f4a4")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_trxbx")
+body_armor_type = 0
+name = "Cuirass and Chainmail"
+description = "Thousands of tiny rings joined together by an apprentice questioning their life choices."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_xetph")]([SubResource("Resource_ltop2"), SubResource("Resource_34c3w"), SubResource("Resource_ea438"), SubResource("Resource_3iu74")])

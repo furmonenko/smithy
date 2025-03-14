@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BodyArmorItem" load_steps=8 format=3 uid="uid://dbxfrdlteahdn"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_y77eu"]
+[ext_resource type="Resource" uid="uid://d1510hl4xd0ix" path="res://data/items/components (simple items)/armor components/resources/body_armor/gauntlets_plate.tres" id="2_uu8qb"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_wbu0u"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="4_qymto"]
+[ext_resource type="Script" uid="uid://cph1myq4jq05p" path="res://data/items/products (complex items)/scripts/body_armor_item.gd" id="5_8wwd2"]
+
+[sub_resource type="Resource" id="Resource_v1q44"]
+script = ExtResource("3_wbu0u")
+allowed_component = ExtResource("2_uu8qb")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_oidkk"]
+script = ExtResource("3_wbu0u")
+allowed_component = ExtResource("4_qymto")
+weight = 2
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("5_8wwd2")
+body_armor_type = 2
+name = "Gauntlets"
+description = "Protects against sword cuts, mace blows, and bad fashion choices."
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_y77eu")]([SubResource("Resource_v1q44"), SubResource("Resource_oidkk")])

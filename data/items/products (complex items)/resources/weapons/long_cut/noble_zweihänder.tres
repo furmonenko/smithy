@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://sd7hq2g8st6n"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_0i20c"]
+[ext_resource type="Resource" uid="uid://bds4usqidx0ql" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/noble_zweihänder_blade.tres" id="2_5elek"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_nwcwj"]
+[ext_resource type="Resource" uid="uid://b2ntr14lkuwmv" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_guard.tres" id="4_8gnlb"]
+[ext_resource type="Resource" uid="uid://cmvuupx7mlrtx" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_pommel.tres" id="5_4xlsy"]
+[ext_resource type="Resource" uid="uid://b3jvil6h8kau" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_handle.tres" id="6_khlqx"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_njxa4"]
+
+[sub_resource type="Resource" id="Resource_ljsfu"]
+script = ExtResource("3_nwcwj")
+allowed_component = ExtResource("2_5elek")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_r0tcy"]
+script = ExtResource("3_nwcwj")
+allowed_component = ExtResource("4_8gnlb")
+weight = 2
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_7y7fx"]
+script = ExtResource("3_nwcwj")
+allowed_component = ExtResource("5_4xlsy")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_du3o0"]
+script = ExtResource("3_nwcwj")
+allowed_component = ExtResource("6_khlqx")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_njxa4")
+weapon_type = 2
+name = "Noble Zweihänder"
+description = "Unnecessarily ornate and expensive. Perfect for dying with style."
+creation_difficulty = 4
+produced_quantity = 1
+component_slots = Array[ExtResource("1_0i20c")]([SubResource("Resource_ljsfu"), SubResource("Resource_r0tcy"), SubResource("Resource_7y7fx"), SubResource("Resource_du3o0")])

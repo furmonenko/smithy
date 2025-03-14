@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://bo0sy7mw0r2py"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_q5tgf"]
+[ext_resource type="Resource" uid="uid://b48lbmwyapjvq" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/tatar_saber_blade.tres" id="2_ru3b5"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_cyk1k"]
+[ext_resource type="Resource" uid="uid://b5him07gv7w5d" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/curved_guard.tres" id="4_8kj8e"]
+[ext_resource type="Resource" uid="uid://clvait8p5d43f" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/round_pommel.tres" id="5_2t2fv"]
+[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="6_au6fh"]
+[ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_pidtl"]
+
+[sub_resource type="Resource" id="Resource_krg24"]
+script = ExtResource("3_cyk1k")
+allowed_component = ExtResource("2_ru3b5")
+weight = 3
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_rlnsr"]
+script = ExtResource("3_cyk1k")
+allowed_component = ExtResource("4_8kj8e")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_e6yod"]
+script = ExtResource("3_cyk1k")
+allowed_component = ExtResource("5_2t2fv")
+weight = 1
+is_required = true
+max_stack = 10
+
+[sub_resource type="Resource" id="Resource_amvqj"]
+script = ExtResource("3_cyk1k")
+allowed_component = ExtResource("6_au6fh")
+weight = 1
+is_required = true
+max_stack = 10
+
+[resource]
+script = ExtResource("7_pidtl")
+weapon_type = 1
+name = "Tatar Saber"
+description = "Brings a certain gravitas to diplomatic negotiations."
+creation_difficulty = 3
+produced_quantity = 1
+component_slots = Array[ExtResource("1_q5tgf")]([SubResource("Resource_krg24"), SubResource("Resource_rlnsr"), SubResource("Resource_e6yod"), SubResource("Resource_amvqj")])
