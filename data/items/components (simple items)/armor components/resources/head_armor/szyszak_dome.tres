@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="HeadArmorComponent" load_steps=5 format=3 uid="uid://cf8wsvd0syuhk"]
+[gd_resource type="Resource" script_class="HeadArmorComponent" load_steps=8 format=3 uid="uid://cf8wsvd0syuhk"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_h03jc"]
 [ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_pokpg"]
+[ext_resource type="Resource" uid="uid://bk8rk3f55wbqs" path="res://data/items/components (simple items)/tool components/resources/materials/chainmail_piece.tres" id="3_do3oo"]
 [ext_resource type="Script" uid="uid://cqk12n4kt8wiq" path="res://data/items/components (simple items)/armor components/head_armor_component.gd" id="3_y088k"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="4_26js8"]
 
 [sub_resource type="Resource" id="Resource_do3oo"]
 script = ExtResource("2_pokpg")
@@ -11,6 +13,14 @@ weight = 3
 is_required = true
 max_stack = 2
 
+[sub_resource type="Resource" id="Resource_2tmc4"]
+script = ExtResource("4_26js8")
+allowed_component = ExtResource("3_do3oo")
+weight = 2
+is_required = true
+max_stack = 2
+metadata/_custom_type_script = "uid://m8q58xkg5dxw"
+
 [resource]
 script = ExtResource("3_y088k")
 head_armor_type = 0
@@ -18,4 +28,4 @@ name = "Szyszak Dome"
 description = "Makes a satisfying 'dong' sound when struck, which is preferable to the sound an unprotected head makes."
 creation_difficulty = 3
 produced_quantity = 1
-component_slots = Array[ExtResource("1_h03jc")]([SubResource("Resource_do3oo")])
+component_slots = Array[ExtResource("1_h03jc")]([SubResource("Resource_do3oo"), SubResource("Resource_2tmc4")])

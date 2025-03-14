@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="GeneralOrder" load_steps=2 format=3 uid="uid://dilsukrsg2g5m"]
+[gd_resource type="Resource" script_class="SpecificComponentOrder" load_steps=2 format=3 uid="uid://dilsukrsg2g5m"]
 
-[ext_resource type="Script" uid="uid://dlo3bbnrmbv8x" path="res://data/items/orders/general_order.gd" id="1_1ubm0"]
+[ext_resource type="Script" uid="uid://c25kbvhryeuaf" path="res://data/items/orders/specific_component_order.gd" id="1_1ubm0"]
 
 [resource]
 script = ExtResource("1_1ubm0")
-creation_difficulty = 0
+required_component = ""
 required_quality_min = 0
 base_price = 0
 price_limit = 0
