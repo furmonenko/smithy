@@ -1,0 +1,219 @@
+[gd_scene load_steps=9 format=3 uid="uid://ba4pxcyb33bl3"]
+
+[ext_resource type="Script" uid="uid://cdvg3dmg5n8pc" path="res://mini games/workbench/polish/polish_mini_game.gd" id="1_k7g03"]
+[ext_resource type="Shader" uid="uid://r3nsaproj2ap" path="res://shaders/workpiece_shader.gdshader" id="2_shader"]
+[ext_resource type="Texture2D" uid="uid://dmuq6d4yl7422" path="res://assets/smithing/pngimg.com - sword_PNG5525.png" id="3_sword"]
+[ext_resource type="Texture2D" uid="uid://c3w0toplyah77" path="res://assets/buttons/keyboard/key_left.png" id="4_left"]
+[ext_resource type="Texture2D" uid="uid://cx2jhs8kcxh4" path="res://assets/buttons/keyboard/key_right.png" id="5_right"]
+[ext_resource type="Texture2D" uid="uid://dpe3i42rqkkng" path="res://assets/buttons/keyboard/key_down.png" id="6_down"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp6gl"]
+bg_color = Color(0.133333, 0.133333, 0.133333, 0.65098)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_polisher"]
+shader = ExtResource("2_shader")
+shader_parameter/shader_mode = 2
+shader_parameter/forge_progress = 1.0
+shader_parameter/initial_deform = Vector2(1, 1)
+shader_parameter/forge_center = Vector2(0.5, 0.5)
+shader_parameter/impact_radius = 0.4
+shader_parameter/bulge_strength = 0.0
+shader_parameter/noise_influence = 0.0
+shader_parameter/heat_amount = 0.0
+shader_parameter/heat_at_top = false
+shader_parameter/heat_spread = 2.0
+shader_parameter/heat_min_level = 0.2
+shader_parameter/heat_gradient_power = 0.8
+shader_parameter/heat_gradient_smooth = 0.7
+shader_parameter/heat_glow_threshold = 0.3
+shader_parameter/heat_glow_intensity = 0.6
+shader_parameter/heat_color_intensity = 0.85
+shader_parameter/impact_intensity = 0.0
+shader_parameter/impact_band_width = 0.1
+shader_parameter/impact_color = Color(1, 0.8, 0.2, 1)
+shader_parameter/flip_done = false
+shader_parameter/impact_y_position = 0.5
+shader_parameter/total_regions = 5
+shader_parameter/current_region = 0
+shader_parameter/cloth_position = 0.5
+shader_parameter/polish_direction = 0
+shader_parameter/rust_intensity = 0.7
+shader_parameter/scratch_intensity = 0.5
+shader_parameter/tarnish_intensity = 0.6
+shader_parameter/rust_color = Color(0.6, 0.2, 0, 1)
+shader_parameter/tarnish_color = Color(0.3, 0.3, 0.35, 1)
+shader_parameter/polish_highlight_color = Color(1, 0.95, 0.8, 1)
+
+[node name="PolishingMiniGame" type="CanvasLayer"]
+script = ExtResource("1_k7g03")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameTitle" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -92.0
+offset_top = 40.0
+offset_right = 92.0
+offset_bottom = 75.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Полірування виробу"
+horizontal_alignment = 1
+
+[node name="MainPanel" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 380.0
+offset_top = -200.0
+offset_right = 780.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dp6gl")
+
+[node name="WorkpieceView" type="TextureRect" parent="UI/MainPanel"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_polisher")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_sword")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RegionLabel" type="Label" parent="UI/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 20.0
+offset_right = 100.0
+offset_bottom = 46.0
+grow_horizontal = 2
+text = "Смуга 1 з 5"
+horizontal_alignment = 1
+
+[node name="PolishProgressBar" type="ProgressBar" parent="UI/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = -50.0
+offset_right = -50.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+value = 50.0
+
+[node name="ControlsContainer" type="HBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 383.0
+offset_top = -334.0
+offset_right = 783.0
+offset_bottom = -254.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="LeftButton" type="TextureRect" parent="UI/ControlsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("4_left")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="NextButton" type="TextureRect" parent="UI/ControlsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("6_down")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="RightButton" type="TextureRect" parent="UI/ControlsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("5_right")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InstructionsLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 14
+text = "Натискайте Q та E для руху тряпки ліворуч/праворуч
+Натисніть S щоб перейти до наступної смуги"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FeedbackLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Почніть полірування"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="PolishSound" type="AudioStreamPlayer" parent="SFX"]
+unique_name_in_owner = true
+volume_db = -10.0

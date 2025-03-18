@@ -1,12 +1,18 @@
 shader_type canvas_item;
 
-// Основні параметри шейдера
-uniform float forge_progress : hint_range(0.0, 1.0) = 0.0; // Прогрес кування (0 - початок/деформований, 1 - кінець/готовий меч)
+// Режими роботи шейдера
+uniform int shader_mode = 0; // 0 = кування, 1 = загартовування, 2 = полірування
+
+// ==== ЗАГАЛЬНІ ПАРАМЕТРИ ====
+uniform sampler2D displacement_noise; // Шум для деформацій та дефектів
+
+// ==== ПАРАМЕТРИ КУВАННЯ (FORGE) ====
+// Основні параметри
+uniform float forge_progress : hint_range(0.0, 1.0) = 0.0; // Прогрес кування
 uniform vec2 initial_deform = vec2(3.0, 3.0); // Початкова деформація
 uniform vec2 forge_center = vec2(0.5, 0.5); // Центр кування (точка удару молотом)
 uniform float impact_radius : hint_range(0.1, 1.0) = 0.5; // Радіус впливу удару
 uniform float bulge_strength : hint_range(0.0, 1.0) = 0.15; // Сила випучування по краях
-uniform sampler2D displacement_noise : hint_default_black; // Шум для нерівномірної деформації
 uniform float noise_influence : hint_range(0.0, 1.0) = 0.05; // Вплив шуму на деформацію
 uniform sampler2D billet_texture : hint_default_white; // Текстура початкової заготовки
 
@@ -26,11 +32,30 @@ uniform float heat_glow_intensity : hint_range(0.1, 1.0) = 0.6; // Інтенс�
 uniform float heat_color_intensity : hint_range(0.1, 1.0) = 0.85; // Інтенсивність змішування з кольором нагріву
 
 // Параметри імпакту від ударів
-uniform float impact_intensity : hint_range(0.0, 1.0) = 0.0; // Інтенсивність поточного імпакту (0.0 - не видно, 1.0 - максимально видно)
-uniform float impact_band_width : hint_range(0.01, 0.3) = 0.1; // Ширина смуги імпакту (0.01 - дуже вузька, 0.3 - широка)
-uniform vec4 impact_color : source_color = vec4(1.0, 0.8, 0.2, 1.0); // Колір імпакту (жовтуватий)
+uniform float impact_intensity : hint_range(0.0, 1.0) = 0.0; // Інтенсивність поточного імпакту
+uniform float impact_band_width : hint_range(0.01, 0.3) = 0.1; // Ширина смуги імпакту
+uniform vec4 impact_color : source_color = vec4(1.0, 0.8, 0.2, 1.0); // Колір імпакту
 uniform bool flip_done = false; // Чи був виконаний переворот заготовки
 uniform float impact_y_position : hint_range(0.0, 1.0) = 0.5; // Позиція імпакту по вертикалі
+
+// ==== ПАРАМЕТРИ ПОЛІРУВАННЯ (POLISH) ====
+uniform int total_regions = 5; // Загальна кількість смуг для полірування
+uniform int current_region = 0; // Поточна активна смуга (0-based)
+uniform float cloth_position = 0.5; // Позиція полірувальної тряпки
+uniform int polish_direction = 0; // Напрямок руху тряпки (0 = немає, 1 = ліворуч, 2 = праворуч)
+uniform sampler2D region_polish_texture; // Текстура з прогресом полірування для кожної смуги
+
+// Параметри налаштування дефектів
+uniform float rust_intensity : hint_range(0.0, 1.0) = 0.7; // Інтенсивність іржі
+uniform float scratch_intensity : hint_range(0.0, 1.0) = 0.5; // Інтенсивність подряпин
+uniform float tarnish_intensity : hint_range(0.0, 1.0) = 0.6; // Інтенсивність потемніння
+
+// Кольори дефектів
+uniform vec4 rust_color : source_color = vec4(0.6, 0.2, 0.0, 1.0); // Колір іржі (коричневий)
+uniform vec4 tarnish_color : source_color = vec4(0.3, 0.3, 0.35, 1.0); // Колір потемніння (темно-сірий)
+uniform vec4 polish_highlight_color : source_color = vec4(1.0, 0.95, 0.8, 1.0); // Колір блиску при поліруванні
+
+// ==== ФУНКЦІЇ ДЛЯ РЕЖИМУ КУВАННЯ ====
 
 // Функція для отримання кольору нагріву на основі температури
 vec3 get_heat_color(float heat_level) {
@@ -146,61 +171,232 @@ float calculate_horizontal_band_impact(vec2 uv) {
     return combined_effect * impact_intensity;
 }
 
+// ==== ФУНКЦІЇ ДЛЯ РЕЖИМУ ПОЛІРУВАННЯ ====
+
+// Функція для визначення, чи належить пікселя до поточної смуги
+bool is_in_current_region(float v_coord) {
+    float region_height = 1.0 / float(total_regions);
+    float region_start = region_height * float(current_region);
+    float region_end = region_start + region_height;
+    
+    return (v_coord >= region_start && v_coord < region_end);
+}
+
+// Функція для визначення номера смуги для пікселя
+int get_region_index(float v_coord) {
+    float region_height = 1.0 / float(total_regions);
+    return int(v_coord / region_height);
+}
+
+// Функція для отримання прогресу полірування для конкретної смуги
+float get_polish_progress_for_region(int region_idx) {
+    if (region_idx < 0 || region_idx >= total_regions) {
+        return 0.0;
+    }
+    
+    // Використовуємо текстуру 1D для зберігання прогресу (R-канал)
+    // Нормалізовані координати для текстури 1D
+    float u_coord = (float(region_idx) + 0.5) / float(total_regions);
+    return texture(region_polish_texture, vec2(u_coord, 0.5)).r;
+}
+
+// Функція для генерації іржавих плям
+float generate_rust(vec2 uv, float seed) {
+    // Зчитуємо шум для створення органічних плям
+    vec2 scaled_uv = uv * vec2(3.0, 1.5) + vec2(seed * 7.89, seed * 2.45);
+    float noise_val = texture(displacement_noise, scaled_uv).r;
+    
+    // Додаємо другий шар шуму для більш цікавих форм
+    vec2 scaled_uv2 = uv * vec2(5.0, 2.5) + vec2(seed * 3.21, seed * 1.78);
+    float noise_val2 = texture(displacement_noise, scaled_uv2).r;
+    
+    // Змішуємо два шари шуму
+    float combined_noise = mix(noise_val, noise_val2, 0.4);
+    
+    // Застосовуємо пороговий ефект для створення плям
+    float rust_threshold = 0.6 + seed * 0.2; // Поріг з варіацією по seed
+    return smoothstep(rust_threshold, rust_threshold + 0.1, combined_noise);
+}
+
+// Функція для генерації подряпин
+float generate_scratches(vec2 uv, float seed) {
+    // Різні шари подряпин
+    float scratch1 = texture(displacement_noise, uv * vec2(20.0, 0.5) + vec2(0.0, seed * 8.67)).r;
+    float scratch2 = texture(displacement_noise, uv * vec2(15.0, 0.3) + vec2(0.0, seed * 4.32)).r;
+    float scratch3 = texture(displacement_noise, uv * vec2(25.0, 0.7) + vec2(0.0, seed * 2.18)).r;
+    
+    // Комбінуємо різні шари подряпин
+    float scratches = max(scratch1, max(scratch2, scratch3));
+    
+    // Застосовуємо поріг для тонших ліній
+    return step(0.75, scratches);
+}
+
+// Функція для генерації потемніння металу
+float generate_tarnish(vec2 uv, float seed) {
+    // Зчитуємо шум для створення патерну потемніння
+    vec2 scaled_uv = uv * vec2(2.0, 3.0) + vec2(seed * 3.45, seed * 5.67);
+    float noise_val = texture(displacement_noise, scaled_uv).r;
+    
+    // Робимо плавний перехід для природного вигляду
+    return smoothstep(0.4, 0.6, noise_val);
+}
+
+// Функція для створення ефекту "блиску" при проходженні тряпки
+float generate_polish_highlight(vec2 uv) {
+    // Відстань від позиції тряпки по горизонталі
+    float distance_from_cloth = abs(uv.x - cloth_position);
+    
+    // Ширина ефекту блиску
+    float highlight_width = 0.05;
+    
+    // Створюємо ефект блиску лише при активному русі і лише в поточній смузі
+    if (polish_direction != 0 && is_in_current_region(uv.y)) {
+        // Визначаємо силу блиску з урахуванням відстані від тряпки
+        float highlight = smoothstep(highlight_width, 0.0, distance_from_cloth);
+        
+        // Додаємо "хвилю" блиску для більш динамічного ефекту
+        float wave = sin(uv.x * 50.0 + TIME * 15.0) * 0.5 + 0.5;
+        
+        // Зменшуємо інтенсивність, щоб не засліплювати
+        return highlight * wave * 0.4;
+    }
+    
+    return 0.0;
+}
+
 void fragment() {
     // Отримуємо базові UV координати
     vec2 uv = UV;
+    vec4 final_color;
+    
+    // Обробка в залежності від режиму шейдера
+    if (shader_mode == 0) {
+        // ==== РЕЖИМ КУВАННЯ ====
+        
+        // Застосовуємо деформацію з більш плавним прогресом
+        vec2 deformed_uv = deform_point(uv, forge_progress);
 
-    // Застосовуємо деформацію з більш плавним прогресом
-    vec2 deformed_uv = deform_point(uv, forge_progress);
+        // Перевіряємо границі і обмежуємо deformed_uv, щоб завжди залишатися в межах текстури
+        deformed_uv = clamp(deformed_uv, vec2(0.0), vec2(1.0));
 
-    // Перевіряємо границі і обмежуємо deformed_uv, щоб завжди залишатися в межах текстури
-    deformed_uv = clamp(deformed_uv, vec2(0.0), vec2(1.0));
+        // Отримуємо колір з текстури заготовки та фінального меча
+        vec4 billet_color = texture(billet_texture, deformed_uv);
+        vec4 final_texture_color = texture(TEXTURE, deformed_uv);
 
-    // Отримуємо колір з текстури заготовки та фінального меча
-    vec4 billet_color = texture(billet_texture, deformed_uv);
-    vec4 final_color = texture(TEXTURE, deformed_uv);
+        // Змішуємо текстури заготовки та фінального меча в залежності від прогресу кування
+        final_color = mix(billet_color, final_texture_color, forge_progress);
 
-    // Змішуємо текстури заготовки та фінального меча в залежності від прогресу кування
-    COLOR = mix(billet_color, final_color, forge_progress);
+        // Додаємо ефект нагріву з реалістичними температурними кольорами
+        if (heat_amount > 0.0) {
+            // Обчислюємо тепловий градієнт на основі вертикального положення
+            float heat_gradient = calculate_heat_gradient(uv);
 
-    // Додаємо ефект нагріву з реалістичними температурними кольорами
-    if (heat_amount > 0.0) {
-        // Обчислюємо тепловий градієнт на основі вертикального положення
-        float heat_gradient = calculate_heat_gradient(uv);
+            // Додаємо вплив центру кування для реалістичності, але із збільшеним радіусом
+            float expanded_radius = impact_radius * heat_spread; // Збільшуємо радіус впливу тепла
+            float forge_effect = smoothstep(expanded_radius, 0.0, distance(uv, forge_center)) * 0.4;
 
-        // Додаємо вплив центру кування для реалістичності, але із збільшеним радіусом
-        float expanded_radius = impact_radius * heat_spread; // Збільшуємо радіус впливу тепла
-        float forge_effect = smoothstep(expanded_radius, 0.0, distance(uv, forge_center)) * 0.4;
+            // Посилюємо ефект вертикального градієнту та комбінуємо з центром кування
+            float combined_heat = max(heat_gradient, forge_effect);
 
-        // Посилюємо ефект вертикального градієнту та комбінуємо з центром кування
-        float combined_heat = max(heat_gradient, forge_effect);
+            // Масштабуємо комбінований тепловий ефект загальним значенням нагріву
+            float effective_heat = heat_amount * combined_heat;
 
-        // Масштабуємо комбінований тепловий ефект загальним значенням нагріву
-        float effective_heat = heat_amount * combined_heat;
+            // Отримуємо колір нагріву відповідно до ефективного рівня температури
+            vec3 metal_heat_color = get_heat_color(effective_heat);
 
-        // Отримуємо колір нагріву відповідно до ефективного рівня температури
-        vec3 metal_heat_color = get_heat_color(effective_heat);
+            // Змішуємо основний колір з кольором нагріву з налаштованою інтенсивністю
+            final_color.rgb = mix(final_color.rgb, metal_heat_color, effective_heat * heat_color_intensity);
 
-        // Змішуємо основний колір з кольором нагріву з налаштованою інтенсивністю
-        COLOR.rgb = mix(COLOR.rgb, metal_heat_color, effective_heat * heat_color_intensity);
+            // Додаємо світіння (більш виражене при вищих температурах)
+            // Використовуємо налаштований поріг для початку світіння та інтенсивність
+            if (effective_heat > heat_glow_threshold) {
+                float glow_intensity = (effective_heat - heat_glow_threshold) / (1.0 - heat_glow_threshold);
+                glow_intensity = min(glow_intensity, 1.0); // Обмежуємо максимальну інтенсивність
+                final_color.rgb += metal_heat_color * glow_intensity * heat_glow_intensity;
+            }
+        }
 
-        // Додаємо світіння (більш виражене при вищих температурах)
-        // Використовуємо налаштований поріг для початку світіння та інтенсивність
-        if (effective_heat > heat_glow_threshold) {
-            float glow_intensity = (effective_heat - heat_glow_threshold) / (1.0 - heat_glow_threshold);
-            glow_intensity = min(glow_intensity, 1.0); // Обмежуємо максимальну інтенсивність
-            COLOR.rgb += metal_heat_color * glow_intensity * heat_glow_intensity;
+        // Додаємо ефект імпакту від ударів молотом (горизонтальна смуга)
+        if (impact_intensity > 0.0) {
+            float impact_effect = calculate_horizontal_band_impact(uv);
+
+            // Додаємо світіння на місці удару
+            final_color.rgb = mix(final_color.rgb, impact_color.rgb, impact_effect);
+
+            // Додаємо додаткове світіння для кращої видимості
+            final_color.rgb += impact_color.rgb * impact_effect * 0.6;
         }
     }
-
-    // Додаємо ефект імпакту від ударів молотом (горизонтальна смуга)
-    if (impact_intensity > 0.0) {
-        float impact_effect = calculate_horizontal_band_impact(uv);
-
-        // Додаємо світіння на місці удару
-        COLOR.rgb = mix(COLOR.rgb, impact_color.rgb, impact_effect);
-
-        // Додаємо додаткове світіння для кращої видимості
-        COLOR.rgb += impact_color.rgb * impact_effect * 0.6;
+    else if (shader_mode == 2) {
+        // ==== РЕЖИМ ПОЛІРУВАННЯ ====
+        
+        // Базовий колір з текстури
+        final_color = texture(TEXTURE, uv);
+        
+        // Визначаємо до якої смуги належить поточний піксель
+        int region_idx = get_region_index(uv.y);
+        
+        // Отримуємо прогрес полірування для цієї смуги
+        float polish_progress = get_polish_progress_for_region(region_idx);
+        
+        // Створюємо колір дефектів для поточного пікселя
+        vec4 defect_color = final_color;
+        
+        // Унікальне значення seed для різних типів дефектів
+        float rust_seed = uv.x * 12.34 + uv.y * 56.78;
+        float scratch_seed = uv.x * 90.12 + uv.y * 34.56;
+        float tarnish_seed = uv.x * 78.90 + uv.y * 12.34;
+        
+        // Створюємо різні типи дефектів і застосовуємо їх з поступовим зникненням залежно від прогресу полірування
+        float rust = generate_rust(uv, rust_seed) * rust_intensity * (1.0 - polish_progress);
+        float scratches = generate_scratches(uv, scratch_seed) * scratch_intensity * (1.0 - polish_progress);
+        float tarnish = generate_tarnish(uv, tarnish_seed) * tarnish_intensity * (1.0 - polish_progress);
+        
+        // Комбінуємо різні дефекти
+        defect_color.rgb = mix(defect_color.rgb, rust_color.rgb, rust);
+        defect_color.rgb = mix(defect_color.rgb, vec3(0.5, 0.5, 0.5), scratches * 0.3);
+        defect_color.rgb = mix(defect_color.rgb, tarnish_color.rgb, tarnish);
+        
+        // Додаємо блиск там, де тряпка проходить
+        float highlight = generate_polish_highlight(uv);
+        
+        // Змішуємо з фінальним кольором
+        final_color = defect_color;
+        
+        // Додаємо ефект блиску при поліруванні
+        if (highlight > 0.0) {
+            final_color.rgb = mix(final_color.rgb, polish_highlight_color.rgb, highlight);
+        }
+        
+        // Додаємо ефект "виділення поточної активної смуги"
+        if (is_in_current_region(uv.y)) {
+            // Пульсуюча рамка для активної смуги
+            float region_height = 1.0 / float(total_regions);
+            float region_start = region_height * float(current_region);
+            float region_end = region_start + region_height;
+            
+            // Ефект рамки (верх і низ смуги)
+            float border_width = 0.005;
+            float top_border = smoothstep(region_start, region_start + border_width, uv.y);
+            float bottom_border = smoothstep(region_end - border_width, region_end, uv.y);
+            float border = min(top_border, 1.0 - bottom_border);
+            
+            // Пульсація рамки
+            float pulse = sin(TIME * 5.0) * 0.5 + 0.5;
+            
+            // Додаємо підсвітку рамки для активної смуги
+            if (border < 0.9) {
+                vec3 highlight_color = vec3(1.0, 0.8, 0.2);
+                final_color.rgb = mix(final_color.rgb, highlight_color, (1.0 - border) * 0.5 * pulse);
+            }
+        }
     }
+    else {
+        // Режим загартовування або інші режими
+        // Можна буде додати логіку для режиму загартовування пізніше
+        final_color = texture(TEXTURE, uv);
+    }
+    
+    COLOR = final_color;
 }
