@@ -1,0 +1,434 @@
+[gd_scene load_steps=8 format=3 uid="uid://dq3uqbpx0bvmr"]
+
+[ext_resource type="Script" uid="uid://b6inuyiimj45s" path="res://mini games/workbench/chainmail/chainmail_mini_game.gd" id="1_itqux"]
+[ext_resource type="Texture2D" uid="uid://r1abwf6oc5yv" path="res://assets/pngtree-metal-ring-of-can-png-illustration-png-image_11584863.png" id="2_6hogm"]
+[ext_resource type="Texture2D" uid="uid://bxox6agx280fw" path="res://assets/buttons/keyboard/key_e.png" id="3_xvkgf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp6gl"]
+bg_color = Color(0.133333, 0.133333, 0.133333, 0.65098)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7s8e"]
+bg_color = Color(0.145098, 0.145098, 0.145098, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="Gradient" id="Gradient_iyuvs"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.8, 0.2, 0.8, 1, 0.5, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vkm8r"]
+bg_color = Color(0.784314, 0.392157, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="ChainmailMiniGame" type="CanvasLayer"]
+script = ExtResource("1_itqux")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameTitle" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -92.0
+offset_top = 40.0
+offset_right = 92.0
+offset_bottom = 75.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Плетіння кульчуги"
+horizontal_alignment = 1
+
+[node name="RightPanel" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -580.0
+offset_top = -200.0
+offset_right = -180.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dp6gl")
+
+[node name="DetailedViewLabel" type="Label" parent="UI/RightPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 20.0
+offset_right = 100.0
+offset_bottom = 46.0
+grow_horizontal = 2
+text = "Плетіння кільця"
+horizontal_alignment = 1
+
+[node name="WorkspaceContainer" type="Panel" parent="UI/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7s8e")
+
+[node name="CenterRing" type="TextureRect" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(95, 95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(50, 50)
+texture = ExtResource("2_6hogm")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Marker" type="ColorRect" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -75.0
+offset_right = 20.0
+offset_bottom = -55.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(10, 10)
+color = Color(1, 0, 0, 1)
+
+[node name="PlacedRing0" type="TextureRect" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(95, 95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -85.0
+offset_right = 10.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(47.5, 47.5)
+texture = ExtResource("2_6hogm")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="PlacedRing1" type="TextureRect" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(95, 95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -85.0
+offset_right = 10.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(47.5, 47.5)
+texture = ExtResource("2_6hogm")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="PlacedRing2" type="TextureRect" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(95, 95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -85.0
+offset_right = 10.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(47.5, 47.5)
+texture = ExtResource("2_6hogm")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="PlacedRing3" type="TextureRect" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(95, 95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -85.0
+offset_right = 10.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(47.5, 47.5)
+texture = ExtResource("2_6hogm")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="PlacedRing4" type="TextureRect" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(95, 95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -85.0
+offset_right = 10.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(47.5, 47.5)
+texture = ExtResource("2_6hogm")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="PlacedRing5" type="TextureRect" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(95, 95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -85.0
+offset_right = 10.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(47.5, 47.5)
+texture = ExtResource("2_6hogm")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="RivetFlash" type="CPUParticles2D" parent="UI/RightPanel/WorkspaceContainer"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(200, 150)
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.8
+local_coords = true
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+scale_amount_min = 3.0
+scale_amount_max = 5.0
+color_ramp = SubResource("Gradient_iyuvs")
+
+[node name="RingsInfo" type="VBoxContainer" parent="UI/RightPanel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -181.0
+offset_top = 9.0
+offset_right = -17.0
+offset_bottom = 145.0
+grow_horizontal = 0
+
+[node name="RingsLabel" type="Label" parent="UI/RightPanel/RingsInfo"]
+layout_mode = 2
+text = "Залишилось кілець:"
+horizontal_alignment = 1
+
+[node name="RingsCounter" type="Label" parent="UI/RightPanel/RingsInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Кільця: 0/6"
+horizontal_alignment = 1
+
+[node name="RingsLeft" type="GridContainer" parent="UI/RightPanel/RingsInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 6
+
+[node name="Ring1" type="TextureRect" parent="UI/RightPanel/RingsInfo/RingsLeft"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("2_6hogm")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Ring5" type="TextureRect" parent="UI/RightPanel/RingsInfo/RingsLeft"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("2_6hogm")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Ring6" type="TextureRect" parent="UI/RightPanel/RingsInfo/RingsLeft"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("2_6hogm")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Ring2" type="TextureRect" parent="UI/RightPanel/RingsInfo/RingsLeft"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("2_6hogm")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Ring3" type="TextureRect" parent="UI/RightPanel/RingsInfo/RingsLeft"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("2_6hogm")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Ring4" type="TextureRect" parent="UI/RightPanel/RingsInfo/RingsLeft"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("2_6hogm")
+expand_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="UI/RightPanel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -24.0
+offset_right = -2.0
+offset_bottom = 72.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="RivetButton" type="TextureRect" parent="UI/RightPanel/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("3_xvkgf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="QualityMeter" type="ProgressBar" parent="UI/RightPanel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 78.0
+offset_right = -18.0
+offset_bottom = 98.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_vkm8r")
+value = 100.0
+show_percentage = false
+
+[node name="QualityLabel" type="Label" parent="UI/RightPanel/QualityMeter"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Якість"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FeedbackLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Заклепайте кільце!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InstructionsLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -70.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 14
+text = "Натисніть A коли маркер буде на правильній позиції"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="RivetSound" type="AudioStreamPlayer" parent="SFX"]
+unique_name_in_owner = true
+volume_db = -10.0

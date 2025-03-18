@@ -1,0 +1,292 @@
+[gd_scene load_steps=9 format=3 uid="uid://dryvi50abgq1s"]
+
+[ext_resource type="Script" uid="uid://ca1k24bahqr7c" path="res://mini games/workbench/woodworking/woodworking_mini_game.gd" id="1_tyisp"]
+[ext_resource type="Texture2D" uid="uid://dpe3i42rqkkng" path="res://assets/buttons/keyboard/key_down.png" id="2_j0gml"]
+[ext_resource type="Texture2D" uid="uid://c3w0toplyah77" path="res://assets/buttons/keyboard/key_left.png" id="2_pii2r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp6gl"]
+bg_color = Color(0.133333, 0.133333, 0.133333, 0.65098)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7s8e"]
+bg_color = Color(0.145098, 0.145098, 0.145098, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wood"]
+bg_color = Color(0.545098, 0.270588, 0.0745098, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.392157, 0.196078, 0.0392157, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_marker"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.2, 0.2, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="Gradient" id="Gradient_saw"]
+offsets = PackedFloat32Array(0, 0.7, 1)
+colors = PackedColorArray(1, 1, 1, 0.8, 1, 1, 1, 0.3, 1, 1, 1, 0)
+
+[node name="WoodworkingMiniGame" type="CanvasLayer"]
+script = ExtResource("1_tyisp")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameTitle" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -92.0
+offset_top = 40.0
+offset_right = 92.0
+offset_bottom = 75.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Вирізання дерева"
+horizontal_alignment = 1
+
+[node name="RightPanel" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -580.0
+offset_top = -200.0
+offset_right = -180.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dp6gl")
+
+[node name="WoodworkContainer" type="Panel" parent="UI/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7s8e")
+
+[node name="WorkpieceTitle" type="Label" parent="UI/RightPanel/WoodworkContainer"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -88.0
+offset_top = 20.0
+offset_right = 90.0
+offset_bottom = 46.0
+grow_horizontal = 2
+pivot_offset = Vector2(89, 13)
+theme_override_font_sizes/font_size = 18
+text = "Заготовка з дерева"
+horizontal_alignment = 1
+
+[node name="WoodChunk" type="Panel" parent="UI/RightPanel/WoodworkContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -158.0
+offset_right = 150.0
+offset_bottom = 198.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wood")
+
+[node name="StripsContainer" type="GridContainer" parent="UI/RightPanel/WoodworkContainer/WoodChunk"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 0
+columns = 6
+
+[node name="CutterMarker" type="Panel" parent="UI/RightPanel/WoodworkContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+offset_left = 150.0
+offset_top = 200.0
+offset_right = 180.0
+offset_bottom = 230.0
+pivot_offset = Vector2(15, 15)
+theme_override_styles/panel = SubResource("StyleBoxFlat_marker")
+
+[node name="SawParticles" type="CPUParticles2D" parent="UI/RightPanel/WoodworkContainer/CutterMarker"]
+unique_name_in_owner = true
+position = Vector2(15, 15)
+emitting = false
+amount = 50
+lifetime = 1.5
+preprocess = 0.2
+local_coords = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector2(0, -1)
+spread = 30.0
+gravity = Vector2(0, 20)
+initial_velocity_min = 20.0
+initial_velocity_max = 40.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(0.8, 0.7, 0.5, 0.8)
+color_ramp = SubResource("Gradient_saw")
+
+[node name="LeftButton" type="TextureRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = 220.0
+offset_right = -72.0
+offset_bottom = 348.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("2_pii2r")
+stretch_mode = 5
+
+[node name="RightButton" type="TextureRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 220.0
+offset_right = 68.0
+offset_bottom = 348.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("2_j0gml")
+stretch_mode = 5
+flip_h = true
+
+[node name="CutButton" type="TextureRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 80.0
+offset_top = 220.0
+offset_right = 208.0
+offset_bottom = 348.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+stretch_mode = 5
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 40.0
+offset_right = -20.0
+offset_bottom = 66.0
+grow_horizontal = 0
+text = "Рахунок: 100"
+horizontal_alignment = 1
+
+[node name="FeedbackLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Виберіть полосу для вирізання"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InstructionsLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -70.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 14
+text = "Оберіть полосу (ліворуч/праворуч) та зажміть E щоб вирізати.
+Відпустіть на кінці полоси!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="MoveSound" type="AudioStreamPlayer" parent="SFX"]
+unique_name_in_owner = true
+volume_db = -15.0
+
+[node name="CuttingSound" type="AudioStreamPlayer" parent="SFX"]
+unique_name_in_owner = true
+volume_db = -10.0
