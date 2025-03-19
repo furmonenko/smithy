@@ -59,6 +59,9 @@ var flip_timer: Timer
 var impact_tween: Tween = null
 var hit_positions = []  # Масив позицій ударів
 
+@onready var flip_button = %FlipButton
+
+
 # Налаштування кування меча для шейдера
 var forging_stages = [
 	{
@@ -308,7 +311,8 @@ func start_hit_phase(update_shader_position: bool = true):
 	
 	# Ховаємо елементи інших фаз
 	%DirectionArrow.visible = false
-	%FlipButton.visible = false
+	if flip_button:
+		flip_button.visible = false
 	
 	# Скасовуємо попередній tween, якщо він існує
 	var existing_tweens = get_tree().get_processed_tweens()
@@ -860,8 +864,8 @@ func setup_hit_buttons():
 	if %DirectionArrow:
 		%DirectionArrow.texture = InputManager.get_button_texture("ui_up")  # Початкова текстура
 	
-	if %FlipButton:
-		%FlipButton.texture = InputManager.get_button_texture("ui_left")  # Початкова текстура для фліпу
+	if flip_button:
+		flip_button.texture = InputManager.get_button_texture("ui_left")  # Початкова текстура для фліпу
 
 # Нова функція для оновлення візуалізації заготовки
 func update_forge_visualization():
@@ -970,11 +974,9 @@ func start_flip_phase():
 	%HitButtonY.visible = false
 	
 	# Оновлюємо текстуру для кнопки перевертання
-	%FlipButton.texture = InputManager.get_button_texture("ui_left")  # Можна вибрати будь-яку з двох
-	%FlipButton.visible = true
-	
-	# Показуємо кнопку перевертання
-	%FlipButton.visible = true
+	if flip_button:
+		flip_button.texture = InputManager.get_button_texture("ui_left")  # Можна вибрати будь-яку з двох
+		flip_button.visible = true
 	
 	# Встановлюємо таймер для автоматичного завершення фази
 	flip_timer.wait_time = reaction_time * 1.3  # Більше часу на перевертання

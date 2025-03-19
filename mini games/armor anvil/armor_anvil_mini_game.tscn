@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://xxxxxxxxxxxx"]
+[gd_scene load_steps=15 format=3 uid="uid://d2lcdjgnsuw4o"]
 
-[ext_resource type="Script" uid="uid://5f46gg4tuxfv" path="res://mini games/anvil_mini_game.gd" id="1_pbr6s"]
+[ext_resource type="Script" uid="uid://ct0q7utqxjf5e" path="res://mini games/armor anvil/armor_anvil_mini_game.gd" id="1_d2bl4"]
 [ext_resource type="Texture2D" uid="uid://dpe3i42rqkkng" path="res://assets/buttons/keyboard/key_down.png" id="2_j0gml"]
 [ext_resource type="Texture2D" uid="uid://c3w0toplyah77" path="res://assets/buttons/keyboard/key_left.png" id="2_pii2r"]
+[ext_resource type="Texture2D" uid="uid://cx2jhs8kcxh4" path="res://assets/buttons/keyboard/key_right.png" id="2_right"]
 [ext_resource type="Shader" uid="uid://r3nsaproj2ap" path="res://shaders/workpiece_shader.gdshader" id="2_t4qx3"]
 [ext_resource type="Texture2D" uid="uid://dmuq6d4yl7422" path="res://assets/smithing/pngimg.com - sword_PNG5525.png" id="2_tx81m"]
 [ext_resource type="Texture2D" uid="uid://cxobr12vcikg" path="res://assets/buttons/xbox_gamepad/dpad_down.png" id="6_roavf"]
@@ -79,8 +80,8 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="AnvilMiniGame" type="CanvasLayer"]
-script = ExtResource("1_pbr6s")
+[node name="ArmorAnvilMiniGame" type="CanvasLayer"]
+script = ExtResource("1_d2bl4")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -101,7 +102,7 @@ offset_right = 92.0
 offset_bottom = 75.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 24
-text = "Ковальська справа"
+text = "Бронярська справа"
 horizontal_alignment = 1
 
 [node name="RightPanel" type="Panel" parent="UI"]
@@ -177,77 +178,6 @@ texture = ExtResource("2_tx81m")
 expand_mode = 5
 stretch_mode = 5
 
-[node name="DirectionArrow" type="TextureRect" parent="UI/RightPanel/WorkpieceContainer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -254.0
-offset_top = 59.0
-offset_right = -126.0
-offset_bottom = 187.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(64, 64)
-texture = ExtResource("2_j0gml")
-stretch_mode = 5
-
-[node name="FlipButton" type="TextureRect" parent="UI/RightPanel"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -254.0
-offset_top = 115.0
-offset_right = -126.0
-offset_bottom = 243.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(64, 64)
-texture = ExtResource("2_pii2r")
-stretch_mode = 5
-
-[node name="HitButtonA" type="TextureRect" parent="UI/RightPanel"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -254.0
-offset_top = 115.0
-offset_right = -126.0
-offset_bottom = 243.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(64, 64)
-stretch_mode = 5
-
-[node name="HitButtonB" type="TextureRect" parent="UI/RightPanel"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -254.0
-offset_top = 115.0
-offset_right = -126.0
-offset_bottom = 243.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch_mode = 5
-
 [node name="HitButtonX" type="TextureRect" parent="UI/RightPanel"]
 unique_name_in_owner = true
 visible = false
@@ -298,6 +228,74 @@ scale = Vector2(4, 4)
 pivot_offset = Vector2(64, 64)
 texture = ExtResource("6_roavf")
 expand_mode = 1
+stretch_mode = 5
+
+[node name="HitButtonA" type="TextureRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -254.0
+offset_top = 115.0
+offset_right = -126.0
+offset_bottom = 243.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+stretch_mode = 5
+
+[node name="HitButtonB" type="TextureRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -254.0
+offset_top = 115.0
+offset_right = -126.0
+offset_bottom = 243.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DirectionContainer" type="HBoxContainer" parent="UI/RightPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = 10.0
+offset_right = 150.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="FlipButton" type="TextureRect" parent="UI/RightPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 220.0
+offset_right = 64.0
+offset_bottom = 348.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
 stretch_mode = 5
 
 [node name="WorkpieceLabel" type="Label" parent="UI"]
@@ -410,3 +408,21 @@ vertical_alignment = 1
 unique_name_in_owner = true
 stream = ExtResource("8_nuycr")
 volume_db = -10.0
+
+[node name="LeftDirectionButton" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+texture = ExtResource("2_pii2r")
+stretch_mode = 5
+
+[node name="DirectionArrow" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+texture = ExtResource("2_j0gml")
+stretch_mode = 5
+
+[node name="RightDirectionButton" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+texture = ExtResource("2_right")
+stretch_mode = 5
