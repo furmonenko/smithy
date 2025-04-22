@@ -163,3 +163,75 @@ func calculate_average_quality() -> float:
 # Отримати всі компоненти
 func get_all_components() -> Array[SimpleItem]:
 	return assigned_components
+
+# Перевизначення методу contains
+func contains(component: SimpleItem) -> bool:
+	return assigned_components.has(component)
+
+# Перевірка чи містить слот компонент конкретного типу
+func contains_component_type(component_type) -> bool:
+	for component in assigned_components:
+		# Отримуємо тип компонента (залежить від реалізації компонентів)
+		var comp_type = component.get_component_type() if component.has_method("get_component_type") else null
+		
+		if comp_type == component_type:
+			return true
+	
+	return false
+
+# Перевизначення методу get_all_items
+func get_all_items() -> Array:
+	return assigned_components
+
+# Отримати вартість матеріалів для компонентів
+func get_material_cost() -> int:
+	var total_cost = 0
+	for component in assigned_components:
+		total_cost += component.get_material_cost()
+	return total_cost
+
+# Перевіряє чи відповідають компоненти мінімальним вимогам якості
+func meets_quality_requirement(required_quality: int) -> bool:
+	return calculate_average_quality() >= required_quality
+
+# Отримати копію слота з порожніми компонентами для шаблону крафту
+func get_empty_template() -> ComponentSlot:
+	var template = ComponentSlot.new()
+	template.allowed_component = allowed_component
+	template.weight = weight
+	template.is_required = is_required
+	template.max_stack = max_stack
+	template.quantity = quantity
+	return template
+
+# Знайти найкращий компонент для замовлення
+func get_best_component_for_order(order) -> SimpleItem:
+	var best_component = null
+	var highest_quality = 0
+	
+	for component in assigned_components:
+		if component.get_quality() > highest_quality:
+			highest_quality = component.get_quality()
+			best_component = component
+	
+	return best_component
+
+# Кількість унікальних компонентів у слоті
+func get_unique_components_count() -> int:
+	var unique_names = {}
+	
+	for component in assigned_components:
+		unique_names[component.name] = true
+	
+	return unique_names.size()
+
+# Перевірка чи даний слот підходить для конкретного замовлення
+func is_suitable_for_order(order) -> bool:
+	# Приклад перевірки для специфічного замовлення компонента
+	if order is SpecificComponentOrder and order.required_component:
+		# Перевіряємо, чи дозволений компонент відповідає замовленому
+		if allowed_component.name == order.required_component.name:
+			return true
+		
+	# Можна додати інші перевірки для інших типів замовлень
+	return false

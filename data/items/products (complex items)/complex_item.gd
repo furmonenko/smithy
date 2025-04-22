@@ -7,14 +7,16 @@ signal assembly_quality_changed(new_quality: float)
 
 var assembly_quality: float = 0.0  # Результат міні-гри складання (0-1)
 
-# Отримати коефіцієнт складності на основі рівня
+# Отримує коефіцієнт складності на основі рівня
 func get_complexity_coefficient() -> float:
 	match creation_difficulty:
-		1:  # Побутовий виріб
+		CreationDifficulty.HOUSEHOLD:  # 1
 			return 0.9
-		2:  # Військовий виріб
+		CreationDifficulty.BASIC:      # 2
+			return 1.0
+		CreationDifficulty.MILITARY:   # 3
 			return 1.1
-		3:  # Елітний виріб
+		CreationDifficulty.ELITE:      # 4
 			return 1.2
 		_:
 			return 1.0
@@ -130,3 +132,103 @@ func remove_component_from_slot(slot_index: int, component_index: int) -> Simple
 func clear_all_slots() -> void:
 	for slot in component_slots:
 		slot.clear()
+
+# Додаткові методи для системи замовлень
+
+# Перевизначення методу has_component для перевірки наявності компонента
+func has_component(component: SimpleItem) -> bool:
+	for slot in component_slots:
+		if slot.contains_component(component):
+			return true
+	return false
+
+# Перевірка чи містить предмет компонент певного типу
+func has_component_type(component_type) -> bool:
+	for slot in component_slots:
+		if slot.contains_component_type(component_type):
+			return true
+	return false
+
+# Отримати список всіх компонентів
+func get_all_components() -> Array:
+	var components = []
+	for slot in component_slots:
+		components.append_array(slot.get_all_components())
+	return components
+
+# Розрахунок вартості матеріалів для складного виробу
+func calculate_material_cost() -> int:
+	var total_cost = 0
+	
+	# Додаємо вартість всіх компонентів
+	for slot in component_slots:
+		if slot.is_filled():
+			for component in slot.get_all_components():
+				total_cost += component.get_material_cost()
+	
+	return total_cost
+
+# Метод для оцінки вартості на основі бажаної якості
+func calculate_estimated_price(desired_quality: int) -> int:
+	# За замовчуванням просто множимо базову ціну на коефіцієнт якості
+	return base_price * (desired_quality / 50.0)
+
+# Отримує тип складного виробу
+func get_complex_item_type():
+	# Метод має бути перевизначений у підкласах
+	return null
+
+# Перевіряє чи виріб відповідає конкретному типу
+func is_specific_complex_type(required_type) -> bool:
+	var my_type = get_complex_item_type()
+	return my_type != null and my_type == required_type
+
+# Перевірка відповідності вимогам замовлення для складного виробу
+func matches_order_requirements(order: Order) -> bool:
+	# Базова перевірка якості
+	if get_quality() < order.required_quality_min:
+		return false
+		
+	# Перевірка для різних типів замовлень
+	if order is GeneralOrder:
+		# Перевірка категорії та складності
+		if not matches_category(order.item_category):
+			return false
+		if not matches_difficulty(order.creation_difficulty):
+			return false
+	elif order is SpecificItemOrder:
+		# Перевірка конкретного виробу
+		if name != order.required_item.name:
+			return false
+	elif order is SpecificComponentOrder:
+		# Перевірка наявності конкретного компонента
+		if not has_component(order.required_component):
+			return false
+	
+	return true
+
+# Отримує рівень складності складання
+func get_complexity_level() -> int:
+	# Для складних виробів рівень складності визначається за типом
+	match get_complex_item_type():
+		"Побутовий виріб":
+			return 1
+		"Військовий виріб": 
+			return 2
+		"Елітний виріб":
+			return 3
+		_:
+			return int(creation_difficulty)
+
+# Оновлення базової ціни на основі якості та коефіцієнтів
+func update_base_price() -> void:
+	var material_cost = calculate_material_cost()
+	var complexity_mod = get_complexity_coefficient()
+	var quality_mod = get_quality() / 50.0  # Якість впливає на ціну
+	
+	base_price = int(material_cost * complexity_mod * quality_mod)
+
+# Отримання категорії предмета (перевизначення методу ItemData)
+func get_category() -> ItemData.Category:
+	# Метод має бути перевизначений у підкласах
+	return ItemData.Category.WEAPONS  # За замовчуванням зброя

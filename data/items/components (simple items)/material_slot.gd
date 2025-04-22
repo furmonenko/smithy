@@ -130,3 +130,49 @@ func get_total_value() -> int:
 	for material in assigned_materials:
 		total += material.cost
 	return total
+
+# Перевизначення методу contains
+func contains(material: CraftMaterial) -> bool:
+	return assigned_materials.has(material)
+
+# Перевизначення методу get_all_items
+func get_all_items() -> Array:
+	return assigned_materials
+
+# Отримати вартість матеріалів
+func get_material_cost() -> int:
+	var total_cost = 0
+	for material in assigned_materials:
+		total_cost += material.cost
+	return total_cost
+
+# Перевірка якості матеріалів
+func meets_quality_requirement(required_quality: int) -> bool:
+	return calculate_average_quality() >= required_quality
+
+# Отримати найкращий матеріал для замовлення, що вимагає якість
+func get_best_material_for_quality(required_quality: int) -> CraftMaterial:
+	# Знаходимо матеріал, що має якість найближчу до required_quality, але не менше
+	var best_material = null
+	var closest_quality_diff = 999
+	
+	for material in assigned_materials:
+		if material.quality >= required_quality:
+			var diff = material.quality - required_quality
+			if diff < closest_quality_diff:
+				closest_quality_diff = diff
+				best_material = material
+	
+	# Якщо не знайдено матеріал з достатньою якістю, повертаємо найякісніший
+	if best_material == null and not assigned_materials.is_empty():
+		return get_highest_quality_material()
+		
+	return best_material
+
+# Оцінити вартість слота для замовлення конкретної якості
+func estimate_cost_for_quality(required_quality: int) -> int:
+	# Шукаємо рекомендований матеріал для цієї якості
+	var material = CraftMaterialsManager.get_recommended_material_by_type_and_quality(material_type, required_quality)
+	if material:
+		return material.cost * quantity
+	return 0

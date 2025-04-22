@@ -3,12 +3,12 @@ class_name SimpleItem
 
 var subcategory_materials: Dictionary
 
-# В базовому класі SimpleItem
+# Ініціалізує матеріали для підкатегорії
 func initialize_subcategory_materials() -> void:
 	# Буде перевизначено в нащадках
 	subcategory_materials = {}
 
-# Нова функція для визначення ціни на основі якості
+# Розраховує ціну на основі бажаної якості
 func calculate_price_for_quality(desired_quality: int) -> int:
 	var total_price = 0
 	
@@ -21,7 +21,7 @@ func calculate_price_for_quality(desired_quality: int) -> int:
 	
 	return total_price
 
-# Отримати коефіцієнт складності на основі типу виробу
+# Отримує коефіцієнт складності на основі типу виробу
 func get_complexity_coefficient() -> float:
 	match creation_difficulty:
 		CreationDifficulty.HOUSEHOLD:
@@ -35,6 +35,7 @@ func get_complexity_coefficient() -> float:
 		_:
 			return 1.0
 
+# Розраховує якість простого виробу
 func calculate_quality() -> float:
 	# 1. Розрахунок зваженої середньої якості матеріалів
 	var weighted_quality_sum = 0.0
@@ -62,7 +63,7 @@ func calculate_quality() -> float:
 	
 	return final_quality
 
-# Для класу SimpleItem (простий виріб/компонент)
+# Розраховує престиж простого виробу
 func calculate_prestige() -> float:
 	var quality = calculate_quality()
 	var base_prestige = get_base_prestige_by_quality(quality)
@@ -70,7 +71,7 @@ func calculate_prestige() -> float:
 	# Престиж Елемента = (Фактична Якість / 100) × Базовий Престиж Категорії
 	return (quality / 100.0) * base_prestige
 
-# Визначення базового престижу на основі якості
+# Визначає базовий престиж на основі якості
 func get_base_prestige_by_quality(quality: float) -> int:
 	if quality >= 0 and quality < 50:
 		return PRESTIGE_LOW_QUALITY  # Звичайний
@@ -80,20 +81,75 @@ func get_base_prestige_by_quality(quality: float) -> int:
 		return PRESTIGE_HIGH_QUALITY  # Видатний
 	return 20  # За замовчуванням
 
-# Отримати результат міні-ігор (може бути реалізовано в GameManager)
+# Отримує результат міні-ігор
 func get_mini_game_result() -> float:
 	# Тут має бути логіка отримання результату міні-ігор
 	# Поки що повертаємо значення за замовчуванням
 	return 80.0  # Від 0 до 100
 
-# Отримати ефективність станків
+# Отримує ефективність станків
 func get_station_efficiency() -> float:
 	# Тут має бути логіка отримання ефективності станків
 	# Поки що повертаємо значення за замовчуванням
 	return 0.9  # від 0 до 1 (або трохи більше)
 
-# Отримати навичку гравця
+# Отримує навичку гравця
 func get_player_skill() -> float:
 	# Тут має бути логіка отримання навички гравця
 	# Поки що повертаємо значення за замовчуванням
 	return 0.75  # від 0 до 1 (або трохи більше)
+
+# Додаткові методи для системи замовлень
+
+# Перевіряє чи відповідає компонент необхідним матеріалам
+func matches_material_requirements(required_material_type) -> bool:
+	# Перевіряємо чи всі необхідні матеріали присутні
+	if required_material_type == null:
+		return true  # Якщо немає особливих вимог
+		
+	# Перевіряємо чи в слотах є матеріали відповідного типу
+	for slot in component_slots:
+		if slot is MaterialSlot and slot.is_filled():
+			if slot.assigned_material.material_type == required_material_type:
+				return true
+	
+	return false
+
+# Перевіряє чи відповідає компонент бажаній якості
+func meets_quality_requirement(required_quality: int) -> bool:
+	return get_quality() >= required_quality
+
+# Переоцінка вартості виробу на основі якості
+func recalculate_price() -> void:
+	base_price = calculate_price_for_quality(int(get_quality()))
+
+# Отримує тип компонента (для SimpleItem це більш специфічний тип)
+func get_component_type():
+	# Цей метод має бути перевизначений у підкласах
+	return null
+
+# Перевіряє чи компонент є точним (specific) типом для замовлення
+func is_specific_type(required_type) -> bool:
+	var my_type = get_component_type()
+	return my_type != null and my_type == required_type
+
+# Метод для перевірки відповідності компонента замовленню
+func matches_specific_order_requirements(order) -> bool:
+	# Перевіряємо якість
+	if not meets_quality_requirement(order.required_quality_min):
+		return false
+		
+	# Специфічні перевірки для різних типів замовлень можуть бути додані тут
+	# Наприклад, перевірка типу компонента, матеріалу тощо
+	
+	return true
+
+# Метод для оцінки вартості матеріалів
+func calculate_material_cost_estimate(desired_quality: int) -> int:
+	# Використовуємо інформацію про матеріали підкатегорії
+	return calculate_price_for_quality(desired_quality)
+
+# Отримує категорію предмета (перевизначення методу ItemData)
+func get_category() -> ItemData.Category:
+	# Метод має бути перевизначений у підкласах
+	return ItemData.Category.TOOLS

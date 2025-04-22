@@ -42,3 +42,32 @@ func calculate_average_quality() -> float:
 # Перевірити чи можна додати ще вміст
 func can_add_more() -> bool:
 	return get_current_quantity() < max_stack
+
+# Перевірка чи слот містить конкретний елемент
+func contains(item) -> bool:
+	return false  # Базова реалізація
+
+# Отримати вартість матеріалів у слоті
+func get_material_cost() -> int:
+	return 0  # Базова реалізація
+
+# Перевірка, чи слот повністю порожній 
+func is_empty() -> bool:
+	return get_current_quantity() == 0
+
+# Получение качества материалов в процентах
+func get_quality_percentage() -> float:
+	return quality
+
+# Отримання коефіцієнта ваги для розрахунку загальної якості
+func get_weight_coefficient() -> float:
+	# Переводимо вагу в коефіцієнт
+	match weight:
+		1: return 1.0
+		2: return 1.5
+		3: return 2.0
+		_: return 1.0
+
+# Отримання всіх елементів в слоті
+func get_all_items() -> Array:
+	return []  # Базова реалізація, перевизначається в нащадках
