@@ -3,10 +3,6 @@ class_name SpecificComponentOrder
 
 @export var required_component: SimpleItem  # Наприклад, "Grip Dagger Handle"
 
-func _init() -> void:
-	order_type = OrderType.SPECIFIC_COMPONENT
-	super()
-
 # Перевизначаємо метод validate_item для перевірки наявності необхідного компонента
 func validate_item(item: ItemData) -> bool:
 	if not super.validate_item(item):

@@ -1,17 +1,14 @@
-[gd_resource type="Resource" script_class="GeneralOrder" load_steps=3 format=3 uid="uid://dilsukrsg2g5m"]
+[gd_resource type="Resource" script_class="SpecificItemOrder" load_steps=3 format=3 uid="uid://dilsukrsg2g5m"]
 
-[ext_resource type="Script" uid="uid://dlo3bbnrmbv8x" path="res://data/orders/general orders/scripts/general_order.gd" id="1_1ubm0"]
-[ext_resource type="Resource" uid="uid://bagf2r3y4k6k1" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/claymore_blade.tres" id="1_nvpf5"]
+[ext_resource type="Resource" uid="uid://b3obdds00atbh" path="res://data/items/products (complex items)/resources/weapons/dagger/knights_dagger.tres" id="1_k2460"]
+[ext_resource type="Script" uid="uid://b1j7n0sfd0q6f" path="res://data/orders/specific item orders/scripts/specific_item_order.gd" id="1_xh8ab"]
 
 [resource]
-script = ExtResource("1_1ubm0")
-item_category = ExtResource("1_nvpf5")
-creation_difficulty = 0
-required_quality_min = 0
-base_price = 0
-price_limit = 0
-duration_days = 1
-reputation_impact = 0
-description = ""
-completed = false
+script = ExtResource("1_xh8ab")
+required_item = ExtResource("1_k2460")
+order_name = "Knights Dagger"
+description = "sss"
+required_quality_min = 50
+duration_days = 2
+reputation_impact = 5
 metadata/_custom_type_script = "uid://dlo3bbnrmbv8x"

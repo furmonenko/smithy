@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name PlayerController
 
+@export var order: Order
+
 # Налаштування руху
 @export var speed: float = 200.0
 @export var layer_manager: LayerManager
@@ -19,6 +21,8 @@ var is_layer_transitioning = false
 
 func _ready() -> void:
 	move_to_new_layer(layer)
+	order.initialize_item()
+	print("Base price - ", order.base_price)
 
 func _process(delta: float) -> void:
 	# Забороняємо рух під час переходу між шарами

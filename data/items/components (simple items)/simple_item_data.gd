@@ -12,12 +12,17 @@ func initialize_subcategory_materials() -> void:
 func calculate_price_for_quality(desired_quality: int) -> int:
 	var total_price = 0
 	
+# Inside calculate_price_for_quality
 	for material_type in subcategory_materials.keys():
 		var quantity = subcategory_materials[material_type]
+		print("Looking for material of type: ", material_type, " with quality: ", desired_quality)
 		var material = CraftMaterialsManager.get_cheapest_material_by_type_and_quality(material_type, desired_quality)
-		
+	
 		if material:
+			print("Found material: ", material.name, " with cost: ", material.cost)
 			total_price += material.cost * quantity
+		else:
+			print("No material found for type: ", material_type, " with quality: ", desired_quality)
 	
 	return total_price
 

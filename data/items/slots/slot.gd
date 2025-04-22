@@ -8,7 +8,7 @@ signal quality_changed(new_quality: float)  # Сигнал про зміну я�
 
 @export var weight: int = 1  # Вага для розрахунку (1-3)
 @export var is_required: bool = true  # Чи є обов'язковим
-@export var max_stack: int = 10  # Максимальна кількість вмісту у слоті
+@export var max_stack: int = 1  # Максимальна кількість вмісту у слоті
 
 var quantity: int = 0  # Необхідна кількість вмісту
 var quality: float = 0.0  # Середня якість вмісту слота

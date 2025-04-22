@@ -177,9 +177,9 @@ func organize_objects_for_game():
 	for child in parent.get_children():
 		if child is Node2D and child != self and child != front_layer and child != middle_layer and child != back_layer:
 			objects_to_sort.append(child)
-			print("Object to sort: " + child.name + " at Y=" + str(child.position.y))
+			# print("Object to sort: " + child.name + " at Y=" + str(child.position.y))
 	
-	print("Found " + str(objects_to_sort.size()) + " objects to sort")
+	# print("Found " + str(objects_to_sort.size()) + " objects to sort")
 	
 	# Сортуємо об'єкти по шарах
 	for obj in objects_to_sort:
@@ -190,7 +190,7 @@ func organize_objects_for_game():
 		if "layer" in obj:
 			obj.layer = layer_index
 		
-		print("Assigning " + obj.name + " at Y=" + str(y_pos) + " to layer " + str(layer_index))
+		# print("Assigning " + obj.name + " at Y=" + str(y_pos) + " to layer " + str(layer_index))
 		
 		# Зберігаємо глобальну позицію і оригінальний масштаб
 		var global_pos = obj.global_position
@@ -200,10 +200,10 @@ func organize_objects_for_game():
 			var original_scale = original_scales[obj]
 			target_scale = Vector2(original_scale.x * scales[layer_index], 
 								   original_scale.y * scales[layer_index])
-			print("Using saved original scale: " + str(original_scale))
+			# print("Using saved original scale: " + str(original_scale))
 		else:
 			target_scale = Vector2(scales[layer_index], scales[layer_index])
-			print("No saved scale, using direct scale factor: " + str(scales[layer_index]))
+			# print("No saved scale, using direct scale factor: " + str(scales[layer_index]))
 		
 		# Видаляємо з поточного батька
 		if obj.get_parent():
@@ -225,8 +225,8 @@ func organize_objects_for_game():
 		# Встановлюємо масштаб
 		obj.scale = target_scale
 		
-		print("Object " + obj.name + " moved to layer " + str(layer_index) + 
-			" with scale " + str(obj.scale))
+		# print("Object " + obj.name + " moved to layer " + str(layer_index) + 
+		# " with scale " + str(obj.scale))
 
 # Метод для ручного сортування через інспектор
 func organize_now():
