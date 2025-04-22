@@ -37,7 +37,6 @@ signal order_updated
 @export_category("Basic Properties")
 @export var order_name: String = ""
 @export var description: String = ""
-@export var order_type: OrderType = OrderType.NONE
 @export var required_quality_min: int = 0
 @export var base_price: int = 0
 @export var price_limit: int = 0  # Maximum price customer is willing to pay
@@ -62,6 +61,7 @@ var negotiated_price: int = 0  # Price after negotiations
 # Result
 var actual_quality: int = 0    # Actual quality of the item
 var actual_item_id: String = "" # ID of the actual item
+var order_type: OrderType = OrderType.NONE
 
 # --------------------------------
 # Initialization methods

@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://d3xqxf83ped1a"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_nedg5"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_nedg5"]
 [ext_resource type="Resource" uid="uid://6ksckubmnat7" path="res://data/items/components (simple items)/weapon components/resources/pole_weapon/bardiche_head.tres" id="2_uxpyj"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_upp5i"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_upp5i"]
 [ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="4_6thd3"]
 [ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_v2sy8"]
 

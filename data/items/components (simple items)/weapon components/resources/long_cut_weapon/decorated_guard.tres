@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="LongCutWeaponComponent" load_steps=6 format=3 uid="uid://dno566pb0nwh"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_plsmv"]
-[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_sacvo"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_plsmv"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/slots/material_slot.gd" id="2_sacvo"]
 [ext_resource type="Script" uid="uid://cum7qn3or7k3x" path="res://data/items/components (simple items)/weapon components/scripts/long_cut_weapon_component.gd" id="3_lo38d"]
 
 [sub_resource type="Resource" id="Resource_plsmv"]

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ToolComponent" load_steps=5 format=3 uid="uid://b15ich57fqk7i"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_fms1h"]
-[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_7iou6"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_fms1h"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/slots/material_slot.gd" id="2_7iou6"]
 [ext_resource type="Script" uid="uid://8qtbmjhqr804" path="res://data/items/components (simple items)/tool components/scripts/tool_component.gd" id="3_xuf21"]
 
 [sub_resource type="Resource" id="Resource_nosdl"]

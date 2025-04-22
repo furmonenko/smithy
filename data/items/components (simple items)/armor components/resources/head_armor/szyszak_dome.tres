@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="HeadArmorComponent" load_steps=8 format=3 uid="uid://cf8wsvd0syuhk"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_h03jc"]
-[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_pokpg"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_h03jc"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/slots/material_slot.gd" id="2_pokpg"]
 [ext_resource type="Resource" uid="uid://bk8rk3f55wbqs" path="res://data/items/components (simple items)/tool components/resources/materials/chainmail_piece.tres" id="3_do3oo"]
-[ext_resource type="Script" uid="uid://cqk12n4kt8wiq" path="res://data/items/components (simple items)/armor components/head_armor_component.gd" id="3_y088k"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="4_26js8"]
+[ext_resource type="Script" uid="uid://cqk12n4kt8wiq" path="res://data/items/components (simple items)/armor components/scripts/head_armor_component.gd" id="3_y088k"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="4_26js8"]
 
 [sub_resource type="Resource" id="Resource_do3oo"]
 script = ExtResource("2_pokpg")

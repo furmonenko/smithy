@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="BodyArmorItem" load_steps=8 format=3 uid="uid://y0cbkdfii7ry"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_woc86"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_woc86"]
 [ext_resource type="Resource" uid="uid://b34x0vy7qol0n" path="res://data/items/components (simple items)/armor components/resources/body_armor/sabatons_plate.tres" id="2_2dl03"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_m07kp"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_m07kp"]
 [ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="4_vgqjt"]
 [ext_resource type="Script" uid="uid://cph1myq4jq05p" path="res://data/items/products (complex items)/scripts/body_armor_item.gd" id="5_gg110"]
 

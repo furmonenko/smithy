@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="BodyArmorComponent" load_steps=6 format=3 uid="uid://yosmfwj2qide"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_37tqr"]
-[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_d4rxb"]
-[ext_resource type="Script" uid="uid://dyyks6satm6td" path="res://data/items/components (simple items)/armor components/body_armor_component.gd" id="3_jd5xy"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_37tqr"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/slots/material_slot.gd" id="2_d4rxb"]
+[ext_resource type="Script" uid="uid://dyyks6satm6td" path="res://data/items/components (simple items)/armor components/scripts/body_armor_component.gd" id="3_jd5xy"]
 
 [sub_resource type="Resource" id="Resource_373q7"]
 script = ExtResource("2_d4rxb")

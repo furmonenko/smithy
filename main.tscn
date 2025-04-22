@@ -1,11 +1,23 @@
-[gd_scene load_steps=9 format=3 uid="uid://g4ya6k88ptd2"]
+[gd_scene load_steps=11 format=3 uid="uid://g4ya6k88ptd2"]
 
 [ext_resource type="Script" uid="uid://c108hofdxfow4" path="res://main.gd" id="1_7mycd"]
 [ext_resource type="Script" uid="uid://dnjlyacgvik5m" path="res://layer_manager.gd" id="1_qrecu"]
-[ext_resource type="Resource" uid="uid://of2puhfavt8r" path="res://data/one_handed_sword_blade.tres" id="2_7mycd"]
 [ext_resource type="PackedScene" uid="uid://bx8ek002jwy3h" path="res://blacksmith.tscn" id="2_71qyi"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="2_272bh"]
 [ext_resource type="PackedScene" uid="uid://de0p5f556732l" path="res://objects/anvil.tscn" id="2_rsqs0"]
+[ext_resource type="Script" uid="uid://1vvnpf41k0sm" path="res://data/items/components (simple items)/weapon components/scripts/one_handed_cut_weapon_component.gd" id="3_5vw27"]
 [ext_resource type="Script" uid="uid://b4c0bs3h53rv2" path="res://depth_camera.gd" id="3_rvftn"]
+
+[sub_resource type="Resource" id="Resource_kek77"]
+script = ExtResource("3_5vw27")
+one_handed_cut_weapon_type = 0
+weapon_type = 0
+name = "One-Handed Sword Blade"
+description = ""
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("2_272bh")]([])
+metadata/_custom_type_script = "uid://1vvnpf41k0sm"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6v1v1"]
 size = Vector2(662, 4040)
@@ -19,7 +31,7 @@ script = ExtResource("1_7mycd")
 mini_game_camera_zoom = Vector2(1, 1)
 mini_game_camera_offset = Vector2(200, 140)
 transition_duration = 1.0
-test_item = ExtResource("2_7mycd")
+test_item = SubResource("Resource_kek77")
 
 [node name="LayerManager" type="Node" parent="."]
 script = ExtResource("1_qrecu")
@@ -37,7 +49,7 @@ position = Vector2(1147, 1006)
 
 [node name="Anvil2" parent="." instance=ExtResource("2_rsqs0")]
 position = Vector2(1229, 820)
-scale = Vector2(0.137997, 0.137997)
+scale = Vector2(0.114275, 0.114275)
 layer = 1
 
 [node name="Anvil3" parent="." instance=ExtResource("2_rsqs0")]

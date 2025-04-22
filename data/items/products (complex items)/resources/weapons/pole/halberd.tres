@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://dqkegje1c6wwo"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_64twm"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_64twm"]
 [ext_resource type="Resource" uid="uid://kkbr0nikschy" path="res://data/items/components (simple items)/weapon components/resources/pole_weapon/halberd_head.tres" id="2_li1qy"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_wgxed"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_wgxed"]
 [ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="4_1diul"]
 [ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_tq7wr"]
 

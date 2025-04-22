@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="HeavyWeaponComponent" load_steps=6 format=3 uid="uid://ceb4e2qw5aagj"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_bnvpc"]
-[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/components (simple items)/material_slot.gd" id="2_ca3yl"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_bnvpc"]
+[ext_resource type="Script" uid="uid://cgn18dsfwr3nu" path="res://data/items/slots/material_slot.gd" id="2_ca3yl"]
 [ext_resource type="Script" uid="uid://5tu6mq5d5d4c" path="res://data/items/components (simple items)/weapon components/scripts/heavy_weapon_component.gd" id="3_vk8mq"]
 
 [sub_resource type="Resource" id="Resource_bnvpc"]

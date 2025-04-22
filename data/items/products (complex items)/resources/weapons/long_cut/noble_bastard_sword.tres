@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://d1mr5fdei1822"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_0i1fs"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_0i1fs"]
 [ext_resource type="Resource" uid="uid://dwm8apyyyowxy" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/noble_bastard_blade.tres" id="2_x8v0p"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_2x5ke"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_2x5ke"]
 [ext_resource type="Resource" uid="uid://b2ntr14lkuwmv" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_guard.tres" id="4_aq4g8"]
 [ext_resource type="Resource" uid="uid://cmvuupx7mlrtx" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_pommel.tres" id="5_bwdqq"]
 [ext_resource type="Resource" uid="uid://b3jvil6h8kau" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/decorated_handle.tres" id="6_o0j5m"]

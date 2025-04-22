@@ -1,10 +1,12 @@
-# SpecificItemOrder.gd - Order for a specific item
 extends Order
 class_name SpecificItemOrder
 
 # Item properties
-@export var item_resource: ItemData  # Direct reference to the required item
-@export var item_name: String = ""   # Optional: item name if resource not provided
+@export var item_resource: ComplexItem  # Direct reference to the required item
+
+func _init() -> void:
+	super()
+	order_type = OrderType.SPECIFIC_ITEM
 
 # Override validate_item method to check exact match
 func validate_item(item: ItemData) -> bool:
@@ -16,10 +18,6 @@ func validate_item(item: ItemData) -> bool:
 	# If resource is specified, check by resource
 	if item_resource != null:
 		return item.name == item_resource.name
-	
-	# If name is specified, check by name
-	if not item_name.is_empty():
-		return item.name == item_name
 	
 	return false
 
@@ -64,7 +62,5 @@ func get_ui_description() -> String:
 		
 		if not category_name.is_empty():
 			desc += " (" + category_name + ")"
-	elif not item_name.is_empty():
-		desc += "\nRequired item: " + item_name
 	
 	return desc

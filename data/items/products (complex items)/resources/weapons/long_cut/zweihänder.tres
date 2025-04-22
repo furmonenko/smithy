@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://c3d6rmplq8cnf"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_fgar0"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_fgar0"]
 [ext_resource type="Resource" uid="uid://cwfiqjnmtd2gp" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/zweihänder_blade.tres" id="2_nahcq"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_lf10y"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_lf10y"]
 [ext_resource type="Resource" uid="uid://0jp43w7lebvn" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/straight_guard.tres" id="4_d1bgr"]
 [ext_resource type="Resource" uid="uid://dv0jbgv8ggv25" path="res://data/items/components (simple items)/weapon components/resources/long_cut_weapon/heavy_pommel.tres" id="5_87hft"]
 [ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="6_4figv"]

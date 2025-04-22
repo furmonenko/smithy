@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="HeadArmorItem" load_steps=8 format=3 uid="uid://cvxxh0dstwuqd"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_hs5lk"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_hs5lk"]
 [ext_resource type="Resource" uid="uid://cu0cplvsmw3hw" path="res://data/items/components (simple items)/armor components/resources/head_armor/bascinet_dome.tres" id="2_kcudo"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_7355k"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_7355k"]
 [ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="4_ujied"]
 [ext_resource type="Script" uid="uid://d2tyofj6yx7fj" path="res://data/items/products (complex items)/scripts/head_armor_item.gd" id="5_ppslo"]
 

@@ -1,30 +1,24 @@
-[gd_resource type="Resource" script_class="ToolItem" load_steps=8 format=3 uid="uid://b6k5gx1mhcdo"]
+[gd_resource type="Resource" script_class="ToolItem" load_steps=6 format=3 uid="uid://b6k5gx1mhcdo"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_ddnh0"]
-[ext_resource type="Resource" uid="uid://bqjrgql7wol11" path="res://data/items/components (simple items)/tool components/resources/tools/scythe_head.tres" id="2_bhqhy"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_rvp0w"]
-[ext_resource type="Resource" uid="uid://55bx8thjrtgv" path="res://data/items/components (simple items)/tool components/resources/tools/tool_handle.tres" id="4_m0npo"]
-[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/items/products (complex items)/scripts/tool_item.gd" id="5_6dvcj"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_g7ryp"]
+[ext_resource type="Resource" uid="uid://55bx8thjrtgv" path="res://data/items/components (simple items)/tool components/resources/tools/tool_handle.tres" id="2_sn2c2"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_gj2fw"]
+[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/items/products (complex items)/scripts/tool_item.gd" id="4_6csy4"]
 
-[sub_resource type="Resource" id="Resource_ddnh0"]
-script = ExtResource("3_rvp0w")
-allowed_component = ExtResource("2_bhqhy")
-weight = 3
-is_required = true
-max_stack = 10
-
-[sub_resource type="Resource" id="Resource_bhqhy"]
-script = ExtResource("3_rvp0w")
-allowed_component = ExtResource("4_m0npo")
+[sub_resource type="Resource" id="Resource_pxmmu"]
+script = ExtResource("3_gj2fw")
+allowed_component = ExtResource("2_sn2c2")
 weight = 1
 is_required = true
-max_stack = 10
+max_stack = 1
+metadata/_custom_type_script = "uid://m8q58xkg5dxw"
 
 [resource]
-script = ExtResource("5_6dvcj")
-tool_type = 2
-name = "Scythe"
-description = "Not just for the Grim Reaper anymore. Works great on wheat too!"
-creation_difficulty = 1
+script = ExtResource("4_6csy4")
+tool_type = 1
+name = "Hand Hoe"
+description = ""
+creation_difficulty = 2
 produced_quantity = 1
-component_slots = Array[ExtResource("1_ddnh0")]([SubResource("Resource_ddnh0"), SubResource("Resource_bhqhy")])
+component_slots = Array[ExtResource("1_g7ryp")]([SubResource("Resource_pxmmu")])
+metadata/_custom_type_script = "uid://bbd134pghcqmk"

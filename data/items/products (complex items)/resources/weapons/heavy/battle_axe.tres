@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="WeaponItem" load_steps=8 format=3 uid="uid://bynbfmod34j34"]
 
-[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slot.gd" id="1_16fhf"]
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_16fhf"]
 [ext_resource type="Resource" uid="uid://wkpexfltwcc0" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/battle_axe_head.tres" id="2_fnd5l"]
-[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/component_slot.gd" id="3_vbhue"]
+[ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_vbhue"]
 [ext_resource type="Resource" uid="uid://d1r03lwttbiif" path="res://data/items/components (simple items)/weapon components/resources/heavy_weapon/wooden_handle.tres" id="4_odoh0"]
 [ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="5_k7xtv"]
 
