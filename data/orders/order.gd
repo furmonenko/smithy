@@ -179,23 +179,8 @@ func can_negotiate() -> bool:
 	return status == OrderStatus.NEW
 
 # Calculate final price
-func calculate_final_price(item_quality: int) -> int:
-	# If price is already negotiated
-	if negotiated_price > 0:
-		return negotiated_price
-	
-	# Base case with quality consideration
-	var quality_modifier = 1.0
-	
-	if item_quality > required_quality_min:
-		# Bonus for exceeding quality (up to 20%)
-		var quality_diff = item_quality - required_quality_min
-		quality_modifier = 1.0 + min(quality_diff / 100.0, 0.2)
-	elif item_quality < required_quality_min:
-		# Penalty for insufficient quality
-		quality_modifier = 0.8
-	
-	return int(base_price * quality_modifier)
+func calculate_final_price(quality_execution: float = 0.8, negotiation_result: float = 0.0):
+	pass
 
 # --------------------------------
 # Item validation

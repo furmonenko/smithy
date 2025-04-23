@@ -2,9 +2,10 @@ extends Order
 class_name SpecificItemOrder
 
 # Item properties
-@export var required_item: ComplexItem  # Direct reference to the required item
+@export var required_item: ItemData  # Direct reference to the required item
 
 func _init() -> void:
+	super()
 	order_type = OrderType.SPECIFIC_ITEM
 
 func initialize_item():
@@ -13,6 +14,10 @@ func initialize_item():
 		calculate_base_price()
 		
 	super()
+	
+	negotiated_price = calculate_final_price()
+	print("neg price - ", negotiated_price)
+	
 
 # Override validate_item method to check exact match
 func validate_item(item: ItemData) -> bool:
@@ -25,126 +30,87 @@ func validate_item(item: ItemData) -> bool:
 	
 	return false
 
-# Calculate the base price based on component materials
+# Розрахунок базової ціни (лише собівартість матеріалів)
 func calculate_base_price() -> int:
-	print("[ORDER] Calculating base price for order: ", order_name)
+	print("[ORDER] Calculating base price (material cost) for order: ", order_name)
 	
 	if required_item == null:
 		print("[ORDER] No required_item set, returning current base_price: ", base_price)
 		return base_price
 	
-	print("[ORDER] Required item: ", required_item.name)
-	print("[ORDER] Required quality: ", required_quality_min)
-	
+	# Розрахунок вартості матеріалів
 	var material_cost = 0
 	
-	# Calculate material costs for all components
-	print("[ORDER] Calculating costs for ", required_item.component_slots.size(), " component slots")
-	
-	for slot_index in range(required_item.component_slots.size()):
-		var slot = required_item.component_slots[slot_index]
-		
-		print("[ORDER] Checking slot ", slot_index)
-		
-		if slot is ComponentSlot and slot.allowed_component != null:
-			var component = slot.allowed_component
-			
-			# Use max_stack as the quantity for calculation
-			var slot_quantity = slot.max_stack
-			
-			print("[ORDER] Slot has component: ", component.name, ", max_stack: ", slot_quantity)
-			
-			# Get estimated material cost for component
-			if component.has_method("calculate_price_for_quality"):
-				var component_cost = component.calculate_price_for_quality(required_quality_min)
-				var total_component_cost = component_cost * slot_quantity
-				
-				print("[ORDER] Component cost: ", component_cost, " x ", slot_quantity, " = ", total_component_cost)
-				
-				material_cost += total_component_cost
-			else:
-				print("[ORDER] Component doesn't have calculate_price_for_quality method!")
-		else:
-			print("[ORDER] Slot is not a ComponentSlot or has no allowed_component")
+	if required_item is ComplexItem:
+		print("[ORDER] Calculating material cost for ComplexItem")
+		material_cost = PriceCalculator.calculate_complex_item_material_cost(required_item)
+	elif required_item is SimpleItem:
+		print("[ORDER] Calculating material cost for SimpleItem")
+		material_cost = PriceCalculator.calculate_simple_item_material_cost(required_item)
 	
 	print("[ORDER] Total material cost: ", material_cost)
 	
-	# Add crafting premium based on complexity
-	var complexity_premium = 1.0
-	if required_item.has_method("get_complexity_coefficient"):
-		complexity_premium = required_item.get_complexity_coefficient()
-		print("[ORDER] Complexity premium: ", complexity_premium)
-	else:
-		print("[ORDER] Item doesn't have get_complexity_coefficient method, using default: 1.0")
+	# Оновлюємо базову ціну (лише собівартість)
+	base_price = material_cost
 	
-	# Final base price with 20% markup
-	var final_price = int(material_cost * complexity_premium * 1.2)
-	print("[ORDER] Final price calculation: ", material_cost, " x ", complexity_premium, " x 1.2 = ", final_price)
-	
-	# Update the base price
-	print("[ORDER] Updating base_price from ", base_price, " to ", final_price)
-	base_price = final_price
-	
-	# Update price limit
-	price_limit = int(base_price * 1.5)  # 50% markup for price limit
-	print("[ORDER] Setting price_limit to ", price_limit, " (1.5x base price)")
+	# Встановлюємо ліміт ціни (для торгівлі) з урахуванням базової націнки 50%
+	price_limit = int(base_price * 2.5)  # 150% над собівартістю
 	
 	return base_price
 
-# Calculate final price with quality consideration
-func calculate_final_price(item_quality: int) -> int:
-	# If price is already negotiated
+# Розрахунок фінальної ціни замовлення з урахуванням усіх факторів
+func calculate_final_price(quality_execution: float = 0.8, negotiation_result: float = 0.0):
+	# Якщо ціна вже узгоджена під час торгу
 	if negotiated_price > 0:
 		return negotiated_price
 	
-	# Base price (if not calculated yet)
-	if base_price <= 0:
-		calculate_base_price()
+	# Базова ціна (собівартість)
+	var final_price = base_price
 	
-	# Quality modifier
-	var quality_modifier = 1.0
-	if item_quality > required_quality_min:
-		# Bonus for exceeding quality
-		quality_modifier = 1.0 + (item_quality - required_quality_min) / 100.0
-	elif item_quality < required_quality_min:
-		# Penalty for insufficient quality (if acceptable)
-		quality_modifier = 0.8
+	# 1. Модифікатор складності виробу
+	var complexity_mod = 1.0
+	var complexity_level = 1
 	
-	# Final price with item-specific bonus
-	return int(base_price * quality_modifier * 1.1)
-
-# Extend UI description
-func get_ui_description() -> String:
-	var desc = super.get_ui_description()
+	if required_item.has_method("get_complexity_level"):
+		complexity_level = required_item.get_complexity_level()
 	
-	# Display information about the required item
-	if required_item != null:
-		desc += "\nRequired item: " + required_item.name
-		
-		# Add category info if available
-		var category_name = ""
-		match required_item.get_category():
-			ItemData.Category.TOOLS:
-				category_name = "Tool"
-			ItemData.Category.WEAPONS:
-				category_name = "Weapon"
-			ItemData.Category.ARMOR:
-				category_name = "Armor"
-		
-		if not category_name.is_empty():
-			desc += " (" + category_name + ")"
-		
-		# Add required quality
-		desc += "\nRequired quality: " + str(required_quality_min)
-		
-		# Add price information
-		desc += "\nBase price: " + str(base_price) + " coins"
-		desc += "\nPrice limit: " + str(price_limit) + " coins"
-		
-		if negotiated_price > 0:
-			desc += "\nNegotiated price: " + str(negotiated_price) + " coins"
+	match complexity_level:
+		1: complexity_mod = 1.02
+		2: complexity_mod = 1.05
+		3: complexity_mod = 1.075
+		4: complexity_mod = 1.1
 	
-	return desc
+	final_price = int(final_price * complexity_mod)
+	print("[ORDER] After complexity: ", final_price, " (mod: ", complexity_mod, ")")
+	
+	# 2. Базова націнка (20% для покриття витрат кузні)
+	var base_markup = 1.2
+	final_price = int(final_price * base_markup)
+	print("[ORDER] After base markup: ", final_price, " (mod: ", base_markup, ")")
+	
+	# 3. Модифікатор якості виконання (0-1 від міні-гри)
+	var quality_mod = 0.8 + (quality_execution * 0.4)  # від 0.8 (при 0) до 1.2 (при 1)
+	final_price = int(final_price * quality_mod)
+	print("[ORDER] After quality execution: ", final_price, " (mod: ", quality_mod, ")")
+	
+	# 4. Бонус престижу кузні (отримуємо з ForgeManager)
+	var prestige_bonus = 1.0 + ForgeManager.price_premium
+	final_price = int(final_price * prestige_bonus)
+	print("[ORDER] After prestige bonus: ", final_price, " (mod: ", prestige_bonus, ")")
+	
+	# 5. Результат торгів (-10%, 0%, +10%, +20%)
+	var negotiation_multiplier = 1.0
+	
+	match negotiation_result:
+		-0.1: negotiation_multiplier = 0.9  # -10%
+		0.0: negotiation_multiplier = 1.0   # 0%
+		0.1: negotiation_multiplier = 1.1   # +10%
+		0.2: negotiation_multiplier = 1.2   # +20%
+	
+	final_price = int(final_price * negotiation_multiplier)
+	print("[ORDER] After negotiation: ", final_price, " (mod: ", negotiation_multiplier, ")")
+	
+	return final_price
 
 # Create a specific item order from a complex item template
 static func create_from_item(item: ComplexItem, customer: String, min_quality: int = 50) -> SpecificItemOrder:
@@ -170,5 +136,4 @@ static func create_from_item(item: ComplexItem, customer: String, min_quality: i
 	order.duration_days = int(3 * complexity)
 	
 	# Base price is automatically calculated in _init when required_item is set
-	
 	return order

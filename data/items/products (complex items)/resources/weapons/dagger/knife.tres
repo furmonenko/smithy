@@ -11,14 +11,14 @@ script = ExtResource("3_4k1ho")
 allowed_component = ExtResource("2_488k7")
 weight = 3
 is_required = true
-max_stack = 10
+max_stack = 1
 
 [sub_resource type="Resource" id="Resource_3p7fd"]
 script = ExtResource("3_4k1ho")
 allowed_component = ExtResource("4_effet")
 weight = 2
 is_required = true
-max_stack = 10
+max_stack = 1
 
 [resource]
 script = ExtResource("5_0o114")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpecificItemOrder" load_steps=3 format=3 uid="uid://dilsukrsg2g5m"]
 
-[ext_resource type="Resource" uid="uid://b3obdds00atbh" path="res://data/items/products (complex items)/resources/weapons/dagger/knights_dagger.tres" id="1_k2460"]
+[ext_resource type="Resource" uid="uid://irmqnc0te6h1" path="res://data/items/products (complex items)/resources/weapons/dagger/knife.tres" id="1_k2460"]
 [ext_resource type="Script" uid="uid://b1j7n0sfd0q6f" path="res://data/orders/specific item orders/scripts/specific_item_order.gd" id="1_xh8ab"]
 
 [resource]
