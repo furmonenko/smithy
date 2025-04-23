@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="GameConfig" load_steps=2 format=3 uid="uid://c7hh0204v56is"]
+
+[ext_resource type="Script" uid="uid://djv30oqralgby" path="res://game config/game_config.gd" id="1_8ip4q"]
+
+[resource]
+script = ExtResource("1_8ip4q")
+base_markup = 1.2
+complexity_mod_level_1 = 1.02
+complexity_mod_level_2 = 1.05
+complexity_mod_level_3 = 1.075
+complexity_mod_level_4 = 1.1
+quality_mod_min = 0.8
+quality_mod_range = 0.4
+negotiation_result_bad = 0.9
+negotiation_result_normal = 1.0
+negotiation_result_good = 1.1
+negotiation_result_excellent = 1.2
+price_limit_multiplier = 2.5
+base_reputation_impact = 5
+duration_days_multiplier = 3
+default_min_quality = 50
+prestige_gain_quality_divisor = 10.0
+max_active_orders = 5
+starting_money = 100
+starting_prestige = 0
+prestige_level_1 = 50
+prestige_level_2 = 150
+prestige_level_3 = 300
+prestige_level_4 = 500
+prestige_level_5 = 700
+prestige_level_6 = 900
+price_premium_level_1 = 0.01
+price_premium_level_2 = 0.02
+price_premium_level_3 = 0.05
+price_premium_level_4 = 0.08
+price_premium_level_5 = 0.12
+price_premium_level_6 = 0.15
+supplier_discount_level_1 = 300
+supplier_discount_level_2 = 500
+supplier_discount_level_3 = 700
+supplier_discount_level_4 = 900
+supplier_discount_value_1 = 0.03
+supplier_discount_value_2 = 0.05
+supplier_discount_value_3 = 0.07
+supplier_discount_value_4 = 0.1
+metal_base_cost = 20
+leather_base_cost = 15
+wood_base_cost = 10
+fabric_base_cost = 8
+quality_cost_multiplier = 0.01
+metadata/_custom_type_script = "uid://djv30oqralgby"

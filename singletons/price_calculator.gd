@@ -1,19 +1,15 @@
 extends Node
 
 # Функція для розрахунку очікуваної ціни матеріалів простого виробу
-func calculate_simple_item_material_cost(item: SimpleItem) -> int:
+static func calculate_simple_item_material_cost(item: SimpleItem) -> int:
 	print("[PRICE] Calculating cost for simple item: ", item.name)
 	var total_cost = 0
 	
-	# Перевірка наявності subcategory_materials
-	if not item.has_method("initialize_subcategory_materials"):
-		print("[PRICE] Item doesn't have initialize_subcategory_materials method")
-		return 0
-		
 	# Переконаємося що subcategory_materials ініціалізовано
 	if item.subcategory_materials.is_empty():
-		item.initialize_subcategory_materials()
-		print("[PRICE] Initialized subcategory_materials")
+		if item.has_method("initialize_subcategory_materials"):
+			item.initialize_subcategory_materials()
+			print("[PRICE] Initialized subcategory_materials")
 	
 	print("[PRICE] Subcategory materials: ", item.subcategory_materials)
 	
@@ -33,7 +29,7 @@ func calculate_simple_item_material_cost(item: SimpleItem) -> int:
 	return total_cost
 
 # Функція для розрахунку очікуваної ціни матеріалів складного виробу
-func calculate_complex_item_material_cost(item: ComplexItem) -> int:
+static func calculate_complex_item_material_cost(item: ComplexItem) -> int:
 	print("[PRICE] Calculating cost for complex item: ", item.name)
 	var total_cost = 0
 	
@@ -43,8 +39,11 @@ func calculate_complex_item_material_cost(item: ComplexItem) -> int:
 			var component = slot.allowed_component
 			print("[PRICE] Processing slot with component: ", component.name)
 			
-			# Використовуємо max_stack замість quantity для розрахунку ціни
+			# Використовуємо max_stack для кількості компонентів
 			var required_amount = slot.max_stack
+			if required_amount <= 0:
+				required_amount = 1  # Мінімальна кількість 1, якщо max_stack не встановлено
+			
 			print("[PRICE] Required amount (max_stack): ", required_amount)
 			
 			# Розраховуємо вартість компонента
@@ -59,29 +58,30 @@ func calculate_complex_item_material_cost(item: ComplexItem) -> int:
 	return total_cost
 
 # Отримати вартість матеріалу певної якості
-func get_material_cost_for_quality(material_type: int, quality: int) -> int:
-	# Тут має бути логіка отримання вартості матеріалу з бази даних або іншого джерела
-	# Для прикладу використовуємо фіксовані ціни
+static func get_material_cost_for_quality(material_type: int, quality: int) -> int:
+	var config = Global.get_config()
 	
 	# Базова ціна для типу матеріалу
-	var base_cost = 10
+	var base_cost = 10 # Значення за замовчуванням
+	
 	match material_type:
 		Enums.MaterialType.METAL:
-			base_cost = 20
+			base_cost = config.metal_base_cost
 		Enums.MaterialType.LEATHER:
-			base_cost = 15
+			base_cost = config.leather_base_cost
 		Enums.MaterialType.WOOD:
-			base_cost = 10
+			base_cost = config.wood_base_cost
 		Enums.MaterialType.FABRIC:
-			base_cost = 8
+			base_cost = config.fabric_base_cost
 	
 	# Множник якості (чим вища якість, тим дорожче)
-	var quality_multiplier = 1.0 + (quality / 100.0)
+	var quality_multiplier = 1.0 + (quality * config.quality_cost_multiplier)
 	
 	return int(base_cost * quality_multiplier)
 
 # Розрахунок фактичної ціни замовлення
-func calculate_actual_order_price(order: Order, item: ItemData) -> int:
+static func calculate_actual_order_price(order: Order, item: ItemData, quality_execution: float = 0.8) -> int:
+	var config = Global.get_config()
 	var negotiated_price = order.negotiated_price
 	
 	# Якщо ціна вже узгоджена під час торгу
@@ -89,17 +89,26 @@ func calculate_actual_order_price(order: Order, item: ItemData) -> int:
 		return negotiated_price
 	
 	# Інакше рахуємо за формулою:
-	# Фактична ціна = Виторгована ціна * Модифікатор складності * Модифікатор якості
+	# Фактична ціна = Базова ціна * Модифікатор складності * Модифікатор якості
 	
 	var base_price = order.base_price
 	
 	# Модифікатор складності фінального виробу
 	var complexity_mod = 1.0
-	match item.get_complexity_level():
-		1: complexity_mod = 1.05 if item is SimpleItem else 1.02
-		2: complexity_mod = 1.1 if item is SimpleItem else 1.05 
-		3: complexity_mod = 1.2 if item is SimpleItem else 1.075
-		4: complexity_mod = 1.0 if item is SimpleItem else 1.1  # Для рівня 4
+	var complexity_level = item.get_complexity_level() if item.has_method("get_complexity_level") else 1
+	
+	if item is SimpleItem:
+		match complexity_level:
+			1: complexity_mod = config.complexity_mod_level_1
+			2: complexity_mod = config.complexity_mod_level_2
+			3: complexity_mod = config.complexity_mod_level_3
+			4: complexity_mod = config.complexity_mod_level_4
+	else:  # ComplexItem
+		match complexity_level:
+			1: complexity_mod = config.complexity_mod_level_1
+			2: complexity_mod = config.complexity_mod_level_2
+			3: complexity_mod = config.complexity_mod_level_3
+			4: complexity_mod = config.complexity_mod_level_4
 	
 	# Модифікатор якості фінального виробу
 	var quality_mod = 1.0
@@ -116,4 +125,13 @@ func calculate_actual_order_price(order: Order, item: ItemData) -> int:
 		# Замовлення не приймається
 		return 0
 	
-	return int(base_price * complexity_mod * quality_mod)
+	# Модифікатор якості виконання (від міні-гри)
+	var execution_mod = config.quality_mod_min + (quality_execution * config.quality_mod_range)
+	
+	# Бонус престижу кузні
+	var prestige_bonus = 1.0 + ForgeManager.price_premium
+	
+	# Фінальна ціна з усіма модифікаторами
+	var final_price = int(base_price * complexity_mod * quality_mod * execution_mod * prestige_bonus)
+	
+	return final_price

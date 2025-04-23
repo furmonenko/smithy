@@ -1,42 +1,51 @@
 extends Node
 
+# Посилання на конфігурацію
+var config: GameConfig
+
 # Basic forge data
 var forge_name: String = "Novice Forge"
 var forge_prestige: int = 0  # 0-1000
 var forge_reputation: Dictionary = {
-	"city_guard": 0,    # -100 to +100
-	"merchants": 0,     # -100 to +100
-	"nobility": 0,      # -100 to +100
-	"church": 0,        # -100 to +100
-	"thieves": 0,       # -100 to +100
-	"smugglers": 0,     # -100 to +100
-	"bandits": 0,       # -100 to +100
-	"secret_cults": 0   # -100 to +100
+	"city_guard": 0,  # -100 to +100
+	"merchants": 0,
+	"nobility": 0,
+	"church": 0,
+	"thieves": 0,
+	"smugglers": 0,
+	"bandits": 0,
+	"secret_cults": 0
 }
 
 # Economic indicators
-var forge_money: int = 100
+var forge_money: int = 0
 var price_premium: float = 0.0  # Price premium percentage (added to base price)
 var supplier_discount: float = 0.0  # Discount from suppliers
+var materials_in_stock: Dictionary = {}  # materials in stock {material_id: quantity}
 
-# Current orders and inventory
+# Orders collections
 var active_orders: Array[Order] = []
 var completed_orders: Array[Order] = []
 var failed_orders: Array[Order] = []
-
-var materials_inventory: Dictionary = {}  # {material_id: {material: CraftMaterial, quantity: int}}
-var components_inventory: Dictionary = {} # {component_id: {component: SimpleItem, quantity: int}}
-var products_inventory: Dictionary = {}   # {product_id: {product: ComplexItem, quantity: int}}
+var max_active_orders: int = 5
 
 # Signals
 signal money_changed(new_amount: int)
 signal prestige_changed(new_amount: int)
 signal reputation_changed(faction: String, new_value: int)
+signal order_accepted(order: Order)
+signal order_completed(order: Order)
+signal order_failed(order: Order)
 
-# Initialize the forge
+# Ініціалізація
 func _ready() -> void:
-	# Default initialization
-	pass
+	# Завантаження конфігурації
+	config = Global.get_config()
+	
+	# Встановлення початкових значень з конфігурації
+	forge_money = config.starting_money
+	forge_prestige = config.starting_prestige
+	max_active_orders = config.max_active_orders
 
 # Update prestige
 func update_prestige(amount: int) -> void:
@@ -66,192 +75,115 @@ func update_money(amount: int) -> void:
 # Update benefits based on prestige level
 func update_prestige_benefits() -> void:
 	# Update price premium based on prestige
-	if forge_prestige < 50:
+	if forge_prestige < config.prestige_level_1:
 		price_premium = 0.0
-	elif forge_prestige < 150:
-		price_premium = 0.01  # 1%
-	elif forge_prestige < 300:
-		price_premium = 0.02  # 2%
-	elif forge_prestige < 500:
-		price_premium = 0.05  # 5%
-	elif forge_prestige < 700:
-		price_premium = 0.08  # 8%
-	elif forge_prestige < 900:
-		price_premium = 0.12  # 12%
+	elif forge_prestige < config.prestige_level_2:
+		price_premium = config.price_premium_level_1
+	elif forge_prestige < config.prestige_level_3:
+		price_premium = config.price_premium_level_2
+	elif forge_prestige < config.prestige_level_4:
+		price_premium = config.price_premium_level_3
+	elif forge_prestige < config.prestige_level_5:
+		price_premium = config.price_premium_level_4
+	elif forge_prestige < config.prestige_level_6:
+		price_premium = config.price_premium_level_5
 	else:
-		price_premium = 0.15  # 15%
+		price_premium = config.price_premium_level_6
 		
 	# Update supplier discount based on prestige
-	if forge_prestige < 300:
+	if forge_prestige < config.supplier_discount_level_1:
 		supplier_discount = 0.0
-	elif forge_prestige < 500:
-		supplier_discount = 0.03  # 3%
-	elif forge_prestige < 700:
-		supplier_discount = 0.05  # 5%
-	elif forge_prestige < 900:
-		supplier_discount = 0.07  # 7%
+	elif forge_prestige < config.supplier_discount_level_2:
+		supplier_discount = config.supplier_discount_value_1
+	elif forge_prestige < config.supplier_discount_level_3:
+		supplier_discount = config.supplier_discount_value_2
+	elif forge_prestige < config.supplier_discount_level_4:
+		supplier_discount = config.supplier_discount_value_3
 	else:
-		supplier_discount = 0.10  # 10%
+		supplier_discount = config.supplier_discount_value_4
 
 # Add a new order
 func add_order(order: Order) -> void:
+	# Check if we can accept more orders
+	if active_orders.size() >= max_active_orders:
+		return
+		
+	# Accept the order
+	order.accept()
 	active_orders.append(order)
+	
+	# Emit signal
+	order_accepted.emit(order)
 
 # Complete an order
 func complete_order(order_id: String, item: ItemData) -> bool:
+	# Find the order in active orders
+	var order_index = -1
 	for i in range(active_orders.size()):
 		if active_orders[i].order_id == order_id:
-			var order = active_orders[i]
-			
-			# Validate item against order requirements
-			if order.validate_item(item):
-				# Complete the order
-				var item_quality = int(item.get_quality())
-				if order.complete(item_quality, item.name):
-					# Move to completed orders
-					active_orders.remove_at(i)
-					completed_orders.append(order)
-					
-					# Update forge stats
-					update_money(order.get_money_reward())
-					update_prestige(order.get_prestige_gain())
-					update_reputation(order.customer_id.split("-")[0], order.get_reputation_impact())
-					
-					return true
-			
-			return false
+			order_index = i
+			break
+	
+	if order_index == -1:
+		return false
+	
+	var order = active_orders[order_index]
+	
+	# Validate the item against the order requirements
+	if not order.validate_item(item):
+		return false
+	
+	# Complete the order
+	var item_quality = int(item.get_quality())
+	if order.complete(item_quality, item.name):
+		# Move to completed orders
+		active_orders.remove_at(order_index)
+		completed_orders.append(order)
+		
+		# Update forge stats
+		update_money(order.get_money_reward())
+		update_prestige(order.get_prestige_gain())
+		update_reputation(order.customer_id.split("-")[0], order.get_reputation_impact())
+		
+		# Emit signal
+		order_completed.emit(order)
+		
+		return true
 	
 	return false
 
 # Fail an order
 func fail_order(order_id: String) -> bool:
+	# Find the order in active orders
+	var order_index = -1
 	for i in range(active_orders.size()):
 		if active_orders[i].order_id == order_id:
-			var order = active_orders[i]
-			order.fail()
-			
-			# Move to failed orders
-			active_orders.remove_at(i)
-			failed_orders.append(order)
-			
-			# Apply reputation penalty
-			update_reputation(order.customer_id.split("-")[0], -abs(order.get_reputation_impact()))
-			
-			return true
+			order_index = i
+			break
 	
-	return false
+	if order_index == -1:
+		return false
+	
+	var order = active_orders[order_index]
+	
+	# Fail the order
+	order.fail()
+	
+	# Move to failed orders
+	active_orders.remove_at(order_index)
+	failed_orders.append(order)
+	
+	# Update reputation
+	update_reputation(order.customer_id.split("-")[0], order.get_reputation_impact())
+	
+	# Emit signal
+	order_failed.emit(order)
+	
+	return true
 
-# Add material to inventory
-func add_material(material: CraftMaterial, quantity: int) -> void:
-	var material_id = material.name
-	
-	if material_id in materials_inventory:
-		materials_inventory[material_id].quantity += quantity
-	else:
-		materials_inventory[material_id] = {
-			"material": material,
-			"quantity": quantity
-		}
-
-# Add component to inventory
-func add_component(component: SimpleItem, quantity: int = 1) -> void:
-	var component_id = component.name
-	
-	if component_id in components_inventory:
-		components_inventory[component_id].quantity += quantity
-	else:
-		components_inventory[component_id] = {
-			"component": component,
-			"quantity": quantity
-		}
-
-# Add product to inventory
-func add_product(product: ComplexItem, quantity: int = 1) -> void:
-	var product_id = product.name
-	
-	if product_id in products_inventory:
-		products_inventory[product_id].quantity += quantity
-	else:
-		products_inventory[product_id] = {
-			"product": product,
-			"quantity": quantity
-		}
-
-# Remove material from inventory
-func remove_material(material_id: String, quantity: int) -> bool:
-	if material_id in materials_inventory:
-		if materials_inventory[material_id].quantity >= quantity:
-			materials_inventory[material_id].quantity -= quantity
-			
-			# Remove entry if quantity is zero
-			if materials_inventory[material_id].quantity <= 0:
-				materials_inventory.erase(material_id)
-				
-			return true
-	
-	return false
-
-# Remove component from inventory
-func remove_component(component_id: String, quantity: int = 1) -> bool:
-	if component_id in components_inventory:
-		if components_inventory[component_id].quantity >= quantity:
-			components_inventory[component_id].quantity -= quantity
-			
-			# Remove entry if quantity is zero
-			if components_inventory[component_id].quantity <= 0:
-				components_inventory.erase(component_id)
-				
-			return true
-	
-	return false
-
-# Remove product from inventory
-func remove_product(product_id: String, quantity: int = 1) -> bool:
-	if product_id in products_inventory:
-		if products_inventory[product_id].quantity >= quantity:
-			products_inventory[product_id].quantity -= quantity
-			
-			# Remove entry if quantity is zero
-			if products_inventory[product_id].quantity <= 0:
-				products_inventory.erase(product_id)
-				
-			return true
-	
-	return false
-
-# Calculate mismatch penalty for a product
-func calculate_mismatch_penalty(product: ComplexItem) -> int:
-	# Mismatch = (Prestige_Forge / 100) - Prestige_Product
-	var normalized_forge_prestige = forge_prestige / 100.0
-	var product_prestige = product.get_prestige()
-	
-	var mismatch = normalized_forge_prestige - product_prestige
-	
-	# No penalty if mismatch is within acceptable range (-3 to 3)
-	if abs(mismatch) <= 3:
-		return 0
-		
-	# Calculate penalty for positive mismatch (forge prestige too high for product)
-	if mismatch > 3:
-		var penalty_multiplier = get_mismatch_level_multiplier()
-		return int((mismatch - 3) * penalty_multiplier)
-		
-	# Calculate bonus for negative mismatch (product prestige higher than forge)
-	if mismatch < -3:
-		return int((mismatch + 3) * 0.5)
-		
-	return 0
-
-# Get multiplier based on forge prestige level
-func get_mismatch_level_multiplier() -> float:
-	if forge_prestige < 500:
-		return 0.5
-	elif forge_prestige < 700:
-		return 1.0
-	elif forge_prestige < 900:
-		return 1.5
-	else:
-		return 2.0
+# Can accept more orders check
+func can_accept_more_orders() -> bool:
+	return active_orders.size() < max_active_orders
 
 # Get reputation level description
 func get_reputation_level_description(faction: String) -> String:
@@ -274,17 +206,66 @@ func get_reputation_level_description(faction: String) -> String:
 
 # Get prestige level description
 func get_prestige_level_description() -> String:
-	if forge_prestige >= 900:
+	if forge_prestige >= config.prestige_level_6:
 		return "Legendary Smith"
-	elif forge_prestige >= 700:
+	elif forge_prestige >= config.prestige_level_5:
 		return "Master Craftsman"
-	elif forge_prestige >= 500:
+	elif forge_prestige >= config.prestige_level_4:
 		return "Master Smith"
-	elif forge_prestige >= 300:
+	elif forge_prestige >= config.prestige_level_3:
 		return "Known Smith"
-	elif forge_prestige >= 150:
+	elif forge_prestige >= config.prestige_level_2:
 		return "Local Smith"
-	elif forge_prestige >= 50:
+	elif forge_prestige >= config.prestige_level_1:
 		return "Novice Smith"
 	else:
 		return "Unknown Smith"
+
+# Resource-based saving
+class ForgeData extends Resource:
+	@export var forge_name: String
+	@export var forge_prestige: int
+	@export var forge_reputation: Dictionary
+	@export var forge_money: int
+	@export var price_premium: float
+	@export var supplier_discount: float
+
+# Save forge data to a resource file
+func save_game(save_path: String = "user://forge_save.tres") -> Error:
+	var save_data = ForgeData.new()
+	
+	# Copy basic data
+	save_data.forge_name = forge_name
+	save_data.forge_prestige = forge_prestige
+	save_data.forge_reputation = forge_reputation
+	save_data.forge_money = forge_money
+	save_data.price_premium = price_premium
+	save_data.supplier_discount = supplier_discount
+	
+	# Save to disk
+	return ResourceSaver.save(save_data, save_path)
+
+# Load forge data from a resource file
+func load_game(save_path: String = "user://forge_save.tres") -> Error:
+	if not FileAccess.file_exists(save_path):
+		return ERR_FILE_NOT_FOUND
+		
+	var save_data = ResourceLoader.load(save_path, "", ResourceLoader.CACHE_MODE_REPLACE)
+	if not save_data:
+		return ERR_FILE_CORRUPT
+		
+	# Copy data from resource
+	if save_data is ForgeData:
+		forge_name = save_data.forge_name
+		forge_prestige = save_data.forge_prestige
+		forge_reputation = save_data.forge_reputation
+		forge_money = save_data.forge_money
+		price_premium = save_data.price_premium
+		supplier_discount = save_data.supplier_discount
+		
+		# Update any derived values
+		update_prestige_benefits()
+		
+		return OK
+	
+	return ERR_INVALID_DATA

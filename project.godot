@@ -23,6 +23,7 @@ CraftMaterialsManager="*res://singletons/craft_materials_manager.gd"
 GameTime="*res://singletons/game_time.gd"
 ForgeManager="*res://singletons/forge_manager.gd"
 PriceCalculator="*res://singletons/price_calculator.gd"
+Global="*res://singletons/global.tscn"
 
 [display]
 
