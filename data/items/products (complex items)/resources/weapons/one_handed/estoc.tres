@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://boeifqcguhv4t"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_ebsdp"]
-[ext_resource type="Resource" uid="uid://diwf0nvww1ql3" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/estoc_blade.tres" id="2_umtag"]
+[ext_resource type="Resource" uid="uid://diwf0nvww1ql3" path="res://data/items/components (simple items)/resources/weapon components/one_handed_cut_weapon/estoc_blade.tres" id="2_umtag"]
 [ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_f8k4c"]
-[ext_resource type="Resource" uid="uid://0jp43w7lebvn" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/straight_guard.tres" id="4_koema"]
-[ext_resource type="Resource" uid="uid://b2y8jx2vncppe" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/long_pommel.tres" id="5_d67ec"]
-[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/weapon components/resources/one_handed_cut_weapon/grip_handle.tres" id="6_ykw25"]
+[ext_resource type="Resource" uid="uid://0jp43w7lebvn" path="res://data/items/components (simple items)/resources/weapon components/one_handed_cut_weapon/straight_guard.tres" id="4_koema"]
+[ext_resource type="Resource" uid="uid://b2y8jx2vncppe" path="res://data/items/components (simple items)/resources/weapon components/one_handed_cut_weapon/long_pommel.tres" id="5_d67ec"]
+[ext_resource type="Resource" uid="uid://dlg05n18x1500" path="res://data/items/components (simple items)/resources/weapon components/one_handed_cut_weapon/grip_handle.tres" id="6_ykw25"]
 [ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_wkinm"]
 
 [sub_resource type="Resource" id="Resource_6vrj1"]

@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="HeadArmorItem" load_steps=10 format=3 uid="uid://bhcarrhk5hqe4"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_n3lnb"]
-[ext_resource type="Resource" uid="uid://cf8wsvd0syuhk" path="res://data/items/components (simple items)/armor components/resources/head_armor/szyszak_dome.tres" id="2_hsajj"]
+[ext_resource type="Resource" uid="uid://cf8wsvd0syuhk" path="res://data/items/components (simple items)/resources/armor components/head_armor/szyszak_dome.tres" id="2_hsajj"]
 [ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_o82pp"]
-[ext_resource type="Resource" uid="uid://dogeytygg2ij8" path="res://data/items/components (simple items)/armor components/resources/head_armor/nose_protection.tres" id="4_01hjh"]
-[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="5_y1d2p"]
+[ext_resource type="Resource" uid="uid://dogeytygg2ij8" path="res://data/items/components (simple items)/resources/armor components/head_armor/nose_protection.tres" id="4_01hjh"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/resources/armor components/head_armor/fabric_liner.tres" id="5_y1d2p"]
 [ext_resource type="Script" uid="uid://d2tyofj6yx7fj" path="res://data/items/products (complex items)/scripts/head_armor_item.gd" id="6_7hykl"]
 
 [sub_resource type="Resource" id="Resource_ufrqx"]

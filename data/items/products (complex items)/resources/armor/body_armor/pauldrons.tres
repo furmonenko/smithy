@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="BodyArmorItem" load_steps=8 format=3 uid="uid://dnn6pr7hsikv4"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_200pf"]
-[ext_resource type="Resource" uid="uid://x2fpsnuncvu6" path="res://data/items/components (simple items)/armor components/resources/body_armor/pauldrons_plate.tres" id="2_pipdb"]
+[ext_resource type="Resource" uid="uid://x2fpsnuncvu6" path="res://data/items/components (simple items)/resources/armor components/body_armor/pauldrons_plate.tres" id="2_pipdb"]
 [ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_p6bvq"]
-[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/armor components/resources/head_armor/fabric_liner.tres" id="4_tvoew"]
+[ext_resource type="Resource" uid="uid://cn6nmol73qvcf" path="res://data/items/components (simple items)/resources/armor components/head_armor/fabric_liner.tres" id="4_tvoew"]
 [ext_resource type="Script" uid="uid://cph1myq4jq05p" path="res://data/items/products (complex items)/scripts/body_armor_item.gd" id="5_kcpd4"]
 
 [sub_resource type="Resource" id="Resource_odbh7"]

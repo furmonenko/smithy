@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="WeaponItem" load_steps=12 format=3 uid="uid://b3obdds00atbh"]
 
 [ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/items/slots/slot.gd" id="1_gnxsl"]
-[ext_resource type="Resource" uid="uid://b0lertgktph5j" path="res://data/items/components (simple items)/weapon components/resources/dagger/knights_dagger_blade.tres" id="2_awcoy"]
+[ext_resource type="Resource" uid="uid://b0lertgktph5j" path="res://data/items/components (simple items)/resources/weapon components/dagger/knights_dagger_blade.tres" id="2_awcoy"]
 [ext_resource type="Script" uid="uid://m8q58xkg5dxw" path="res://data/items/slots/component_slot.gd" id="3_g2dl3"]
-[ext_resource type="Resource" uid="uid://fwkixtln3a1j" path="res://data/items/components (simple items)/weapon components/resources/dagger/grip_dagger_handle.tres" id="4_r6thg"]
-[ext_resource type="Resource" uid="uid://ctlrckngw63hp" path="res://data/items/components (simple items)/weapon components/resources/dagger/simple_dagger_guard.tres" id="5_detwo"]
-[ext_resource type="Resource" uid="uid://dr37nbjlhps8c" path="res://data/items/components (simple items)/weapon components/resources/dagger/simple_dagger_pommel.tres" id="6_5sqfp"]
+[ext_resource type="Resource" uid="uid://fwkixtln3a1j" path="res://data/items/components (simple items)/resources/weapon components/dagger/grip_dagger_handle.tres" id="4_r6thg"]
+[ext_resource type="Resource" uid="uid://ctlrckngw63hp" path="res://data/items/components (simple items)/resources/weapon components/dagger/simple_dagger_guard.tres" id="5_detwo"]
+[ext_resource type="Resource" uid="uid://dr37nbjlhps8c" path="res://data/items/components (simple items)/resources/weapon components/dagger/simple_dagger_pommel.tres" id="6_5sqfp"]
 [ext_resource type="Script" uid="uid://bqp2xvedo66i4" path="res://data/items/products (complex items)/scripts/weapon_item.gd" id="7_ifsm0"]
 
 [sub_resource type="Resource" id="Resource_o7mtx"]

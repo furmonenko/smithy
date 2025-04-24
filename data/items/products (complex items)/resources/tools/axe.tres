@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_vkml3")
 tool_type = 0
-name = ""
+name = "Axe"
 description = ""
 creation_difficulty = 2
 produced_quantity = 1
