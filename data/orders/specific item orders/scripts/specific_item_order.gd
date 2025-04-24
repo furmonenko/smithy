@@ -4,19 +4,14 @@ class_name SpecificItemOrder
 # Item properties
 @export var required_item: ItemData  # Direct reference to the required item
 
-# Посилання на конфігурацію
-var config: GameConfig
-
 func _init() -> void:
 	super()
 	order_type = OrderType.SPECIFIC_ITEM
-	
-	config = Global.get_config()
 
 func initialize_item():
-	# Automatically calculate base price if required_item is set
 	if required_item != null:
 		calculate_base_price()
+		negotiated_price = calculate_final_price()
 		
 	super()
 
@@ -39,15 +34,15 @@ func calculate_base_price() -> int:
 		print("[ORDER] No required_item set, returning current base_price: ", base_price)
 		return base_price
 	
-	# Розрахунок вартості матеріалів
+	# Розрахунок вартості матеріалів з урахуванням потрібної якості
 	var material_cost = 0
 	
 	if required_item is ComplexItem:
 		print("[ORDER] Calculating material cost for ComplexItem")
-		material_cost = PriceCalculator.calculate_complex_item_material_cost(required_item)
+		material_cost = PriceCalculator.calculate_complex_item_material_cost(required_item, required_quality_min)
 	elif required_item is SimpleItem:
 		print("[ORDER] Calculating material cost for SimpleItem")
-		material_cost = PriceCalculator.calculate_simple_item_material_cost(required_item)
+		material_cost = PriceCalculator.calculate_simple_item_material_cost(required_item, required_quality_min)
 	
 	print("[ORDER] Total material cost: ", material_cost)
 	
@@ -55,6 +50,7 @@ func calculate_base_price() -> int:
 	base_price = material_cost
 	
 	# Встановлюємо ліміт ціни (для торгівлі) з урахуванням базової націнки
+	var config = Global.get_config()
 	price_limit = int(base_price * config.price_limit_multiplier)
 	
 	return base_price
@@ -64,6 +60,9 @@ func calculate_final_price(quality_execution: float = 0.8, negotiation_result: f
 	# Якщо ціна вже узгоджена під час торгу
 	if negotiated_price > 0:
 		return negotiated_price
+	
+	# Отримання конфігурації
+	var config = Global.get_config()
 	
 	# Базова ціна (собівартість)
 	var final_price = base_price
@@ -117,11 +116,8 @@ func calculate_final_price(quality_execution: float = 0.8, negotiation_result: f
 static func create_from_item(item: ComplexItem, customer: String, min_quality: int = -1) -> SpecificItemOrder:
 	var order = SpecificItemOrder.new()
 	
-	# Load config
-	var config = load("res://resources/game_config.tres") as GameConfig
-	if not config:
-		push_error("Failed to load GameConfig resource")
-		config = GameConfig.new()
+	# Отримання конфігурації через Global
+	var config = Global.get_config()
 	
 	# If min_quality not specified, use default from config
 	if min_quality < 0:
@@ -146,7 +142,7 @@ static func create_from_item(item: ComplexItem, customer: String, min_quality: i
 	# Set duration based on complexity
 	order.duration_days = int(config.duration_days_multiplier * complexity)
 	
-	# Calculate base price
+	# Calculate base price with required quality
 	order.calculate_base_price()
 	
 	return order

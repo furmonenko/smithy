@@ -7,17 +7,18 @@ signal assembly_quality_changed(new_quality: float)
 
 var assembly_quality: float = 0.0  # Результат міні-гри складання (0-1)
 
-# Отримує коефіцієнт складності на основі рівня
 func get_complexity_coefficient() -> float:
+	var config = Global.get_config()
+	
 	match creation_difficulty:
-		CreationDifficulty.HOUSEHOLD:  # 1
-			return 0.9
-		CreationDifficulty.BASIC:      # 2
-			return 1.0
-		CreationDifficulty.MILITARY:   # 3
-			return 1.1
-		CreationDifficulty.ELITE:      # 4
-			return 1.2
+		CreationDifficulty.HOUSEHOLD:
+			return config.complexity_mod_level_1
+		CreationDifficulty.BASIC:
+			return config.complexity_mod_level_2
+		CreationDifficulty.MILITARY:
+			return config.complexity_mod_level_3
+		CreationDifficulty.ELITE:
+			return config.complexity_mod_level_4
 		_:
 			return 1.0
 
@@ -149,13 +150,6 @@ func has_component_type(component_type) -> bool:
 			return true
 	return false
 
-# Отримати список всіх компонентів
-func get_all_components() -> Array:
-	var components = []
-	for slot in component_slots:
-		components.append_array(slot.get_all_components())
-	return components
-
 # Розрахунок вартості матеріалів для складного виробу
 func calculate_material_cost() -> int:
 	var total_cost = 0
@@ -232,3 +226,40 @@ func update_base_price() -> void:
 func get_category() -> ItemData.Category:
 	# Метод має бути перевизначений у підкласах
 	return ItemData.Category.WEAPONS  # За замовчуванням зброя
+
+# Додайте ці методи до класу ComplexItem
+
+# Перевірка чи має предмет вже призначені компоненти
+func has_assigned_components() -> bool:
+	for slot in component_slots:
+		if slot is ComponentSlot and not slot.assigned_components.is_empty():
+			return true
+	return false
+
+# Отримати всі призначені компоненти зі всіх слотів
+func get_all_components() -> Array:
+	var all_components = []
+	
+	for slot in component_slots:
+		if slot is ComponentSlot:
+			all_components.append_array(slot.assigned_components)
+	
+	return all_components
+
+# Перевірка, чи всі необхідні слоти компонентів заповнені
+func all_required_slots_filled() -> bool:
+	for slot in component_slots:
+		if slot is ComponentSlot and slot.is_required and not slot.is_filled():
+			return false
+	return true
+
+# Встановити компонент у слот за індексом
+func set_component_at_slot(slot_index: int, component: SimpleItem) -> bool:
+	if slot_index < 0 or slot_index >= component_slots.size():
+		return false
+		
+	var slot = component_slots[slot_index]
+	if not slot is ComponentSlot:
+		return false
+		
+	return slot.assign_component(component)

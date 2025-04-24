@@ -20,10 +20,6 @@ enum CreationDifficulty {
 @export var produced_quantity: int = 1
 @export var component_slots: Array[Slot] = []
 
-const PRESTIGE_LOW_QUALITY: int = 30
-const PRESTIGE_MEDIUM_QUALITY: int = 40
-const PRESTIGE_HIGH_QUALITY: int = 60
-
 var quality: float = 0.0  # 0-100
 var prestige: float = 0.0
 var base_price: int = 0
@@ -130,14 +126,27 @@ func get_ui_description() -> String:
 	desc += description
 	return desc
 
-# Отримує коефіцієнт для розрахунку престижу на основі якості
 func get_quality_prestige_coefficient() -> float:
+	var config = Global.get_config()
 	var q = get_quality()
 	
 	# Залежність від таблиці на скріншоті
 	if q < 50:  # 0-49
-		return 30.0 / 100.0  # Базовий престиж 30
+		return config.prestige_low_quality / 100.0  
 	elif q < 80:  # 50-79
-		return 50.0 / 100.0  # Базовий престиж 50
+		return config.prestige_medium_quality / 100.0
 	else:  # 80-100
-		return 70.0 / 100.0  # Базовий престиж 70
+		return config.prestige_high_quality / 100.0
+		
+# Отримуємо значення з конфігу
+func get_prestige_low_quality() -> int:
+	var config = Global.get_config()
+	return config.prestige_low_quality
+
+func get_prestige_medium_quality() -> int:
+	var config = Global.get_config()
+	return config.prestige_medium_quality
+
+func get_prestige_high_quality() -> int:
+	var config = Global.get_config()
+	return config.prestige_high_quality

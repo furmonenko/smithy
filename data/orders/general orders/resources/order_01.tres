@@ -7,8 +7,8 @@
 script = ExtResource("1_xh8ab")
 required_item = ExtResource("1_k2460")
 order_name = "Knights Dagger"
-description = "sss"
-required_quality_min = 50
+description = ""
+required_quality_min = 60
 duration_days = 2
 reputation_impact = 5
 metadata/_custom_type_script = "uid://dlo3bbnrmbv8x"

@@ -76,15 +76,16 @@ func calculate_prestige() -> float:
 	# Престиж Елемента = (Фактична Якість / 100) × Базовий Престиж Категорії
 	return (quality / 100.0) * base_prestige
 
-# Визначає базовий престиж на основі якості
 func get_base_prestige_by_quality(quality: float) -> int:
+	var config = Global.get_config()
+	
 	if quality >= 0 and quality < 50:
-		return PRESTIGE_LOW_QUALITY  # Звичайний
+		return config.prestige_low_quality  # Звичайний
 	elif quality >= 50 and quality < 80:
-		return PRESTIGE_MEDIUM_QUALITY  # Відмінний
+		return config.prestige_medium_quality  # Відмінний
 	elif quality >= 80 and quality <= 100:
-		return PRESTIGE_HIGH_QUALITY  # Видатний
-	return 20  # За замовчуванням
+		return config.prestige_high_quality  # Видатний
+	return config.prestige_low_quality / 2  # За замовчуванням
 
 # Отримує результат міні-ігор
 func get_mini_game_result() -> float:

@@ -52,6 +52,14 @@ class_name GameConfig
 @export var starting_money: int = 100
 @export var starting_prestige: int = 0
 
+# ----- Престиж -----
+@export_category("Prestige Configuration")
+# Базові значення престижу для різних рівнів якості
+@export_group("Base Prestige Values")
+@export var prestige_low_quality: int = 30   # Звичайна якість
+@export var prestige_medium_quality: int = 40  # Відмінна якість
+@export var prestige_high_quality: int = 60  # Видатна якість
+
 # Рівні престижу для застосування цінової премії
 @export_group("Prestige Levels")
 @export var prestige_level_1: int = 50
