@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://swrgeb6rjlk" path="res://player_controller.gd" id="1_txate"]
 [ext_resource type="Texture2D" uid="uid://d0rkw6shhaplp" path="res://assets/Screenshot 2025-02-28 at 17.47.51.png" id="2_h16f5"]
-[ext_resource type="Resource" uid="uid://dilsukrsg2g5m" path="res://data/orders/general orders/resources/order_01.tres" id="2_neugl"]
+[ext_resource type="Resource" uid="uid://dilsukrsg2g5m" path="res://data/orders/specific item orders/order_01.tres" id="2_neugl"]
 [ext_resource type="Script" uid="uid://nf6cnj8knel4" path="res://components/interaction_component.gd" id="3_sl6t0"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6elex"]

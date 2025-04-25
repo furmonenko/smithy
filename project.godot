@@ -24,7 +24,7 @@ GameTime="*res://singletons/game_time.gd"
 ForgeManager="*res://singletons/forge_manager.gd"
 PriceCalculator="*res://singletons/price_calculator.gd"
 Global="*res://singletons/global.tscn"
-RecipesManger="*res://singletons/recipes_manger.gd"
+RecipesManager="*res://singletons/recipes_manger.gd"
 
 [display]
 
