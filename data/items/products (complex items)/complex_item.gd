@@ -184,7 +184,7 @@ func matches_order_requirements(order: Order) -> bool:
 		return false
 		
 	# Перевірка для різних типів замовлень
-	if order is GeneralOrder:
+	if order is CategoryItemOrder:
 		# Перевірка категорії та складності
 		if not matches_category(order.item_category):
 			return false

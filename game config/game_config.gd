@@ -78,6 +78,25 @@ class_name GameConfig
 @export var price_premium_level_5: float = 0.12  # 12%
 @export var price_premium_level_6: float = 0.15  # 15%
 
+# Параметри для розрахунку престижу
+@export_group("Prestige Calculation")
+@export var prestige_level_divisor_low: int = 5
+@export var prestige_level_divisor_medium: int = 10
+@export var prestige_level_divisor_high: int = 20
+
+@export var prestige_modifier_level_1: float = 1.0
+@export var prestige_modifier_level_2: float = 0.8
+@export var prestige_modifier_level_3: float = 0.6
+@export var prestige_modifier_level_4: float = 0.4
+@export var prestige_modifier_minimum: float = 0.1
+
+@export var prestige_modifier_decline_rate_1: float = 1000.0
+@export var prestige_modifier_decline_rate_2: float = 1500.0
+@export var prestige_modifier_decline_rate_3: float = 2000.0
+
+@export var prestige_modifier_bonus_military: float = 0.2
+@export var prestige_modifier_bonus_elite: float = 0.3
+
 # Рівні престижу для знижок постачальників
 @export_group("Supplier Discount Levels")
 @export var supplier_discount_level_1: int = 300

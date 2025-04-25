@@ -1,4 +1,4 @@
-extends ArmorComponent
+extends SimpleItem
 class_name HeadArmorComponent
 
 # Підтипи компонентів захисту голови

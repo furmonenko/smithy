@@ -3,8 +3,36 @@ class_name CategoryItemOrder
 
 # Категорія предмета
 @export var item_category: ItemData.Category
-# Тип предмета (відповідає енумам в класах предметів)
-@export var item_type: int
+
+@export_group("Item Type")
+@export_multiline var types_reference = """ Weapons:
+  0 = ONE_HANDED_SWORD
+  1 = SABER
+  2 = LONG_SWORD
+  3 = POLE_WEAPON
+  4 = HEAVY_WEAPON
+  5 = DAGGER
+
+Body Armor:
+  0 = TORSO_ARMOR
+  1 = CHAINMAIL
+  2 = ARMS_ARMOR
+  3 = LEGS_ARMOR
+
+Head Armor:
+  0 = WITHOUT_VISOR
+  1 = WITH_VISOR
+  2 = COIF
+
+Tools:
+  0 = AXE
+  1 = HAND_HOE
+  2 = SCYTHE
+  3 = SHOVEL
+  4 = PICKAXE """
+@export_range(-1, 100, 1, "or_greater") var item_type: int = -1
+@export_group("")
+
 # Рівень складності
 @export var creation_difficulty: ItemData.CreationDifficulty
 
@@ -53,8 +81,10 @@ func get_category_name(category: ItemData.Category) -> String:
 	match category:
 		ItemData.Category.WEAPONS:
 			return "Weapon"
-		ItemData.Category.ARMOR:
-			return "Armor"
+		ItemData.Category.BODY_ARMOR:
+			return "Body Armor"
+		ItemData.Category.HEAD_ARMOR:
+			return "Head Armor"
 		ItemData.Category.TOOLS:
 			return "Tool"
 		_:
@@ -65,11 +95,10 @@ func get_type_name(category: ItemData.Category, type_value: int) -> String:
 	match category:
 		ItemData.Category.WEAPONS:
 			return get_weapon_type_name(type_value)
-		ItemData.Category.ARMOR:
-			if type_value >= 100:  # Шоломи (з зміщенням)
-				return get_head_armor_type_name(type_value - 100)
-			else:  # Броня тіла
-				return get_body_armor_type_name(type_value)
+		ItemData.Category.BODY_ARMOR:
+			return get_body_armor_type_name(type_value)
+		ItemData.Category.HEAD_ARMOR:
+			return get_head_armor_type_name(type_value)
 		ItemData.Category.TOOLS:
 			return get_tool_type_name(type_value)
 		_:
@@ -105,7 +134,7 @@ func get_body_armor_type_name(armor_type: int) -> String:
 		BodyArmorItem.BodyArmorType.LEGS_ARMOR:
 			return "Leg Guards"
 		_:
-			return "Unknown Armor"
+			return "Unknown Body Armor"
 
 # Отримання назви типу шолома
 func get_head_armor_type_name(armor_type: int) -> String:
@@ -117,7 +146,7 @@ func get_head_armor_type_name(armor_type: int) -> String:
 		HeadArmorItem.HeadArmorType.COIF:
 			return "Coif"
 		_:
-			return "Unknown Helmet"
+			return "Unknown Head Armor"
 
 # Отримання назви типу інструмента
 func get_tool_type_name(tool_type: int) -> String:
@@ -191,11 +220,12 @@ func validate_item(item: ItemData) -> bool:
 		ItemData.Category.WEAPONS:
 			if "weapon_type" in item:
 				item_type_value = item.weapon_type
-		ItemData.Category.ARMOR:
+		ItemData.Category.BODY_ARMOR:
 			if "body_armor_type" in item:
 				item_type_value = item.body_armor_type
-			elif "head_armor_type" in item:
-				item_type_value = item.head_armor_type + 100  # Додаємо зміщення
+		ItemData.Category.HEAD_ARMOR:
+			if "head_armor_type" in item:
+				item_type_value = item.head_armor_type
 		ItemData.Category.TOOLS:
 			if "tool_type" in item:
 				item_type_value = item.tool_type
@@ -221,13 +251,12 @@ static func create_weapon_order(weapon_type: WeaponItem.WeaponType, difficulty: 
 # Створення замовлення на броню тіла певного типу
 static func create_body_armor_order(armor_type: BodyArmorItem.BodyArmorType, difficulty: ItemData.CreationDifficulty, 
 									customer: String, min_quality: int = -1) -> CategoryItemOrder:
-	return create_category_order(ItemData.Category.ARMOR, armor_type, difficulty, customer, min_quality)
+	return create_category_order(ItemData.Category.BODY_ARMOR, armor_type, difficulty, customer, min_quality)
 
 # Створення замовлення на шолом певного типу
 static func create_head_armor_order(armor_type: HeadArmorItem.HeadArmorType, difficulty: ItemData.CreationDifficulty, 
 									customer: String, min_quality: int = -1) -> CategoryItemOrder:
-	# Додаємо зміщення для шоломів
-	return create_category_order(ItemData.Category.ARMOR, armor_type + 100, difficulty, customer, min_quality)
+	return create_category_order(ItemData.Category.HEAD_ARMOR, armor_type, difficulty, customer, min_quality)
 
 # Створення замовлення на інструмент певного типу
 static func create_tool_order(tool_type: ToolItem.ToolType, difficulty: ItemData.CreationDifficulty, 
@@ -259,15 +288,16 @@ static func create_category_order(category: ItemData.Category, type_value: int, 
 	
 	# Prestige gain based on complexity and quality
 	var complexity = 1.0
+
 	match difficulty:
 		ItemData.CreationDifficulty.HOUSEHOLD:
-			complexity = 0.8
+			complexity = config.complexity_mod_level_1
 		ItemData.CreationDifficulty.BASIC:
-			complexity = 1.0
+			complexity = config.complexity_mod_level_2
 		ItemData.CreationDifficulty.MILITARY:
-			complexity = 1.2
+			complexity = config.complexity_mod_level_3
 		ItemData.CreationDifficulty.ELITE:
-			complexity = 1.5
+			complexity = config.complexity_mod_level_4
 	
 	order.prestige_gain = int(min_quality / config.prestige_gain_quality_divisor * complexity)
 	

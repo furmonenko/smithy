@@ -3,7 +3,8 @@ class_name ItemData
 
 enum Category {
 	TOOLS,          # Інструменти
-	ARMOR,          # Обладунки
+	BODY_ARMOR,     # Обладунки для тіла
+	HEAD_ARMOR,     # Обладунки для голови
 	WEAPONS         # Зброя
 }
 

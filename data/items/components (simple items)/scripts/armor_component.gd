@@ -1,2 +1,0 @@
-extends SimpleItem
-class_name ArmorComponent

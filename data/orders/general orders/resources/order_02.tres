@@ -1,11 +1,36 @@
 [gd_resource type="Resource" script_class="CategoryItemOrder" load_steps=2 format=3 uid="uid://dqy42yrkb4hev"]
 
-[ext_resource type="Script" uid="uid://dlo3bbnrmbv8x" path="res://data/orders/general orders/scripts/general_order.gd" id="1_q14ce"]
+[ext_resource type="Script" uid="uid://dlo3bbnrmbv8x" path="res://data/orders/general orders/scripts/category_item_order.gd" id="1_q14ce"]
 
 [resource]
 script = ExtResource("1_q14ce")
 item_category = 1
-item_type = 0
+types_reference = " Weapons:
+  0 = ONE_HANDED_SWORD
+  1 = SABER
+  2 = LONG_SWORD
+  3 = POLE_WEAPON
+  4 = HEAVY_WEAPON
+  5 = DAGGER
+
+Armor (Body):
+  0 = TORSO_ARMOR
+  1 = CHAINMAIL
+  2 = ARMS_ARMOR
+  3 = LEGS_ARMOR
+
+Armor (Head, +100):
+  0 = WITHOUT_VISOR
+  1 = WITH_VISOR
+  2 = COIF
+
+Tools:
+  0 = AXE
+  1 = HAND_HOE
+  2 = SCYTHE
+  3 = SHOVEL
+  4 = PICKAXE "
+item_type = -1
 creation_difficulty = 0
 order_name = ""
 description = ""

@@ -1,4 +1,4 @@
-extends ArmorComponent
+extends SimpleItem
 class_name BodyArmorComponent 
 
 # Підтипи компонентів захисту тіла
