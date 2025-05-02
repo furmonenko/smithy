@@ -1,19 +1,19 @@
 extends Order
 class_name SpecificComponentOrder
 
-@export var required_component: SimpleItem  # Наприклад, "Grip Dagger Handle"
+@export var required_component: ComponentRecipe
 
 # Перевизначаємо метод validate_item для перевірки наявності необхідного компонента
-func validate_item(item: ItemData) -> bool:
+func validate_item(item: Recipe) -> bool:
 	if not super.validate_item(item):
 		return false
 	
 	# Перевірка наявності необхідного компонента (для складних виробів)
-	if item is ComplexItem:
+	if item is ProductRecipe:
 		return item.has_component(required_component)
 	
 	# Для простих компонентів перевіряємо відповідність
-	if item is SimpleItem:
+	if item is ComponentRecipe:
 		return item.name == required_component.name
 		
 	return false

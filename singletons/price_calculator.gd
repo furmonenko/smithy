@@ -1,7 +1,7 @@
 extends Node
 
 # Функція для розрахунку очікуваної ціни матеріалів простого виробу
-static func calculate_simple_item_material_cost(item: SimpleItem, desired_quality: int = 50) -> int:
+static func calculate_simple_item_material_cost(item: ComponentRecipe, desired_quality: int = 50) -> int:
 	print("[PRICE] Calculating cost for simple item: ", item.name, " with quality: ", desired_quality)
 	var total_cost = 0
 	
@@ -35,11 +35,11 @@ static func calculate_simple_item_material_cost(item: SimpleItem, desired_qualit
 	return total_cost
 
 # Функція для розрахунку очікуваної ціни матеріалів складного виробу
-static func calculate_complex_item_material_cost(item: ComplexItem, desired_quality: int = 50) -> int:
+static func calculate_complex_item_material_cost(item: ProductRecipe, desired_quality: int = 50) -> int:
 	print("[PRICE] Calculating cost for complex item: ", item.name, " with desired quality: ", desired_quality)
 	var total_cost = 0
 	
-	# Для ComplexItem (рецепт) завжди використовуємо component_slots
+	# Для ProductRecipe (рецепт) завжди використовуємо component_slots
 	print("[PRICE] Using component slots for calculation")
 	
 	# Перебираємо всі слоти компонентів
@@ -67,7 +67,7 @@ static func calculate_complex_item_material_cost(item: ComplexItem, desired_qual
 	return total_cost
 
 # Розрахунок фактичної ціни замовлення
-static func calculate_actual_order_price(order: Order, item: ItemData, quality_execution: float = 0.8) -> int:
+static func calculate_actual_order_price(order: Order, item: Recipe, quality_execution: float = 0.8) -> int:
 	var config = Global.get_config()
 	var negotiated_price = order.negotiated_price
 	
@@ -84,13 +84,13 @@ static func calculate_actual_order_price(order: Order, item: ItemData, quality_e
 	var complexity_mod = 1.0
 	var complexity_level = item.get_complexity_level() if item.has_method("get_complexity_level") else 1
 	
-	if item is SimpleItem:
+	if item is ComponentRecipe:
 		match complexity_level:
 			1: complexity_mod = config.complexity_mod_level_1
 			2: complexity_mod = config.complexity_mod_level_2
 			3: complexity_mod = config.complexity_mod_level_3
 			4: complexity_mod = config.complexity_mod_level_4
-	else:  # ComplexItem
+	else:  # ProductRecipe
 		match complexity_level:
 			1: complexity_mod = config.complexity_mod_level_1
 			2: complexity_mod = config.complexity_mod_level_2

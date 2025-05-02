@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://brkmflhe4nwx4"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/recipes/slots/slot.gd" id="1_q3pn0"]
+[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/recipes/products (complex items)/scripts/tool_recipe.gd" id="5_ae601"]
+
+[resource]
+script = ExtResource("5_ae601")
+tool_type = 1
+name = "Hand Hoe"
+description = ""
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_q3pn0")]([])
+metadata/_custom_type_script = "uid://bbd134pghcqmk"

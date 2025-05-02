@@ -188,7 +188,7 @@ func calculate_final_price(quality_execution: float = 0.8, negotiation_result: f
 
 # Check if item meets order requirements
 # Base implementation
-func validate_item(item: ItemData) -> bool:
+func validate_item(item: Recipe) -> bool:
 	# Basic quality check
 	if item.get_quality() < required_quality_min and not accepts_lower_quality():
 		return false

@@ -116,7 +116,7 @@ func add_order(order: Order) -> void:
 	order_accepted.emit(order)
 
 # Complete an order
-func complete_order(order_id: String, item: ItemData) -> bool:
+func complete_order(order_id: String, item: Recipe) -> bool:
 	# Find the order in active orders
 	var order_index = -1
 	for i in range(active_orders.size()):

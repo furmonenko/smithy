@@ -1,8 +1,7 @@
 extends Order
 class_name SpecificItemOrder
 
-# Item properties
-@export var required_item: ItemData  # Direct reference to the required item
+@export var required_item: Recipe
 
 func _init() -> void:
 	super()
@@ -16,12 +15,12 @@ func initialize_item():
 	super()
 
 # Override validate_item method to check exact match
-func validate_item(item: ItemData) -> bool:
+func validate_item(item: Recipe) -> bool:
 	if not super.validate_item(item):
 		return false
 	
 	# Check if item matches the required item
-	if required_item != null and item is ComplexItem:
+	if required_item != null and item is ProductRecipe:
 		return item.name == required_item.name
 	
 	return false
@@ -37,11 +36,11 @@ func calculate_base_price() -> int:
 	# Розрахунок вартості матеріалів з урахуванням потрібної якості
 	var material_cost = 0
 	
-	if required_item is ComplexItem:
-		print("[ORDER] Calculating material cost for ComplexItem")
+	if required_item is ProductRecipe:
+		print("[ORDER] Calculating material cost for ProductRecipe")
 		material_cost = PriceCalculator.calculate_complex_item_material_cost(required_item, required_quality_min)
-	elif required_item is SimpleItem:
-		print("[ORDER] Calculating material cost for SimpleItem")
+	elif required_item is ComponentRecipe:
+		print("[ORDER] Calculating material cost for ComponentRecipe")
 		material_cost = PriceCalculator.calculate_simple_item_material_cost(required_item, required_quality_min)
 	
 	print("[ORDER] Total material cost: ", material_cost)
@@ -113,7 +112,7 @@ func calculate_final_price(quality_execution: float = 0.8, negotiation_result: f
 	return final_price
 
 # Create a specific item order from a complex item template
-static func create_from_item(item: ComplexItem, customer: String, min_quality: int = -1) -> SpecificItemOrder:
+static func create_from_item(item: ProductRecipe, customer: String, min_quality: int = -1) -> SpecificItemOrder:
 	var order = SpecificItemOrder.new()
 	
 	# Отримання конфігурації через Global

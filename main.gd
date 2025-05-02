@@ -15,7 +15,7 @@ var сamera_in_mini_game_mode: bool = false  # Прапорець для кон�
 @onready var player: PlayerController = %Blacksmith
 @onready var camera: Camera2D = $Blacksmith/Camera2D
 
-@export var test_item: ItemData
+@export var test_item: Recipe
 
 func _ready():
 	сonnect_interactables()

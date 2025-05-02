@@ -62,18 +62,18 @@ func get_level_divisor() -> int:
 			return config.prestige_level_divisor_medium
 
 # Розрахунок престижу для замовлення
-func calculate_order_prestige_gain(min_quality: int, difficulty: ItemData.CreationDifficulty) -> int:
+func calculate_order_prestige_gain(min_quality: int, difficulty: Recipe.CreationDifficulty) -> int:
 	var config = Global.get_config()
 	var complexity = 1.0
 	
 	match difficulty:
-		ItemData.CreationDifficulty.HOUSEHOLD:
+		Recipe.CreationDifficulty.HOUSEHOLD:
 			complexity = config.complexity_mod_level_1
-		ItemData.CreationDifficulty.BASIC:
+		Recipe.CreationDifficulty.BASIC:
 			complexity = config.complexity_mod_level_2
-		ItemData.CreationDifficulty.MILITARY:
+		Recipe.CreationDifficulty.MILITARY:
 			complexity = config.complexity_mod_level_3
-		ItemData.CreationDifficulty.ELITE:
+		Recipe.CreationDifficulty.ELITE:
 			complexity = config.complexity_mod_level_4
 	
 	# Базовий престиж
@@ -85,7 +85,7 @@ func calculate_order_prestige_gain(min_quality: int, difficulty: ItemData.Creati
 	return int(base_prestige * prestige_modifier)
 
 # Отримання модифікатора престижу залежно від складності
-func get_prestige_modifier_for_difficulty(difficulty: ItemData.CreationDifficulty) -> float:
+func get_prestige_modifier_for_difficulty(difficulty: Recipe.CreationDifficulty) -> float:
 	var modifier = 1.0
 	var forge_prestige = ForgeManager.forge_prestige
 	var config = Global.get_config()
@@ -101,9 +101,9 @@ func get_prestige_modifier_for_difficulty(difficulty: ItemData.CreationDifficult
 		modifier = config.prestige_modifier_level_4 - (forge_prestige - config.prestige_level_5) / config.prestige_modifier_decline_rate_3
 	
 	# Бонус для складних предметів
-	if forge_prestige > config.prestige_level_4 and difficulty >= ItemData.CreationDifficulty.MILITARY:
+	if forge_prestige > config.prestige_level_4 and difficulty >= Recipe.CreationDifficulty.MILITARY:
 		modifier += config.prestige_modifier_bonus_military
-	if forge_prestige > config.prestige_level_6 and difficulty == ItemData.CreationDifficulty.ELITE:
+	if forge_prestige > config.prestige_level_6 and difficulty == Recipe.CreationDifficulty.ELITE:
 		modifier += config.prestige_modifier_bonus_elite
 	
 	return max(config.prestige_modifier_minimum, modifier)
@@ -129,7 +129,7 @@ func get_forge_level() -> Enums.ForgeLevel:
 		return Enums.ForgeLevel.LEGENDARY
 
 # Обробка завершення виготовлення предмета
-func process_item_completion(item: ItemData) -> int:
+func process_item_completion(item: Recipe) -> int:
 	var item_prestige = item.get_prestige()
 	
 	# Застосовуємо модифікатор престижу залежно від рівня кузні
@@ -157,7 +157,7 @@ func process_item_completion(item: ItemData) -> int:
 	return actual_impact
 
 # Розрахунок приросту престижу від продажу виробу
-func calculate_prestige_gain_from_item(item: ItemData) -> int:
+func calculate_prestige_gain_from_item(item: Recipe) -> int:
 	var item_prestige = item.get_prestige()
 	var level_divisor = get_level_divisor()
 	

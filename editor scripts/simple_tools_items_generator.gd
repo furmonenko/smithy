@@ -17,12 +17,12 @@ var components = []
 # Мапінг категорій та підкатегорій до відповідних типів і скриптів
 var scripts_map = {
 	"Tools": {
-		"Tool Head": {"script": "ToolComponent", "type": ToolComponent.ToolComponentType.AXE_HEAD},
-		"Tool Handle": {"script": "ToolComponent", "type": ToolComponent.ToolComponentType.TOOL_HANDLE}
+		"Tool Head": {"script": "ToolComponentRecipe", "type": ToolComponentRecipe.ToolComponentRecipeType.AXE_HEAD},
+		"Tool Handle": {"script": "ToolComponentRecipe", "type": ToolComponentRecipe.ToolComponentRecipeType.TOOL_HANDLE}
 	},
 	"Materials": {
-		"Usable": {"script": "UsableMaterialComponent", "type": UsableMaterialComponent.UsableMaterialType.WIRE},
-		"Unusable": {"script": "UnusableMaterialComponent", "type": UnusableMaterialComponent.UnusableMaterialType.NAILS}
+		"Usable": {"script": "UsableMaterialComponentRecipeRecipe", "type": UsableMaterialComponentRecipeRecipe.UsableMaterialType.WIRE},
+		"Unusable": {"script": "UnusableMaterialComponentRecipe", "type": UnusableMaterialComponentRecipe.UnusableMaterialType.NAILS}
 	}
 }
 
@@ -230,24 +230,24 @@ func generate_components():
 	
 	# Мапінг специфічних типів компонентів
 	var tool_type_mapping = {
-		"Axe Head": ToolComponent.ToolComponentType.AXE_HEAD,
-		"Hand Hoe Head": ToolComponent.ToolComponentType.HAND_HOE_HEAD,
-		"Scythe Head": ToolComponent.ToolComponentType.SCYTHE_HEAD,
-		"Shovel Head": ToolComponent.ToolComponentType.SHOVEL_HEAD,
-		"Pickaxe Head": ToolComponent.ToolComponentType.PICKAXE_HEAD,
-		"Tool Handle": ToolComponent.ToolComponentType.TOOL_HANDLE
+		"Axe Head": ToolComponentRecipe.ToolComponentRecipeType.AXE_HEAD,
+		"Hand Hoe Head": ToolComponentRecipe.ToolComponentRecipeType.HAND_HOE_HEAD,
+		"Scythe Head": ToolComponentRecipe.ToolComponentRecipeType.SCYTHE_HEAD,
+		"Shovel Head": ToolComponentRecipe.ToolComponentRecipeType.SHOVEL_HEAD,
+		"Pickaxe Head": ToolComponentRecipe.ToolComponentRecipeType.PICKAXE_HEAD,
+		"Tool Handle": ToolComponentRecipe.ToolComponentRecipeType.TOOL_HANDLE
 	}
 	
 	var usable_type_mapping = {
-		"Wire": UsableMaterialComponent.UsableMaterialType.WIRE,
-		"Metal Rings": UsableMaterialComponent.UsableMaterialType.METAL_RING,
-		"Chainmail Piece": UsableMaterialComponent.UsableMaterialType.CHAINMAIL_PIECE,
-		"Metal Plate": UsableMaterialComponent.UsableMaterialType.METAL_PLATE
+		"Wire": UsableMaterialComponentRecipeRecipe.UsableMaterialType.WIRE,
+		"Metal Rings": UsableMaterialComponentRecipeRecipe.UsableMaterialType.METAL_RING,
+		"Chainmail Piece": UsableMaterialComponentRecipeRecipe.UsableMaterialType.CHAINMAIL_PIECE,
+		"Metal Plate": UsableMaterialComponentRecipeRecipe.UsableMaterialType.METAL_PLATE
 	}
 	
 	var unusable_type_mapping = {
-		"Nails": UnusableMaterialComponent.UnusableMaterialType.NAILS,
-		"Horseshoe": UnusableMaterialComponent.UnusableMaterialType.HORSESHOE
+		"Nails": UnusableMaterialComponentRecipe.UnusableMaterialType.NAILS,
+		"Horseshoe": UnusableMaterialComponentRecipe.UnusableMaterialType.HORSESHOE
 	}
 	
 	# Створюємо компоненти
@@ -261,16 +261,16 @@ func generate_components():
 		var component_type = null
 		
 		if item.category == "Tools":
-			script_name = "ToolComponent"
+			script_name = "ToolComponentRecipe"
 			if item.name in tool_type_mapping:
 				component_type = tool_type_mapping[item.name]
 		elif item.category == "Materials":
 			if item.subcategory == "Usable":
-				script_name = "UsableMaterialComponent"
+				script_name = "UsableMaterialComponentRecipeRecipe"
 				if item.name in usable_type_mapping:
 					component_type = usable_type_mapping[item.name]
 			elif item.subcategory == "Unusable":
-				script_name = "UnusableMaterialComponent"
+				script_name = "UnusableMaterialComponentRecipe"
 				if item.name in unusable_type_mapping:
 					component_type = unusable_type_mapping[item.name]
 		
@@ -302,20 +302,20 @@ func create_component(item_data, script_class_name: String, component_type):
 	
 	# Встановлюємо тип компонента відповідно до скрипта
 	match script_class_name:
-		"ToolComponent":
+		"ToolComponentRecipe":
 			component.tool_type = component_type
-		"UsableMaterialComponent":
+		"UsableMaterialComponentRecipeRecipe":
 			component.usable_material_type = component_type
-		"UnusableMaterialComponent":
+		"UnusableMaterialComponentRecipe":
 			component.unusable_material_type = component_type
 	
 	# Встановлюємо складність створення на основі вхідних даних
 	match item_data.difficulty:
-		"1": component.creation_difficulty = ItemData.CreationDifficulty.HOUSEHOLD
-		"2": component.creation_difficulty = ItemData.CreationDifficulty.BASIC
-		"3": component.creation_difficulty = ItemData.CreationDifficulty.MILITARY
-		"4": component.creation_difficulty = ItemData.CreationDifficulty.ELITE
-		_: component.creation_difficulty = ItemData.CreationDifficulty.BASIC
+		"1": component.creation_difficulty = Recipe.CreationDifficulty.HOUSEHOLD
+		"2": component.creation_difficulty = Recipe.CreationDifficulty.BASIC
+		"3": component.creation_difficulty = Recipe.CreationDifficulty.MILITARY
+		"4": component.creation_difficulty = Recipe.CreationDifficulty.ELITE
+		_: component.creation_difficulty = Recipe.CreationDifficulty.BASIC
 	
 	# Встановлюємо кількість виробів
 	component.produced_quantity = 1
@@ -326,9 +326,9 @@ func create_component(item_data, script_class_name: String, component_type):
 	# Визначаємо папку для збереження компонента
 	var save_path = ""
 	
-	if script_class_name == "ToolComponent":
+	if script_class_name == "ToolComponentRecipe":
 		save_path = TOOL_COMPONENT_BASE_PATH + "tools/" + item_data.name.to_snake_case() + ".tres"
-	else:  # MaterialComponent (Usable або Unusable)
+	else:  # MaterialComponentRecipe (Usable або Unusable)
 		save_path = TOOL_COMPONENT_BASE_PATH + "materials/" + item_data.name.to_snake_case() + ".tres"
 	
 	# Зберігаємо ресурс

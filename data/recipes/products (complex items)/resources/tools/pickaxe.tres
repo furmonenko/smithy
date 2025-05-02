@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ToolItem" load_steps=3 format=3 uid="uid://8yjs0bc4dlv5"]
+
+[ext_resource type="Script" uid="uid://dmtax224w8q6w" path="res://data/recipes/slots/slot.gd" id="1_qt2aj"]
+[ext_resource type="Script" uid="uid://bbd134pghcqmk" path="res://data/recipes/products (complex items)/scripts/tool_recipe.gd" id="4_vr44y"]
+
+[resource]
+script = ExtResource("4_vr44y")
+tool_type = 4
+name = "Pickaxe"
+description = ""
+creation_difficulty = 2
+produced_quantity = 1
+component_slots = Array[ExtResource("1_qt2aj")]([])
+metadata/_custom_type_script = "uid://bbd134pghcqmk"

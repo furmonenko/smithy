@@ -16,16 +16,16 @@ var armor_components = []
 # Мапінг категорій та підкатегорій до відповідних типів і скриптів
 var scripts_map = {
 	"Head Armor": {
-		"Dome": {"script": "HeadArmorComponent", "type": HeadArmorComponent.HeadArmorType.DOME},
-		"Visor": {"script": "HeadArmorComponent", "type": HeadArmorComponent.HeadArmorType.VISOR},
-		"Head Liner": {"script": "HeadArmorComponent", "type": HeadArmorComponent.HeadArmorType.HEAD_LINER}
+		"Dome": {"script": "HeadArmorComponentRecipe", "type": HeadArmorComponentRecipe.HeadArmorType.DOME},
+		"Visor": {"script": "HeadArmorComponentRecipe", "type": HeadArmorComponentRecipe.HeadArmorType.VISOR},
+		"Head Liner": {"script": "HeadArmorComponentRecipe", "type": HeadArmorComponentRecipe.HeadArmorType.HEAD_LINER}
 	},
 	"Body Armor": {
-		"Torso Armor": {"script": "BodyArmorComponent", "type": BodyArmorComponent.BodyArmorType.TORSO_ARMOR},
-		"Arms Armor": {"script": "BodyArmorComponent", "type": BodyArmorComponent.BodyArmorType.ARMS_ARMOR},
-		"Legs Armor": {"script": "BodyArmorComponent", "type": BodyArmorComponent.BodyArmorType.LEGS_ARMOR},
-		"Body Liner": {"script": "BodyArmorComponent", "type": BodyArmorComponent.BodyArmorType.BODY_LINER},
-		"Limb Liner": {"script": "BodyArmorComponent", "type": BodyArmorComponent.BodyArmorType.LIMB_LINER}
+		"Torso Armor": {"script": "BodyArmorComponentRecipe", "type": BodyArmorComponentRecipe.BodyArmorType.TORSO_ARMOR},
+		"Arms Armor": {"script": "BodyArmorComponentRecipe", "type": BodyArmorComponentRecipe.BodyArmorType.ARMS_ARMOR},
+		"Legs Armor": {"script": "BodyArmorComponentRecipe", "type": BodyArmorComponentRecipe.BodyArmorType.LEGS_ARMOR},
+		"Body Liner": {"script": "BodyArmorComponentRecipe", "type": BodyArmorComponentRecipe.BodyArmorType.BODY_LINER},
+		"Limb Liner": {"script": "BodyArmorComponentRecipe", "type": BodyArmorComponentRecipe.BodyArmorType.LIMB_LINER}
 	}
 }
 
@@ -395,20 +395,20 @@ func create_armor_component(item_data, script_class_name: String, component_type
 	if script_info:
 		# Встановлюємо тип компонента
 		match script_class_name:
-			"HeadArmorComponent":
+			"HeadArmorComponentRecipe":
 				component.head_armor_type = script_info.type
-			"BodyArmorComponent":
+			"BodyArmorComponentRecipe":
 				component.body_armor_type = script_info.type
 	else:
 		push_warning("Не знайдено інформацію про тип компонента для " + item_data.name)
 	
 	# Встановлюємо складність створення на основі вхідних даних
 	match item_data.difficulty:
-		"1": component.creation_difficulty = ItemData.CreationDifficulty.HOUSEHOLD
-		"2": component.creation_difficulty = ItemData.CreationDifficulty.BASIC
-		"3": component.creation_difficulty = ItemData.CreationDifficulty.MILITARY
-		"4": component.creation_difficulty = ItemData.CreationDifficulty.ELITE
-		_: component.creation_difficulty = ItemData.CreationDifficulty.BASIC
+		"1": component.creation_difficulty = Recipe.CreationDifficulty.HOUSEHOLD
+		"2": component.creation_difficulty = Recipe.CreationDifficulty.BASIC
+		"3": component.creation_difficulty = Recipe.CreationDifficulty.MILITARY
+		"4": component.creation_difficulty = Recipe.CreationDifficulty.ELITE
+		_: component.creation_difficulty = Recipe.CreationDifficulty.BASIC
 	
 	# Встановлюємо кількість виробів
 	component.produced_quantity = 1

@@ -2,10 +2,10 @@
 extends EditorScript
 
 # Import necessary classes to use their constants and types
-const WeaponItem = preload("res://data/items/products (complex items)/scripts/weapon_item.gd")
-const HeadArmorItem = preload("res://data/items/products (complex items)/scripts/head_armor_item.gd")
-const BodyArmorItem = preload("res://data/items/products (complex items)/scripts/body_armor_item.gd")
-const ToolItem = preload("res://data/items/products (complex items)/scripts/tool_item.gd")
+const WeaponRecipe = preload("res://data/items/products (complex items)/scripts/weapon_item.gd")
+const HeadArmorRecipe = preload("res://data/items/products (complex items)/scripts/head_armor_item.gd")
+const BodyArmorRecipe = preload("res://data/items/products (complex items)/scripts/body_armor_item.gd")
+const ToolRecipe = preload("res://data/items/products (complex items)/scripts/tool_item.gd")
 const ComponentSlot = preload("res://data/items/component_slot.gd")
 const MaterialSlot = preload("res://data/items/components (simple items)/material_slot.gd")
 
@@ -84,7 +84,7 @@ func init_complex_items():
 	
 	# HEAD ARMOR
 	complex_items.append({
-		"type": "HeadArmorItem",
+		"type": "HeadArmorRecipe",
 		"category": "Head Armor",
 		"subcategory": "Without Visor",
 		"name": "Kettle-Hat",
@@ -96,7 +96,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "HeadArmorItem",
+		"type": "HeadArmorRecipe",
 		"category": "Head Armor",
 		"subcategory": "Without Visor",
 		"name": "Simple Bascinet",
@@ -108,7 +108,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "HeadArmorItem",
+		"type": "HeadArmorRecipe",
 		"category": "Head Armor",
 		"subcategory": "Without Visor",
 		"name": "Szyszak",
@@ -120,7 +120,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "HeadArmorItem",
+		"type": "HeadArmorRecipe",
 		"category": "Head Armor",
 		"subcategory": "With Visor",
 		"name": "Bascinet With Visor",
@@ -133,7 +133,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "HeadArmorItem",
+		"type": "HeadArmorRecipe",
 		"category": "Head Armor",
 		"subcategory": "With Visor",
 		"name": "Armet",
@@ -146,7 +146,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "HeadArmorItem",
+		"type": "HeadArmorRecipe",
 		"category": "Head Armor",
 		"subcategory": "With Visor",
 		"name": "Noble Szyszak",
@@ -159,7 +159,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "HeadArmorItem",
+		"type": "HeadArmorRecipe",
 		"category": "Head Armor",
 		"subcategory": "Coif",
 		"name": "Chainmail Coif",
@@ -173,7 +173,7 @@ func init_complex_items():
 	
 	# BODY ARMOR
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Torso Armor",
 		"name": "Simple Cuirass",
@@ -186,7 +186,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Torso Armor",
 		"name": "Full Cuirass",
@@ -200,7 +200,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Torso Armor",
 		"name": "Brigandine",
@@ -214,7 +214,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Torso Armor",
 		"name": "Cuirass and Chainmail",
@@ -229,7 +229,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Chainmail",
 		"name": "Short Chainmail Shirt",
@@ -242,7 +242,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Chainmail",
 		"name": "Long Chainmail Shirt",
@@ -255,7 +255,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Arms Armor",
 		"name": "Pauldrons",
@@ -268,7 +268,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Arms Armor",
 		"name": "Rerebracers",
@@ -281,7 +281,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Arms Armor",
 		"name": "Vambraces",
@@ -294,7 +294,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Arms Armor",
 		"name": "Gauntlets",
@@ -307,7 +307,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Legs Armor",
 		"name": "Cuisses",
@@ -320,7 +320,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Legs Armor",
 		"name": "Greaves",
@@ -333,7 +333,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "BodyArmorItem",
+		"type": "BodyArmorRecipe",
 		"category": "Body Armor",
 		"subcategory": "Legs Armor",
 		"name": "Sabatons",
@@ -347,7 +347,7 @@ func init_complex_items():
 	
 	# ONE-HANDED WEAPONS
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "One-Handed Sword",
 		"name": "Short Sword",
@@ -362,7 +362,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "One-Handed Sword",
 		"name": "Arming Sword",
@@ -377,7 +377,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "One-Handed Sword",
 		"name": "Falchion",
@@ -392,7 +392,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "One-Handed Sword",
 		"name": "Estoc",
@@ -407,7 +407,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "One-Handed Sword",
 		"name": "Noble Short Sword",
@@ -422,7 +422,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "Saber",
 		"name": "Simple Saber",
@@ -437,7 +437,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "Saber",
 		"name": "Polish Saber",
@@ -452,7 +452,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "Saber",
 		"name": "Tatar Saber",
@@ -467,7 +467,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "Saber",
 		"name": "Magyar Saber",
@@ -482,7 +482,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "One-Handed Cut Weapon",
 		"subcategory": "Saber",
 		"name": "Noble Saber",
@@ -498,7 +498,7 @@ func init_complex_items():
 	
 	# LONG CUT WEAPONS
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Long Cut Weapon",
 		"subcategory": "Long Sword",
 		"name": "Bastard Sword",
@@ -513,7 +513,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Long Cut Weapon",
 		"subcategory": "Long Sword",
 		"name": "Zweihänder",
@@ -528,7 +528,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Long Cut Weapon",
 		"subcategory": "Long Sword",
 		"name": "Claymore",
@@ -543,7 +543,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Long Cut Weapon",
 		"subcategory": "Long Sword",
 		"name": "Noble Bastard Sword",
@@ -558,7 +558,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Long Cut Weapon",
 		"subcategory": "Long Sword",
 		"name": "Noble Zweihänder",
@@ -574,7 +574,7 @@ func init_complex_items():
 	
 	# POLE WEAPONS
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Pole Weapon",
 		"subcategory": "Pole Weapon",
 		"name": "Spear",
@@ -587,7 +587,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Pole Weapon",
 		"subcategory": "Pole Weapon",
 		"name": "Bardiche",
@@ -600,7 +600,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Pole Weapon",
 		"subcategory": "Pole Weapon",
 		"name": "Halberd",
@@ -613,7 +613,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Pole Weapon",
 		"subcategory": "Pole Weapon",
 		"name": "Pike",
@@ -627,7 +627,7 @@ func init_complex_items():
 	
 	# HEAVY WEAPONS
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Heavy Weapon",
 		"subcategory": "Heavy Weapon",
 		"name": "War Hammer",
@@ -640,7 +640,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Heavy Weapon",
 		"subcategory": "Heavy Weapon",
 		"name": "Mace",
@@ -653,7 +653,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Heavy Weapon",
 		"subcategory": "Heavy Weapon",
 		"name": "Morning Star",
@@ -666,7 +666,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Heavy Weapon",
 		"subcategory": "Heavy Weapon",
 		"name": "Battle Axe",
@@ -679,7 +679,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Heavy Weapon",
 		"subcategory": "Heavy Weapon",
 		"name": "Noble Pernach",
@@ -693,7 +693,7 @@ func init_complex_items():
 	
 	# DAGGERS
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Dagger",
 		"subcategory": "Knife",
 		"name": "Knife",
@@ -706,7 +706,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Dagger",
 		"subcategory": "Dagger",
 		"name": "Thieves Dagger",
@@ -719,7 +719,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Dagger",
 		"subcategory": "Dagger",
 		"name": "Knights Dagger",
@@ -734,7 +734,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "WeaponItem",
+		"type": "WeaponRecipe",
 		"category": "Dagger",
 		"subcategory": "Dagger",
 		"name": "Rich Dagger",
@@ -750,7 +750,7 @@ func init_complex_items():
 	
 	# TOOLS
 	complex_items.append({
-		"type": "ToolItem",
+		"type": "ToolRecipe",
 		"category": "Tools",
 		"subcategory": "Tools",
 		"name": "Axe",
@@ -763,7 +763,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "ToolItem",
+		"type": "ToolRecipe",
 		"category": "Tools",
 		"subcategory": "Tools",
 		"name": "Hand Hoe",
@@ -776,7 +776,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "ToolItem",
+		"type": "ToolRecipe",
 		"category": "Tools",
 		"subcategory": "Tools",
 		"name": "Scythe",
@@ -789,7 +789,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "ToolItem",
+		"type": "ToolRecipe",
 		"category": "Tools",
 		"subcategory": "Tools",
 		"name": "Shovel",
@@ -802,7 +802,7 @@ func init_complex_items():
 	})
 	
 	complex_items.append({
-		"type": "ToolItem",
+		"type": "ToolRecipe",
 		"category": "Tools",
 		"subcategory": "Tools",
 		"name": "Pickaxe",
@@ -1025,13 +1025,13 @@ func generate_complex_items():
 	for item_data in complex_items:
 		# Create the appropriate complex item based on its type
 		match item_data.type:
-			"HeadArmorItem":
+			"HeadArmorRecipe":
 				create_head_armor_item(item_data)
-			"BodyArmorItem":
+			"BodyArmorRecipe":
 				create_body_armor_item(item_data)
-			"WeaponItem":
+			"WeaponRecipe":
 				create_weapon_item(item_data)
-			"ToolItem":
+			"ToolRecipe":
 				create_tool_item(item_data)
 			_:
 				print("Unknown item type: " + item_data.type)
@@ -1040,8 +1040,8 @@ func generate_complex_items():
 
 # Create head armor item based on data
 func create_head_armor_item(item_data):
-	# Create a new HeadArmorItem instance
-	var head_armor = HeadArmorItem.new()
+	# Create a new HeadArmorRecipe instance
+	var head_armor = HeadArmorRecipe.new()
 	
 	# Set basic properties
 	head_armor.name = item_data.name
@@ -1049,11 +1049,11 @@ func create_head_armor_item(item_data):
 	
 	# Set item difficulty
 	match item_data.difficulty:
-		"1": head_armor.creation_difficulty = ItemData.CreationDifficulty.HOUSEHOLD
-		"2": head_armor.creation_difficulty = ItemData.CreationDifficulty.BASIC
-		"3": head_armor.creation_difficulty = ItemData.CreationDifficulty.MILITARY
-		"4": head_armor.creation_difficulty = ItemData.CreationDifficulty.ELITE
-		_: head_armor.creation_difficulty = ItemData.CreationDifficulty.BASIC
+		"1": head_armor.creation_difficulty = Recipe.CreationDifficulty.HOUSEHOLD
+		"2": head_armor.creation_difficulty = Recipe.CreationDifficulty.BASIC
+		"3": head_armor.creation_difficulty = Recipe.CreationDifficulty.MILITARY
+		"4": head_armor.creation_difficulty = Recipe.CreationDifficulty.ELITE
+		_: head_armor.creation_difficulty = Recipe.CreationDifficulty.BASIC
 	
 	# Set produced quantity
 	head_armor.produced_quantity = 1
@@ -1065,13 +1065,13 @@ func create_head_armor_item(item_data):
 		# Set default type based on subcategory
 		match item_data.subcategory:
 			"Without Visor":
-				head_armor.head_armor_type = HeadArmorItem.HeadArmorType.WITHOUT_VISOR
+				head_armor.head_armor_type = HeadArmorRecipe.HeadArmorType.WITHOUT_VISOR
 			"With Visor":
-				head_armor.head_armor_type = HeadArmorItem.HeadArmorType.WITH_VISOR
+				head_armor.head_armor_type = HeadArmorRecipe.HeadArmorType.WITH_VISOR
 			"Coif":
-				head_armor.head_armor_type = HeadArmorItem.HeadArmorType.COIF
+				head_armor.head_armor_type = HeadArmorRecipe.HeadArmorType.COIF
 			_:
-				head_armor.head_armor_type = HeadArmorItem.HeadArmorType.WITHOUT_VISOR
+				head_armor.head_armor_type = HeadArmorRecipe.HeadArmorType.WITHOUT_VISOR
 	
 	# Add component slots
 	setup_item_components(head_armor, item_data.components)
@@ -1088,8 +1088,8 @@ func create_head_armor_item(item_data):
 
 # Create body armor item based on data
 func create_body_armor_item(item_data):
-	# Create a new BodyArmorItem instance
-	var body_armor = BodyArmorItem.new()
+	# Create a new BodyArmorRecipe instance
+	var body_armor = BodyArmorRecipe.new()
 	
 	# Set basic properties
 	body_armor.name = item_data.name
@@ -1097,11 +1097,11 @@ func create_body_armor_item(item_data):
 	
 	# Set item difficulty
 	match item_data.difficulty:
-		"1": body_armor.creation_difficulty = ItemData.CreationDifficulty.HOUSEHOLD
-		"2": body_armor.creation_difficulty = ItemData.CreationDifficulty.BASIC
-		"3": body_armor.creation_difficulty = ItemData.CreationDifficulty.MILITARY
-		"4": body_armor.creation_difficulty = ItemData.CreationDifficulty.ELITE
-		_: body_armor.creation_difficulty = ItemData.CreationDifficulty.BASIC
+		"1": body_armor.creation_difficulty = Recipe.CreationDifficulty.HOUSEHOLD
+		"2": body_armor.creation_difficulty = Recipe.CreationDifficulty.BASIC
+		"3": body_armor.creation_difficulty = Recipe.CreationDifficulty.MILITARY
+		"4": body_armor.creation_difficulty = Recipe.CreationDifficulty.ELITE
+		_: body_armor.creation_difficulty = Recipe.CreationDifficulty.BASIC
 	
 	# Set produced quantity
 	body_armor.produced_quantity = 1
@@ -1113,15 +1113,15 @@ func create_body_armor_item(item_data):
 		# Default body armor type based on subcategory
 		match item_data.subcategory:
 			"Torso Armor":
-				body_armor.body_armor_type = BodyArmorItem.BodyArmorType.TORSO_ARMOR
+				body_armor.body_armor_type = BodyArmorRecipe.BodyArmorType.TORSO_ARMOR
 			"Chainmail":
-				body_armor.body_armor_type = BodyArmorItem.BodyArmorType.CHAINMAIL
+				body_armor.body_armor_type = BodyArmorRecipe.BodyArmorType.CHAINMAIL
 			"Arms Armor":
-				body_armor.body_armor_type = BodyArmorItem.BodyArmorType.ARMS_ARMOR
+				body_armor.body_armor_type = BodyArmorRecipe.BodyArmorType.ARMS_ARMOR
 			"Legs Armor":
-				body_armor.body_armor_type = BodyArmorItem.BodyArmorType.LEGS_ARMOR
+				body_armor.body_armor_type = BodyArmorRecipe.BodyArmorType.LEGS_ARMOR
 			_:
-				body_armor.body_armor_type = BodyArmorItem.BodyArmorType.TORSO_ARMOR
+				body_armor.body_armor_type = BodyArmorRecipe.BodyArmorType.TORSO_ARMOR
 	
 	# Add component slots
 	setup_item_components(body_armor, item_data.components)
@@ -1138,8 +1138,8 @@ func create_body_armor_item(item_data):
 
 # Create weapon item based on data
 func create_weapon_item(item_data):
-	# Create a new WeaponItem instance
-	var weapon = WeaponItem.new()
+	# Create a new WeaponRecipe instance
+	var weapon = WeaponRecipe.new()
 	
 	# Set basic properties
 	weapon.name = item_data.name
@@ -1147,11 +1147,11 @@ func create_weapon_item(item_data):
 	
 	# Set item difficulty
 	match item_data.difficulty:
-		"1": weapon.creation_difficulty = ItemData.CreationDifficulty.HOUSEHOLD
-		"2": weapon.creation_difficulty = ItemData.CreationDifficulty.BASIC
-		"3": weapon.creation_difficulty = ItemData.CreationDifficulty.MILITARY
-		"4": weapon.creation_difficulty = ItemData.CreationDifficulty.ELITE
-		_: weapon.creation_difficulty = ItemData.CreationDifficulty.BASIC
+		"1": weapon.creation_difficulty = Recipe.CreationDifficulty.HOUSEHOLD
+		"2": weapon.creation_difficulty = Recipe.CreationDifficulty.BASIC
+		"3": weapon.creation_difficulty = Recipe.CreationDifficulty.MILITARY
+		"4": weapon.creation_difficulty = Recipe.CreationDifficulty.ELITE
+		_: weapon.creation_difficulty = Recipe.CreationDifficulty.BASIC
 	
 	# Set produced quantity
 	weapon.produced_quantity = 1
@@ -1210,8 +1210,8 @@ func create_weapon_item(item_data):
 
 # Create tool item based on data
 func create_tool_item(item_data):
-	# Create a new ToolItem instance
-	var tool_item = ToolItem.new()
+	# Create a new ToolRecipe instance
+	var tool_item = ToolRecipe.new()
 	
 	# Set basic properties
 	tool_item.name = item_data.name
@@ -1219,11 +1219,11 @@ func create_tool_item(item_data):
 	
 	# Set item difficulty
 	match item_data.difficulty:
-		"1": tool_item.creation_difficulty = ItemData.CreationDifficulty.HOUSEHOLD
-		"2": tool_item.creation_difficulty = ItemData.CreationDifficulty.BASIC
-		"3": tool_item.creation_difficulty = ItemData.CreationDifficulty.MILITARY
-		"4": tool_item.creation_difficulty = ItemData.CreationDifficulty.ELITE
-		_: tool_item.creation_difficulty = ItemData.CreationDifficulty.BASIC
+		"1": tool_item.creation_difficulty = Recipe.CreationDifficulty.HOUSEHOLD
+		"2": tool_item.creation_difficulty = Recipe.CreationDifficulty.BASIC
+		"3": tool_item.creation_difficulty = Recipe.CreationDifficulty.MILITARY
+		"4": tool_item.creation_difficulty = Recipe.CreationDifficulty.ELITE
+		_: tool_item.creation_difficulty = Recipe.CreationDifficulty.BASIC
 	
 	# Set produced quantity
 	tool_item.produced_quantity = 1
@@ -1235,17 +1235,17 @@ func create_tool_item(item_data):
 		# Default tool type based on name
 		match item_data.name:
 			"Axe":
-				tool_item.tool_type = ToolItem.ToolType.AXE
+				tool_item.tool_type = ToolRecipe.ToolType.AXE
 			"Hand Hoe":
-				tool_item.tool_type = ToolItem.ToolType.HAND_HOE
+				tool_item.tool_type = ToolRecipe.ToolType.HAND_HOE
 			"Scythe":
-				tool_item.tool_type = ToolItem.ToolType.SCYTHE
+				tool_item.tool_type = ToolRecipe.ToolType.SCYTHE
 			"Shovel":
-				tool_item.tool_type = ToolItem.ToolType.SHOVEL
+				tool_item.tool_type = ToolRecipe.ToolType.SHOVEL
 			"Pickaxe":
-				tool_item.tool_type = ToolItem.ToolType.PICKAXE
+				tool_item.tool_type = ToolRecipe.ToolType.PICKAXE
 			_:
-				tool_item.tool_type = ToolItem.ToolType.AXE  # Default
+				tool_item.tool_type = ToolRecipe.ToolType.AXE  # Default
 	
 	# Add component slots
 	setup_item_components(tool_item, item_data.components)
@@ -1293,27 +1293,27 @@ func setup_item_components(item, components_data):
 			# Try to guess the type of component to create
 			var placeholder
 			if "Blade" in component_data.name or "Guard" in component_data.name or "Pommel" in component_data.name:
-				placeholder = WeaponComponent.new()
+				placeholder = WeaponComponentRecipe.new()
 				placeholder.name = component_data.name
 			elif "Dome" in component_data.name or "Visor" in component_data.name:
-				placeholder = HeadArmorComponent.new()
+				placeholder = HeadArmorComponentRecipe.new()
 				placeholder.name = component_data.name
 			elif "Cuirass" in component_data.name or "Plate" in component_data.name or "Liner" in component_data.name:
-				placeholder = BodyArmorComponent.new()
+				placeholder = BodyArmorComponentRecipe.new()
 				placeholder.name = component_data.name
 			elif "Head" in component_data.name and "Tool" in component_data.name:
-				placeholder = ToolComponent.new()
+				placeholder = ToolComponentRecipe.new()
 				placeholder.name = component_data.name
 			elif "Handle" in component_data.name:
-				placeholder = ToolComponent.new()
+				placeholder = ToolComponentRecipe.new()
 				placeholder.name = component_data.name
-				placeholder.tool_type = ToolComponent.ToolComponentType.TOOL_HANDLE
+				placeholder.tool_type = ToolComponentRecipe.ToolComponentRecipeType.TOOL_HANDLE
 			elif "Chainmail" in component_data.name or "Metal Plate" in component_data.name:
-				placeholder = UsableMaterialComponent.new()
+				placeholder = UsableMaterialComponentRecipeRecipe.new()
 				placeholder.name = component_data.name
 			else:
 				# Generic fallback
-				placeholder = WeaponComponent.new()
+				placeholder = WeaponComponentRecipe.new()
 				placeholder.name = component_data.name
 			
 			component_slot.allowed_component = placeholder

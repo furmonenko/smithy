@@ -2,7 +2,7 @@ extends Order
 class_name CategoryItemOrder
 
 # Категорія предмета
-@export var item_category: ItemData.Category
+@export var item_category: Recipe.Category
 
 @export_group("Item Type")
 @export_multiline var types_reference = """ Weapons:
@@ -34,7 +34,7 @@ Tools:
 @export_group("")
 
 # Рівень складності
-@export var creation_difficulty: ItemData.CreationDifficulty
+@export var creation_difficulty: Recipe.CreationDifficulty
 
 # Придатні рецепти, які відповідають вимогам
 var suitable_recipes: Array = []
@@ -77,29 +77,29 @@ func generate_description() -> void:
 		description += "\n\nWARNING: No suitable recipes found for this category."
 
 # Отримання назви категорії
-func get_category_name(category: ItemData.Category) -> String:
+func get_category_name(category: Recipe.Category) -> String:
 	match category:
-		ItemData.Category.WEAPONS:
+		Recipe.Category.WEAPONS:
 			return "Weapon"
-		ItemData.Category.BODY_ARMOR:
+		Recipe.Category.BODY_ARMOR:
 			return "Body Armor"
-		ItemData.Category.HEAD_ARMOR:
+		Recipe.Category.HEAD_ARMOR:
 			return "Head Armor"
-		ItemData.Category.TOOLS:
+		Recipe.Category.TOOLS:
 			return "Tool"
 		_:
 			return "Unknown"
 
 # Отримання назви типу предмета
-func get_type_name(category: ItemData.Category, type_value: int) -> String:
+func get_type_name(category: Recipe.Category, type_value: int) -> String:
 	match category:
-		ItemData.Category.WEAPONS:
+		Recipe.Category.WEAPONS:
 			return get_weapon_type_name(type_value)
-		ItemData.Category.BODY_ARMOR:
+		Recipe.Category.BODY_ARMOR:
 			return get_body_armor_type_name(type_value)
-		ItemData.Category.HEAD_ARMOR:
+		Recipe.Category.HEAD_ARMOR:
 			return get_head_armor_type_name(type_value)
-		ItemData.Category.TOOLS:
+		Recipe.Category.TOOLS:
 			return get_tool_type_name(type_value)
 		_:
 			return "Unknown Item"
@@ -107,17 +107,17 @@ func get_type_name(category: ItemData.Category, type_value: int) -> String:
 # Отримання назви типу зброї
 func get_weapon_type_name(weapon_type: int) -> String:
 	match weapon_type:
-		WeaponItem.WeaponType.ONE_HANDED_SWORD:
+		WeaponRecipe.WeaponType.ONE_HANDED_SWORD:
 			return "One-Handed Sword"
-		WeaponItem.WeaponType.DAGGER:
+		WeaponRecipe.WeaponType.DAGGER:
 			return "Dagger"
-		WeaponItem.WeaponType.SABER:
+		WeaponRecipe.WeaponType.SABER:
 			return "Saber"
-		WeaponItem.WeaponType.LONG_SWORD:
+		WeaponRecipe.WeaponType.LONG_SWORD:
 			return "Long Sword"
-		WeaponItem.WeaponType.POLE_WEAPON:
+		WeaponRecipe.WeaponType.POLE_WEAPON:
 			return "Pole Weapon"
-		WeaponItem.WeaponType.HEAVY_WEAPON:
+		WeaponRecipe.WeaponType.HEAVY_WEAPON:
 			return "Heavy Weapon"
 		_:
 			return "Unknown Weapon"
@@ -125,13 +125,13 @@ func get_weapon_type_name(weapon_type: int) -> String:
 # Отримання назви типу броні тіла
 func get_body_armor_type_name(armor_type: int) -> String:
 	match armor_type:
-		BodyArmorItem.BodyArmorType.TORSO_ARMOR:
+		BodyArmorRecipe.BodyArmorType.TORSO_ARMOR:
 			return "Torso Armor"
-		BodyArmorItem.BodyArmorType.CHAINMAIL:
+		BodyArmorRecipe.BodyArmorType.CHAINMAIL:
 			return "Chainmail"
-		BodyArmorItem.BodyArmorType.ARMS_ARMOR:
+		BodyArmorRecipe.BodyArmorType.ARMS_ARMOR:
 			return "Arm Guards"
-		BodyArmorItem.BodyArmorType.LEGS_ARMOR:
+		BodyArmorRecipe.BodyArmorType.LEGS_ARMOR:
 			return "Leg Guards"
 		_:
 			return "Unknown Body Armor"
@@ -139,11 +139,11 @@ func get_body_armor_type_name(armor_type: int) -> String:
 # Отримання назви типу шолома
 func get_head_armor_type_name(armor_type: int) -> String:
 	match armor_type:
-		HeadArmorItem.HeadArmorType.WITHOUT_VISOR:
+		HeadArmorRecipe.HeadArmorType.WITHOUT_VISOR:
 			return "Helmet without Visor"
-		HeadArmorItem.HeadArmorType.WITH_VISOR:
+		HeadArmorRecipe.HeadArmorType.WITH_VISOR:
 			return "Helmet with Visor"
-		HeadArmorItem.HeadArmorType.COIF:
+		HeadArmorRecipe.HeadArmorType.COIF:
 			return "Coif"
 		_:
 			return "Unknown Head Armor"
@@ -151,29 +151,29 @@ func get_head_armor_type_name(armor_type: int) -> String:
 # Отримання назви типу інструмента
 func get_tool_type_name(tool_type: int) -> String:
 	match tool_type:
-		ToolItem.ToolType.AXE:
+		ToolRecipe.ToolType.AXE:
 			return "Axe"
-		ToolItem.ToolType.HAND_HOE:
+		ToolRecipe.ToolType.HAND_HOE:
 			return "Hand Hoe"
-		ToolItem.ToolType.SCYTHE:
+		ToolRecipe.ToolType.SCYTHE:
 			return "Scythe"
-		ToolItem.ToolType.SHOVEL:
+		ToolRecipe.ToolType.SHOVEL:
 			return "Shovel"
-		ToolItem.ToolType.PICKAXE:
+		ToolRecipe.ToolType.PICKAXE:
 			return "Pickaxe"
 		_:
 			return "Unknown Tool"
 
 # Отримання назви рівня складності
-func get_difficulty_name(difficulty: ItemData.CreationDifficulty) -> String:
+func get_difficulty_name(difficulty: Recipe.CreationDifficulty) -> String:
 	match difficulty:
-		ItemData.CreationDifficulty.HOUSEHOLD:
+		Recipe.CreationDifficulty.HOUSEHOLD:
 			return "Household"
-		ItemData.CreationDifficulty.BASIC:
+		Recipe.CreationDifficulty.BASIC:
 			return "Basic"
-		ItemData.CreationDifficulty.MILITARY:
+		Recipe.CreationDifficulty.MILITARY:
 			return "Military"
-		ItemData.CreationDifficulty.ELITE:
+		Recipe.CreationDifficulty.ELITE:
 			return "Elite"
 		_:
 			return "Unknown"
@@ -190,7 +190,7 @@ func calculate_average_base_price() -> void:
 		# Розрахунок ціни для цього рецепту
 		var recipe_price = 0
 		
-		if recipe is ComplexItem:
+		if recipe is ProductRecipe:
 			recipe_price = PriceCalculator.calculate_complex_item_material_cost(recipe, required_quality_min)
 		
 		total_price += recipe_price
@@ -205,7 +205,7 @@ func calculate_average_base_price() -> void:
 	print("[CATEGORY_ORDER] Average base price: ", base_price)
 
 # Перевизначення методу validate_item для перевірки відповідності категорії та типу
-func validate_item(item: ItemData) -> bool:
+func validate_item(item: Recipe) -> bool:
 	if not super.validate_item(item):
 		return false
 	
@@ -217,16 +217,16 @@ func validate_item(item: ItemData) -> bool:
 	var item_type_value = -1
 	
 	match item_category:
-		ItemData.Category.WEAPONS:
+		Recipe.Category.WEAPONS:
 			if "weapon_type" in item:
 				item_type_value = item.weapon_type
-		ItemData.Category.BODY_ARMOR:
+		Recipe.Category.BODY_ARMOR:
 			if "body_armor_type" in item:
 				item_type_value = item.body_armor_type
-		ItemData.Category.HEAD_ARMOR:
+		Recipe.Category.HEAD_ARMOR:
 			if "head_armor_type" in item:
 				item_type_value = item.head_armor_type
-		ItemData.Category.TOOLS:
+		Recipe.Category.TOOLS:
 			if "tool_type" in item:
 				item_type_value = item.tool_type
 	
@@ -240,31 +240,31 @@ func validate_item(item: ItemData) -> bool:
 	return true
 
 # Створення замовлення на категорію предметів
-static func create_dagger_order(difficulty: ItemData.CreationDifficulty, customer: String, min_quality: int = -1) -> CategoryItemOrder:
-	return create_weapon_order(WeaponItem.WeaponType.DAGGER, difficulty, customer, min_quality)
+static func create_dagger_order(difficulty: Recipe.CreationDifficulty, customer: String, min_quality: int = -1) -> CategoryItemOrder:
+	return create_weapon_order(WeaponRecipe.WeaponType.DAGGER, difficulty, customer, min_quality)
 
 # Створення замовлення на зброю певного типу
-static func create_weapon_order(weapon_type: WeaponItem.WeaponType, difficulty: ItemData.CreationDifficulty, 
+static func create_weapon_order(weapon_type: WeaponRecipe.WeaponType, difficulty: Recipe.CreationDifficulty, 
 								customer: String, min_quality: int = -1) -> CategoryItemOrder:
-	return create_category_order(ItemData.Category.WEAPONS, weapon_type, difficulty, customer, min_quality)
+	return create_category_order(Recipe.Category.WEAPONS, weapon_type, difficulty, customer, min_quality)
 
 # Створення замовлення на броню тіла певного типу
-static func create_body_armor_order(armor_type: BodyArmorItem.BodyArmorType, difficulty: ItemData.CreationDifficulty, 
+static func create_body_armor_order(armor_type: BodyArmorRecipe.BodyArmorType, difficulty: Recipe.CreationDifficulty, 
 									customer: String, min_quality: int = -1) -> CategoryItemOrder:
-	return create_category_order(ItemData.Category.BODY_ARMOR, armor_type, difficulty, customer, min_quality)
+	return create_category_order(Recipe.Category.BODY_ARMOR, armor_type, difficulty, customer, min_quality)
 
 # Створення замовлення на шолом певного типу
-static func create_head_armor_order(armor_type: HeadArmorItem.HeadArmorType, difficulty: ItemData.CreationDifficulty, 
+static func create_head_armor_order(armor_type: HeadArmorRecipe.HeadArmorType, difficulty: Recipe.CreationDifficulty, 
 									customer: String, min_quality: int = -1) -> CategoryItemOrder:
-	return create_category_order(ItemData.Category.HEAD_ARMOR, armor_type, difficulty, customer, min_quality)
+	return create_category_order(Recipe.Category.HEAD_ARMOR, armor_type, difficulty, customer, min_quality)
 
 # Створення замовлення на інструмент певного типу
-static func create_tool_order(tool_type: ToolItem.ToolType, difficulty: ItemData.CreationDifficulty, 
+static func create_tool_order(tool_type: ToolRecipe.ToolType, difficulty: Recipe.CreationDifficulty, 
 							  customer: String, min_quality: int = -1) -> CategoryItemOrder:
-	return create_category_order(ItemData.Category.TOOLS, tool_type, difficulty, customer, min_quality)
+	return create_category_order(Recipe.Category.TOOLS, tool_type, difficulty, customer, min_quality)
 
 # Базовий метод для створення замовлення на категорію предметів
-static func create_category_order(category: ItemData.Category, type_value: int, difficulty: ItemData.CreationDifficulty, 
+static func create_category_order(category: Recipe.Category, type_value: int, difficulty: Recipe.CreationDifficulty, 
 								 customer: String, min_quality: int = -1) -> CategoryItemOrder:
 	var order = CategoryItemOrder.new()
 	
@@ -290,13 +290,13 @@ static func create_category_order(category: ItemData.Category, type_value: int, 
 	var complexity = 1.0
 
 	match difficulty:
-		ItemData.CreationDifficulty.HOUSEHOLD:
+		Recipe.CreationDifficulty.HOUSEHOLD:
 			complexity = config.complexity_mod_level_1
-		ItemData.CreationDifficulty.BASIC:
+		Recipe.CreationDifficulty.BASIC:
 			complexity = config.complexity_mod_level_2
-		ItemData.CreationDifficulty.MILITARY:
+		Recipe.CreationDifficulty.MILITARY:
 			complexity = config.complexity_mod_level_3
-		ItemData.CreationDifficulty.ELITE:
+		Recipe.CreationDifficulty.ELITE:
 			complexity = config.complexity_mod_level_4
 	
 	order.prestige_gain = int(min_quality / config.prestige_gain_quality_divisor * complexity)

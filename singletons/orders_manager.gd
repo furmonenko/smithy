@@ -34,7 +34,7 @@ func register_character(character_id: String, faction: String, reputation: int =
 	}
 
 # Generate orders for a character
-func generate_orders_for_character(character_id: String, templates: Array[ComplexItem], count: int = 1) -> Array[Order]:
+func generate_orders_for_character(character_id: String, templates: Array[ProductRecipe], count: int = 1) -> Array[Order]:
 	if not character_id in characters:
 		return []
 	
@@ -109,7 +109,7 @@ func start_crafting_order(order_id: String) -> bool:
 	return false
 
 # Complete an order
-func complete_order(order_id: String, item: ItemData) -> bool:
+func complete_order(order_id: String, item: Recipe) -> bool:
 	# Find the order in active orders
 	var order_index = -1
 	for i in range(active_orders.size()):

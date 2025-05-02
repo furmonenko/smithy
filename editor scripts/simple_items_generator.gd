@@ -19,31 +19,31 @@ var weapon_components = []
 # Мапінг категорій та підкатегорій до відповідних типів і скриптів
 var scripts_map = {
 	"One-Handed Cut Weapon": {
-		"One-Handed Sword Blade": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SHORT_BLADE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.ONE_HANDED_SWORD_BLADE},
-		"Saber Blade": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SHORT_BLADE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.SABER_BLADE},
-		"One-Handed Guard": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SHORT_BLADE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.ONE_HANDED_GUARD},
-		"One-Handed Pommel": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SHORT_BLADE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.ONE_HANDED_POMMEL},
-		"One-Handed Handle": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.ONE_HANDED_HANDLE}
+		"One-Handed Sword Blade": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SHORT_BLADE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.ONE_HANDED_SWORD_BLADE},
+		"Saber Blade": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SHORT_BLADE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.SABER_BLADE},
+		"One-Handed Guard": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SHORT_BLADE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.ONE_HANDED_GUARD},
+		"One-Handed Pommel": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SHORT_BLADE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.ONE_HANDED_POMMEL},
+		"One-Handed Handle": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.ONE_HANDED_HANDLE}
 	},
 	"Long Cut Weapon": {
-		"Long Sword Blade": {"script": "LongCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.LONG_BLADE, "type": LongCutWeaponComponent.LongCutWeaponType.LONG_SWORD_BLADE},
-		"Lond Sword Guard": {"script": "LongCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.LONG_BLADE, "type": LongCutWeaponComponent.LongCutWeaponType.LONG_SWORD_GUARD},
-		"Long Sword Pommel": {"script": "LongCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.LONG_BLADE, "type": LongCutWeaponComponent.LongCutWeaponType.LONG_SWORD_POMMEL},
-		"Long Sword Handle": {"script": "LongCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": LongCutWeaponComponent.LongCutWeaponType.LONG_SWORD_HANDLE}
+		"Long Sword Blade": {"script": "LongCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.LONG_BLADE, "type": LongCutWeaponComponentRecipe.LongCutWeaponType.LONG_SWORD_BLADE},
+		"Lond Sword Guard": {"script": "LongCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.LONG_BLADE, "type": LongCutWeaponComponentRecipe.LongCutWeaponType.LONG_SWORD_GUARD},
+		"Long Sword Pommel": {"script": "LongCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.LONG_BLADE, "type": LongCutWeaponComponentRecipe.LongCutWeaponType.LONG_SWORD_POMMEL},
+		"Long Sword Handle": {"script": "LongCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": LongCutWeaponComponentRecipe.LongCutWeaponType.LONG_SWORD_HANDLE}
 	},
 	"Pole Weapon": {
-		"Pole Head": {"script": "PoleWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SPEAR_HEAD, "type": PoleWeaponComponent.PoleWeaponType.POLE_HEAD},
-		"Pole Handle": {"script": "PoleWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": PoleWeaponComponent.PoleWeaponType.POLE_HANDLE}
+		"Pole Head": {"script": "PoleWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SPEAR_HEAD, "type": PoleWeaponComponentRecipe.PoleWeaponType.POLE_HEAD},
+		"Pole Handle": {"script": "PoleWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": PoleWeaponComponentRecipe.PoleWeaponType.POLE_HANDLE}
 	},
 	"Heavy Weapon": {
-		"Heavy Weapon Head": {"script": "HeavyWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.MACE_HEAD, "type": HeavyWeaponComponent.HeavyWeaponType.HEAVY_WEAPON_HEAD},
-		"Heavy Weapon Handle": {"script": "HeavyWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": HeavyWeaponComponent.HeavyWeaponType.HEAVY_WEAPON_HANDLE}
+		"Heavy Weapon Head": {"script": "HeavyWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.MACE_HEAD, "type": HeavyWeaponComponentRecipe.HeavyWeaponType.HEAVY_WEAPON_HEAD},
+		"Heavy Weapon Handle": {"script": "HeavyWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": HeavyWeaponComponentRecipe.HeavyWeaponType.HEAVY_WEAPON_HANDLE}
 	},
 	"Dagger": {
-		"Dagger Blade": {"script": "DaggerComponent", "weapon_type": WeaponComponent.WeaponComponentType.DAGGER_BLADE, "type": DaggerComponent.DaggerType.DAGGER_BLADE},
-		"Dagger Handle": {"script": "DaggerComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": DaggerComponent.DaggerType.DAGGER_HANDLE},
-		"Dagger Pommel": {"script": "DaggerComponent", "weapon_type": WeaponComponent.WeaponComponentType.DAGGER_BLADE, "type": DaggerComponent.DaggerType.DAGGER_POMMEL},
-		"Dagger Guard": {"script": "DaggerComponent", "weapon_type": WeaponComponent.WeaponComponentType.DAGGER_BLADE, "type": DaggerComponent.DaggerType.DAGGER_GUARD}
+		"Dagger Blade": {"script": "DaggerComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.DAGGER_BLADE, "type": DaggerComponentRecipe.DaggerType.DAGGER_BLADE},
+		"Dagger Handle": {"script": "DaggerComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": DaggerComponentRecipe.DaggerType.DAGGER_HANDLE},
+		"Dagger Pommel": {"script": "DaggerComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.DAGGER_BLADE, "type": DaggerComponentRecipe.DaggerType.DAGGER_POMMEL},
+		"Dagger Guard": {"script": "DaggerComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.DAGGER_BLADE, "type": DaggerComponentRecipe.DaggerType.DAGGER_GUARD}
 	}
 }
 
@@ -858,37 +858,37 @@ func parse_csv_line(line: String) -> Array:
 func generate_weapon_components():
 	print("Генерація компонентів зброї...")
 	
-	# Використовуємо значення з WeaponComponent.WeaponComponentType для вказання типу зброї
-	# та відповідних підтипів з OneHandedCutWeaponComponent, LongCutWeaponComponent і т.д.
+	# Використовуємо значення з WeaponComponentRecipe.WeaponComponentRecipeType для вказання типу зброї
+	# та відповідних підтипів з OneHandedCutWeaponComponentRecipe, LongCutWeaponComponentRecipe і т.д.
 	
 	# Мапінг категорій та підкатегорій до відповідних типів і скриптів
 	var scripts_map = {
 		"One-Handed Cut Weapon": {
-			"One-Handed Sword Blade": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SHORT_BLADE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.ONE_HANDED_SWORD_BLADE},
-			"Saber Blade": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SHORT_BLADE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.SABER_BLADE},
-			"One-Handed Guard": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SHORT_BLADE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.ONE_HANDED_GUARD},
-			"One-Handed Pommel": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SHORT_BLADE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.ONE_HANDED_POMMEL},
-			"One-Handed Handle": {"script": "OneHandedCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": OneHandedCutWeaponComponent.OneHandedCutWeaponType.ONE_HANDED_HANDLE}
+			"One-Handed Sword Blade": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SHORT_BLADE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.ONE_HANDED_SWORD_BLADE},
+			"Saber Blade": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SHORT_BLADE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.SABER_BLADE},
+			"One-Handed Guard": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SHORT_BLADE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.ONE_HANDED_GUARD},
+			"One-Handed Pommel": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SHORT_BLADE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.ONE_HANDED_POMMEL},
+			"One-Handed Handle": {"script": "OneHandedCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": OneHandedCutWeaponComponentRecipe.OneHandedCutWeaponType.ONE_HANDED_HANDLE}
 		},
 		"Long Cut Weapon": {
-			"Long Sword Blade": {"script": "LongCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.LONG_BLADE, "type": LongCutWeaponComponent.LongCutWeaponType.LONG_SWORD_BLADE},
-			"Lond Sword Guard": {"script": "LongCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.LONG_BLADE, "type": LongCutWeaponComponent.LongCutWeaponType.LONG_SWORD_GUARD},
-			"Long Sword Pommel": {"script": "LongCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.LONG_BLADE, "type": LongCutWeaponComponent.LongCutWeaponType.LONG_SWORD_POMMEL},
-			"Long Sword Handle": {"script": "LongCutWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": LongCutWeaponComponent.LongCutWeaponType.LONG_SWORD_HANDLE}
+			"Long Sword Blade": {"script": "LongCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.LONG_BLADE, "type": LongCutWeaponComponentRecipe.LongCutWeaponType.LONG_SWORD_BLADE},
+			"Lond Sword Guard": {"script": "LongCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.LONG_BLADE, "type": LongCutWeaponComponentRecipe.LongCutWeaponType.LONG_SWORD_GUARD},
+			"Long Sword Pommel": {"script": "LongCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.LONG_BLADE, "type": LongCutWeaponComponentRecipe.LongCutWeaponType.LONG_SWORD_POMMEL},
+			"Long Sword Handle": {"script": "LongCutWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": LongCutWeaponComponentRecipe.LongCutWeaponType.LONG_SWORD_HANDLE}
 		},
 		"Pole Weapon": {
-			"Pole Head": {"script": "PoleWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.SPEAR_HEAD, "type": PoleWeaponComponent.PoleWeaponType.POLE_HEAD},
-			"Pole Handle": {"script": "PoleWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": PoleWeaponComponent.PoleWeaponType.POLE_HANDLE}
+			"Pole Head": {"script": "PoleWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.SPEAR_HEAD, "type": PoleWeaponComponentRecipe.PoleWeaponType.POLE_HEAD},
+			"Pole Handle": {"script": "PoleWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": PoleWeaponComponentRecipe.PoleWeaponType.POLE_HANDLE}
 		},
 		"Heavy Weapon": {
-			"Heavy Weapon Head": {"script": "HeavyWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.MACE_HEAD, "type": HeavyWeaponComponent.HeavyWeaponType.HEAVY_WEAPON_HEAD},
-			"Heavy Weapon Handle": {"script": "HeavyWeaponComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": HeavyWeaponComponent.HeavyWeaponType.HEAVY_WEAPON_HANDLE}
+			"Heavy Weapon Head": {"script": "HeavyWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.MACE_HEAD, "type": HeavyWeaponComponentRecipe.HeavyWeaponType.HEAVY_WEAPON_HEAD},
+			"Heavy Weapon Handle": {"script": "HeavyWeaponComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": HeavyWeaponComponentRecipe.HeavyWeaponType.HEAVY_WEAPON_HANDLE}
 		},
 		"Dagger": {
-			"Dagger Blade": {"script": "DaggerComponent", "weapon_type": WeaponComponent.WeaponComponentType.DAGGER_BLADE, "type": DaggerComponent.DaggerType.DAGGER_BLADE},
-			"Dagger Handle": {"script": "DaggerComponent", "weapon_type": WeaponComponent.WeaponComponentType.WEAPON_HANDLE, "type": DaggerComponent.DaggerType.DAGGER_HANDLE},
-			"Dagger Pommel": {"script": "DaggerComponent", "weapon_type": WeaponComponent.WeaponComponentType.DAGGER_BLADE, "type": DaggerComponent.DaggerType.DAGGER_POMMEL},
-			"Dagger Guard": {"script": "DaggerComponent", "weapon_type": WeaponComponent.WeaponComponentType.DAGGER_BLADE, "type": DaggerComponent.DaggerType.DAGGER_GUARD}
+			"Dagger Blade": {"script": "DaggerComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.DAGGER_BLADE, "type": DaggerComponentRecipe.DaggerType.DAGGER_BLADE},
+			"Dagger Handle": {"script": "DaggerComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.WEAPON_HANDLE, "type": DaggerComponentRecipe.DaggerType.DAGGER_HANDLE},
+			"Dagger Pommel": {"script": "DaggerComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.DAGGER_BLADE, "type": DaggerComponentRecipe.DaggerType.DAGGER_POMMEL},
+			"Dagger Guard": {"script": "DaggerComponentRecipe", "weapon_type": WeaponComponentRecipe.WeaponComponentRecipeType.DAGGER_BLADE, "type": DaggerComponentRecipe.DaggerType.DAGGER_GUARD}
 		}
 	}
 	
@@ -943,15 +943,15 @@ func create_weapon_component(item_data, script_class_name: String, component_typ
 	if script_info:
 		# Встановлюємо тип компонента
 		match script_class_name:
-			"OneHandedCutWeaponComponent":
+			"OneHandedCutWeaponComponentRecipe":
 				component.one_handed_cut_weapon_type = script_info.type
-			"LongCutWeaponComponent":
+			"LongCutWeaponComponentRecipe":
 				component.long_cut_weapon_type = script_info.type
-			"PoleWeaponComponent":
+			"PoleWeaponComponentRecipe":
 				component.pole_weapon_type = script_info.type
-			"HeavyWeaponComponent":
+			"HeavyWeaponComponentRecipe":
 				component.heavy_weapon_type = script_info.type
-			"DaggerComponent":
+			"DaggerComponentRecipe":
 				component.dagger_type = script_info.type
 		
 		# Встановлюємо загальний тип зброї
@@ -961,11 +961,11 @@ func create_weapon_component(item_data, script_class_name: String, component_typ
 	
 	# Встановлюємо складність створення на основі вхідних даних
 	match item_data.difficulty:
-		"1": component.creation_difficulty = ItemData.CreationDifficulty.HOUSEHOLD
-		"2": component.creation_difficulty = ItemData.CreationDifficulty.BASIC
-		"3": component.creation_difficulty = ItemData.CreationDifficulty.MILITARY
-		"4": component.creation_difficulty = ItemData.CreationDifficulty.ELITE
-		_: component.creation_difficulty = ItemData.CreationDifficulty.BASIC
+		"1": component.creation_difficulty = Recipe.CreationDifficulty.HOUSEHOLD
+		"2": component.creation_difficulty = Recipe.CreationDifficulty.BASIC
+		"3": component.creation_difficulty = Recipe.CreationDifficulty.MILITARY
+		"4": component.creation_difficulty = Recipe.CreationDifficulty.ELITE
+		_: component.creation_difficulty = Recipe.CreationDifficulty.BASIC
 	
 	# Встановлюємо кількість виробів
 	component.produced_quantity = 1
