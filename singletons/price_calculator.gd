@@ -48,12 +48,12 @@ static func calculate_complex_item_material_cost(item: ProductRecipe, desired_qu
 			var component = slot.allowed_component
 			print("[PRICE] Processing slot with component: ", component.name)
 			
-			# Використовуємо max_stack для кількості компонентів
-			var required_amount = slot.max_stack
+			# Використовуємо required_amount для кількості компонентів
+			var required_amount = slot.required_amount
 			if required_amount <= 0:
-				required_amount = 1  # Мінімальна кількість 1, якщо max_stack не встановлено
+				required_amount = 1  # Мінімальна кількість 1, якщо required_amount не встановлено
 			
-			print("[PRICE] Required amount (max_stack): ", required_amount)
+			print("[PRICE] Required amount (required_amount): ", required_amount)
 			
 			# Розраховуємо вартість компонента з тією ж якістю
 			var component_cost = calculate_simple_item_material_cost(component, desired_quality)

@@ -8,7 +8,7 @@ signal quality_changed(new_quality: float)  # Сигнал про зміну я�
 
 @export var weight: int = 1  # Вага для розрахунку (1-3)
 @export var is_required: bool = true  # Чи є обов'язковим
-@export var max_stack: int = 1  # Максимальна кількість вмісту у слоті
+@export var required_amount: int = 1  # Максимальна кількість вмісту у слоті
 
 var quantity: int = 0  # Необхідна кількість вмісту
 var quality: float = 0.0  # Середня якість вмісту слота
@@ -41,7 +41,7 @@ func calculate_average_quality() -> float:
 
 # Перевірити чи можна додати ще вміст
 func can_add_more() -> bool:
-	return get_current_quantity() < max_stack
+	return get_current_quantity() < required_amount
 
 # Перевірка чи слот містить конкретний елемент
 func contains(item) -> bool:

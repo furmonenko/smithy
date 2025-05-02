@@ -525,7 +525,7 @@ func setup_material_slots(component, materials_str: String):
 		material_slot.is_required = true
 		
 		# Встановлюємо максимальний стек - виправлена версія
-		material_slot.max_stack = quantity
+		material_slot.required_amount = quantity
 		
 		# Додаємо слот до компонента
 		component.component_slots.append(material_slot)

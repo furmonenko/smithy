@@ -2,9 +2,9 @@
 extends Slot
 class_name ComponentSlot
 
-@export var allowed_component: ComponentRecipe  # Зразок компонента, який можна використати в слоті
+@export var allowed_component: ComponentRecipe
 
-var assigned_components: Array[ComponentRecipe] = []  # Масив призначених компонентів
+var assigned_components: Array[ComponentRecipe] = []
 
 # Отримати поточну кількість компонентів
 func get_current_quantity() -> int:

@@ -1178,8 +1178,8 @@ func setup_material_slots(component, materials_str: String):
 		# Встановлюємо обов'язковість
 		material_slot.is_required = true
 		
-		# Виправлена версія - встановлюємо max_stack рівним точній кількості
-		material_slot.max_stack = quantity
+		# Виправлена версія - встановлюємо required_amount рівним точній кількості
+		material_slot.required_amount = quantity
 		
 		# Додаємо слот до компонента
 		component.component_slots.append(material_slot)
